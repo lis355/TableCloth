@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace TableClothKernel
+﻿namespace TableClothKernel
 {
     /// <summary>
     /// Представление выражения как дерева. У каждой вершины либо нет сыновей (переменная или константа)
@@ -21,14 +16,14 @@ namespace TableClothKernel
     {
         public BooleanConstants Constant;
 
-        public ConstantVertex( BooleanConstants BC )
+        public ConstantVertex( BooleanConstants bc )
         {
-            Constant = BC;
+            Constant = bc;
         }
 
         public override bool CalcExpressionOnThisVertex()
         {
-            return ( Constant == BooleanConstants.True ) ? true : false;
+            return Constant == BooleanConstants.True;
         }
 
         public override bool IsOperand() { return false; }
@@ -41,9 +36,9 @@ namespace TableClothKernel
     {
         public string Name;
 
-        public VariableVertex( string N )
+        public VariableVertex( string n )
         {
-            Name = N;
+            Name = n;
         }
 
         public override bool CalcExpressionOnThisVertex() { return GlobalVariableList.GetCalcValue( Name ); }
@@ -59,11 +54,11 @@ namespace TableClothKernel
         public CommandsCode OperationCode;
         public ExpressionVertex L, R;
 
-        public OperandVertex( CommandsCode C, ExpressionVertex LV, ExpressionVertex RV )
+        public OperandVertex( CommandsCode c, ExpressionVertex lv, ExpressionVertex rv )
         {
-            OperationCode = C;
-            L = LV;
-            R = RV;
+            OperationCode = c;
+            L = lv;
+            R = rv;
         }
 
         public override bool CalcExpressionOnThisVertex()
@@ -96,12 +91,10 @@ namespace TableClothKernel
         {
             if ( OperationCode == CommandsCode.Not )
             {
-                return ExpressionString.CommandsCodeToString( OperationCode ) + L.ToString();
+                return ExpressionString.CommandsCodeToString( OperationCode ) + L;
             }
-            else
-            {
-                return "(" + L.ToString() + " " + ExpressionString.CommandsCodeToString( OperationCode ) + " " + R.ToString() + ")";
-            }
+            
+            return "(" + L + " " + ExpressionString.CommandsCodeToString( OperationCode ) + " " + R + ")";
         }
     }
 }

@@ -5,63 +5,66 @@ namespace TableClothKernel
     /// <summary>
     /// Список переменных, основан на словаре для более быстрой проверки на существование элемента
     /// </summary>
-    class VariableList
+    internal class VariableList
     {
         /// <summary>
         /// Список переменных
         /// </summary>
-        Dictionary<string, Expression> VariablesTable;
+        private readonly Dictionary<string, Expression> _variablesTable;
 
         public VariableList()
         {
-            VariablesTable = new Dictionary<string, Expression>();
+            _variablesTable = new Dictionary<string, Expression>();
         }
 
         /// <summary>
         /// Проверка существования переменной
         /// </summary>
-        public bool IsExist( string Name )
+        public bool IsExist( string name )
         {
-            return VariablesTable.ContainsKey( Name );
+            return _variablesTable.ContainsKey( name );
         }
 
         /// <summary>
         /// Установить новое значение существующей переменной либо
         /// при ее отсутствии создать новую
         /// </summary>
-        public void Set( string Name, Expression F )
+        public void Set( string name, Expression f )
         {
-            if ( !IsExist( Name ) )
+            if ( !IsExist( name ) )
             {
                 // добавляем
-                VariablesTable.Add( Name, F );
+                _variablesTable.Add( name, f );
             }
             else
             {
-                VariablesTable[ Name ] = F;
+                _variablesTable[name] = f;
             }
         }
 
         /// <summary>
         /// Удаление переменной
         /// </summary>
-        public void Delete( string Name )
+        public void Delete( string name )
         {
-            if ( IsExist( Name ) )
+            if ( IsExist( name ) )
             {
-                VariablesTable.Remove( Name );
+                _variablesTable.Remove( name );
             }
         }
 
-        public Expression this[ string Name ]
+        public Expression this[string name]
         {
-            get { return VariablesTable[ Name ]; }
+            get
+            {
+                return _variablesTable[name];
+            }
         }
 
         public string[] GetAllVariablesNames()
         {
-            string[] res = new string[ VariablesTable.Keys.Count ];
-            VariablesTable.Keys.CopyTo( res, 0 );
+            var res = new string[_variablesTable.Keys.Count];
+            _variablesTable.Keys.CopyTo( res, 0 );
             return res;
         }
     }

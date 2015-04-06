@@ -1,56 +1,82 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace TableClothKernel
+﻿namespace TableClothKernel
 {
     static class ExpressionString
     {
-        static string[] StringCommandsCodeSymbol = new string[] { "!", "&&", "||", "^", "==", "=>", "[shef]", "[pirse]" };
-        static string[] StringCommandsCodeWord = new string[] { "[not]", "[and]", "[or]", "[xor]", "[equ]", "[impl]", "[shef]", "[pirse]" };
+        static readonly string[] _stringCommandsCodeSymbol = { "!", "&&", "||", "^", "==", "=>", "[shef]", "[pirse]" };
+        static readonly string[] _stringCommandsCodeWord = { "[not]", "[and]", "[or]", "[xor]", "[equ]", "[impl]", "[shef]", "[pirse]" };
 
-        static string[] StringConstantNumber = new string[] { "0", "1" };
-        static string[] StringConstantWord = new string[] { "false", "true" };
+        static readonly string[] _stringConstantNumber = { "0", "1" };
+        static readonly string[] _stringConstantWord = { "false", "true" };
 
-        public delegate string CommandsCodeToStringConverter( CommandsCode C );
+        public delegate string CommandsCodeToStringConverter( CommandsCode c );
         public static CommandsCodeToStringConverter CommandsCodeToString = CommandCodeToStringSymbol;
 
-        static StringCommandType CommandCodeTypeVariable = StringCommandType.Symbol;
+        static StringCommandType _commandCodeTypeVariable = StringCommandType.Symbol;
         static public StringCommandType CommandCodeType
         {
             set
             {
-                CommandCodeTypeVariable = value;
-                CommandsCodeToString = ( value == StringCommandType.Symbol ) ? ( CommandsCodeToStringConverter )CommandCodeToStringSymbol : ( CommandsCodeToStringConverter )CommandCodeToStringWord;
+                _commandCodeTypeVariable = value;
+
+                if ( value == StringCommandType.Symbol )
+                {
+                    CommandsCodeToString = CommandCodeToStringSymbol;
+                }
+                else
+                {
+                    CommandsCodeToString = CommandCodeToStringWord;
+                }
             }
             get
             {
-                return CommandCodeTypeVariable;
+                return _commandCodeTypeVariable;
             }
         }
 
-        static string CommandCodeToStringSymbol( CommandsCode C ) { return StringCommandsCodeSymbol[ ( byte )C ]; }
-        static string CommandCodeToStringWord( CommandsCode C ) { return StringCommandsCodeWord[ ( byte )C ]; }
+        static string CommandCodeToStringSymbol( CommandsCode c )
+        {
+            return _stringCommandsCodeSymbol[ ( byte )c ];
+        }
 
-        public delegate string ConstantToStringConverter( bool C );
+        static string CommandCodeToStringWord( CommandsCode c )
+        {
+            return _stringCommandsCodeWord[ ( byte )c ];
+        }
+
+        public delegate string ConstantToStringConverter( bool c );
         public static ConstantToStringConverter ConstantToString = ConstantToStringNumber;
 
-        static StringConstantType ConstantTypeVariable = StringConstantType.Number;
+        static StringConstantType _constantTypeVariable = StringConstantType.Number;
         public static StringConstantType ConstantType
         {
             set
             {
-                ConstantTypeVariable = value;
-                ConstantToString = ( ConstantToStringConverter )( ( value == StringConstantType.Number ) ? ( ConstantToStringConverter )ConstantToStringNumber : ( ConstantToStringConverter )ConstantToStringWord );
+                _constantTypeVariable = value;
+
+                if ( value == StringConstantType.Number )
+                {
+                    ConstantToString = ConstantToStringNumber;
+
+                }
+                else
+                {
+                    ConstantToString = ConstantToStringWord;
+                }
             }
             get
             {
-                return ConstantTypeVariable;
+                return _constantTypeVariable;
             }
         }
 
-        static string ConstantToStringNumber( bool C ) { return ( !C ) ? StringConstantNumber[ 0 ] : StringConstantNumber[ 1 ]; }
-        static string ConstantToStringWord( bool C ) { return ( !C ) ? StringConstantWord[ 0 ] : StringConstantWord[ 1 ]; }
+        static string ConstantToStringNumber( bool c )
+        {
+            return ( !c ) ? _stringConstantNumber[ 0 ] : _stringConstantNumber[ 1 ];
+        }
+
+        static string ConstantToStringWord( bool c )
+        {
+            return ( !c ) ? _stringConstantWord[ 0 ] : _stringConstantWord[ 1 ];
+        }
     }
 }

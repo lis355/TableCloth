@@ -9,7 +9,14 @@ namespace TableClothKernel
     class DynamicFastCalc
     {
         static readonly DynamicFastCalc _instance = new DynamicFastCalc();
-        public static DynamicFastCalc Instance { get { return _instance; } }
+
+        public static DynamicFastCalc Instance
+        {
+            get
+            {
+                return _instance;
+            }
+        }
 
         readonly ModuleBuilder _moduleBuilder;
 
@@ -30,6 +37,7 @@ namespace TableClothKernel
         class FastCalcMethod : IFastCalcMethod
         {
             public object Owner;
+
             public MethodInfo Info;
 
             public bool Calc( params object[] args )
@@ -46,11 +54,11 @@ namespace TableClothKernel
                 "FastCalcFunctions_" + name,
                 TypeAttributes.Public );
 
-            var argType = typeof( bool );
+            var argType = typeof ( bool );
 
             var parametersArray = Enumerable.Repeat( argType, argCount ).ToArray();
 
-            MethodBuilder methodSum = typeBuilder.DefineMethod(
+            var methodSum = typeBuilder.DefineMethod(
                 name,
                 MethodAttributes.Public,
                 argType,
@@ -60,12 +68,12 @@ namespace TableClothKernel
 
             var thistype = typeBuilder.CreateType();
 
-            MethodInfo info = thistype.GetMethod(
+            var info = thistype.GetMethod(
                 name,
                 BindingFlags.Instance
                 | BindingFlags.Public );
 
-            FastCalcMethod result = new FastCalcMethod
+            var result = new FastCalcMethod
             {
                 Owner = Activator.CreateInstance( thistype ),
                 Info = info
@@ -74,7 +82,7 @@ namespace TableClothKernel
             return result;
         }
 
-        void EmitInstructions( ILGenerator generator )
+        static void EmitInstructions( ILGenerator generator )
         {
             generator.Emit( OpCodes.Ldarg_1 );
             generator.Emit( OpCodes.Ldarg_2 );

@@ -1,6 +1,6 @@
 ﻿namespace TableClothKernel
 {
-    enum CommandsCode : byte
+    public enum CommandsCode
     {
         Not,
         And,
@@ -12,7 +12,7 @@
         Pirse
     }
 
-    enum BooleanConstants : byte
+    public enum BooleanConstants
     {
         True,
         False

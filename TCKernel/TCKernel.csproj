@@ -9,7 +9,7 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TableClothKernel</RootNamespace>
-    <AssemblyName>TCKernel</AssemblyName>
+    <AssemblyName>TableClothKernel</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -51,14 +51,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base Classes\Base.cs" />
+    <Compile Include="Debug\Tests.cs" />
     <Compile Include="Expression\ExpressionString.cs" />
     <Compile Include="Expression\ExpressionVertex.cs" />
-    <Compile Include="StaticClasses\DynamicFastCalc.cs" />
+    <Compile Include="FastCalc\DynamicFastCalc.cs" />
     <Compile Include="StaticClasses\GlobalVariableList.cs" />
     <Compile Include="Expression\Expression.cs" />
     <Compile Include="StaticClasses\Options.cs" />
     <Compile Include="CocoR\ParserFunctions.cs" />
-    <Compile Include="old_and_tests\TCDebug.cs" />
+    <Compile Include="Debug\TcDebug.cs" />
     <Compile Include="Enums\StringTypes.cs" />
     <Compile Include="StringTree.cs" />
     <Compile Include="TCException.cs" />
@@ -80,7 +81,7 @@
     <Content Include="CocoR\TableClothGrammarSpec.c" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="Config\app.config" />
     <None Include="CocoR\build.bat" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

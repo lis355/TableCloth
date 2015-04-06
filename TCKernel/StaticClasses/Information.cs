@@ -2,16 +2,33 @@
 {
     public static class Information
     {
-        public static string KernelVersion()
+        public static string KernelName
         {
-            return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major.ToString()
-                + '.' + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor.ToString();
+            get
+            {
+                var assemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName();
+                return assemblyName.Name;
+            }
         }
 
-        public static string KernelAssembly()
+        public static string KernelVersion
         {
-            return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Build.ToString()
-                 + '.' + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Revision.ToString();
+            get
+            {
+                var assemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName();
+                return assemblyName.Version.Major.ToString()
+                       + '.' + assemblyName.Version.Minor.ToString();
+            }
+        }
+
+        public static string KernelAssembly
+        {
+            get
+            {
+                var assemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName();
+                return assemblyName.Version.Build.ToString()
+                       + '.' + assemblyName.Version.Revision.ToString();
+            }
         }
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace TableClothKernel
 {
@@ -16,14 +13,17 @@ namespace TableClothKernel
             VariableNames = new List<string>( 3 );
         }
 
-        public bool Calc() { return Root.CalcExpressionOnThisVertex(); }
+        public bool Calc()
+        {
+            return Root.CalcExpressionOnThisVertex();
+        }
 
         public int VariableCount { get { return VariableNames.Count; } }
 
-        public void AddVariable( string Name )
+        public void AddVariable( string name )
         {
-            if ( !VariableNames.Contains( Name ) )
-                VariableNames.Add( Name );
+            if ( !VariableNames.Contains( name ) )
+                VariableNames.Add( name );
         }
     }
 }

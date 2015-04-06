@@ -2,9 +2,7 @@
 {
     static class FMinimize
     {
-        /// <summary>
-        /// Минимизация логической формулы методом Квайна из СДНФ
-        /// </summary>
+        // Минимизация логической формулы методом Квайна из СДНФ
         /*static public Formula MinimizeQuine(ref Formula F)
         {
             Formula G = new Formula(ref F);
@@ -215,7 +213,7 @@
 
             return G; 
         }
-        */
+        
         /// <summary>
         /// Возвращает строку где число единиц больше всех
         /// </summary>
@@ -295,6 +293,6 @@
                 if ( onediff > 1 ) return false;
             }
             return true;
-        }
+        }*/
     }
 }

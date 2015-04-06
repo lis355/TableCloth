@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TableClothKernel
+﻿namespace TableClothKernel
 {
     /// <summary>
     /// Основной класс для рассчета строки
@@ -12,19 +8,19 @@ namespace TableClothKernel
         // Основная функция рассчета строки
         public static bool CalcExpression( string S )
         {
-            Parser Prs = new Parser( new Scanner( S ) );
+            var prs = new Parser( new Scanner( S ) );
             try
             {
-                Prs.Parse();
+                prs.Parse();
                 //Prs.errorString = Prs.errors.errorStream. .ToString();
                 //Prs.Tree.ToDot();
             }
-            catch// ( TCException Expt )
+            catch // ( TCException Expt )
             {
                 return false; // Expt.Message;
             }
 
-            return ( Prs.errors.count != 0 );
+            return prs.errors.count != 0;
         }
     }
 }

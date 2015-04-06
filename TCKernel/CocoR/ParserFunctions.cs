@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace TableClothKernel
 {
@@ -8,17 +6,24 @@ namespace TableClothKernel
     partial class Parser
     {
         public RootNode Tree = new RootNode();
-        Node Cur;
 
-        void AddCh( Node c ) { Cur.Childs.Add( c ); Cur = c; }
-        void AddChC( Node c ) { Cur.Childs.Add( c ); }
+        public Node Cur;
+
+        void AddCh( Node c )
+        {
+            Cur.Childs.Add( c );
+            Cur = c;
+        }
+
+        void AddChC( Node c )
+        {
+            Cur.Childs.Add( c );
+        }
 
         Stack<ExpressionVertex> EV = new Stack<ExpressionVertex>( 50 );
 
-
-        public string
-            tmpIdentifier = "",
-            errorString = "";
+        public string tmpIdentifier = "";
+        public string errorString = "";
 
         Expression tmpExpression = null;
 
@@ -30,56 +35,56 @@ namespace TableClothKernel
 
         void PushFalseConstant()
         {
-            TcDebug.Log("const 0");
+            TcDebug.Log( "const 0" );
             EV.Push( new ConstantVertex( BooleanConstants.False ) );
         }
 
         void PushPirse()
         {
-            TcDebug.Log("pirse");
+            TcDebug.Log( "pirse" );
             EV.Push( new OperandVertex( CommandsCode.Pirse, EV.Pop(), EV.Pop() ) );
         }
 
         void PushShef()
         {
-            TcDebug.Log("shef");
+            TcDebug.Log( "shef" );
             EV.Push( new OperandVertex( CommandsCode.Sheffer, EV.Pop(), EV.Pop() ) );
         }
 
         void PushEqu()
         {
-            TcDebug.Log("equ");
+            TcDebug.Log( "equ" );
             EV.Push( new OperandVertex( CommandsCode.Equivalence, EV.Pop(), EV.Pop() ) );
         }
 
         void PushImpl()
         {
-            TcDebug.Log("impl");
+            TcDebug.Log( "impl" );
             EV.Push( new OperandVertex( CommandsCode.Implication, EV.Pop(), EV.Pop() ) );
         }
 
         void PushXor()
         {
-            TcDebug.Log("xor");
+            TcDebug.Log( "xor" );
             EV.Push( new OperandVertex( CommandsCode.Xor, EV.Pop(), EV.Pop() ) );
         }
 
         void PushOr()
         {
-            TcDebug.Log("or");
+            TcDebug.Log( "or" );
             EV.Push( new OperandVertex( CommandsCode.Or, EV.Pop(), EV.Pop() ) );
         }
 
         void PushAnd()
         {
-            TcDebug.Log("and");
+            TcDebug.Log( "and" );
             EV.Push( new OperandVertex( CommandsCode.And, EV.Pop(), EV.Pop() ) );
         }
 
         void PushNot()
         {
             // !!
-            TcDebug.Log("not");
+            TcDebug.Log( "not" );
             ExpressionVertex PreviosExp = EV.Pop();
             if ( PreviosExp.IsOperand() )
             {
@@ -89,7 +94,7 @@ namespace TableClothKernel
                 }
                 else
                 {
-                    EV.Push( ( ( OperandVertex )PreviosExp ).L ); 
+                    EV.Push( ( ( OperandVertex )PreviosExp ).L );
                     TcDebug.Log( "delete previous not" );
                 }
             }
@@ -99,8 +104,9 @@ namespace TableClothKernel
                 if ( PreviosExp.IsConstant() )
                 {
                     ( ( ConstantVertex )PreviosExp ).Constant =
-                        ( ( ( ConstantVertex )PreviosExp ).Constant == BooleanConstants.False ) ?
-                        BooleanConstants.True : BooleanConstants.False;
+                        ( ( ( ConstantVertex )PreviosExp ).Constant == BooleanConstants.False )
+                            ? BooleanConstants.True
+                            : BooleanConstants.False;
                     EV.Push( PreviosExp );
                 }
                 else
@@ -110,11 +116,11 @@ namespace TableClothKernel
             }
         }
 
-        void PushVariable( string Name )
+        void PushVariable( string name )
         {
-            TcDebug.Log( "var " + Name );
-            EV.Push( new VariableVertex( Name ) );
-            tmpExpression.AddVariable( Name );
+            TcDebug.Log( "var " + name );
+            EV.Push( new VariableVertex( name ) );
+            tmpExpression.AddVariable( name );
         }
     }
 }

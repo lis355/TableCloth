@@ -2,8 +2,11 @@
 
 namespace TableClothKernel
 {
-    class TCException : Exception
+    internal class TcException : Exception
     {
-        public TCException( string M ) : base( M ) { }
+        public TcException( string m ) :
+            base( m )
+        {
+        }
     }
 }
