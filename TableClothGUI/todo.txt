@@ -1,0 +1,20 @@
+﻿обработка enter
+
+в следующей версии сделать возможным сворачивание тетради
+
+// test ellipse and time ///////////////
+if (DEBUG_DRAW)
+{
+    string tststr = DateTime.Now.ToLongTimeString() + ":" + DateTime.Now.Millisecond.ToString() +
+        " SIL=" + SymbolsInLine.ToString() + " SIC=" + SymbolsInColumn.ToString();
+    int tstx = 0, tsty = Height - CommandBoxFontSize.Height;
+    for (float i = CommandBoxFontSize.Width + 1; i <= (SymbolsInLine + 2) * CommandBoxFontSize.Width;
+        i += CommandBoxFontSize.Width) myGraphics.DrawLine(Pens.LightSalmon, i, 0, i, CommandBoxFontSize.Height * SymbolsInColumn);
+    for (int i = 0; i <= SymbolsInColumn; i++)
+        myGraphics.DrawLine(Pens.LightSalmon,
+            0, i * CommandBoxFontSize.Height, (SymbolsInLine + 1) * CommandBoxFontSize.Width, i * CommandBoxFontSize.Height);
+    myGraphics.DrawEllipse(Pens.Gray, 0, 0, Width, Height);
+    myGraphics.FillRectangle(Brushes.Gray, tstx, tsty, TextRenderer.MeasureText(tststr, CommandBoxFont).Width, CommandBoxFontSize.Height);
+    myGraphics.DrawString(tststr, CommandBoxFont, new SolidBrush(Color.DarkOrange), tstx, tsty);
+}
+///////////////////////////////////////

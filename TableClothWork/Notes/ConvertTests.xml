@@ -1,0 +1,39 @@
+<!--TableCloth version 1.2.4139.2957-->
+<TableClothNote name="ConvertTests">
+  <TableClothFormatLanguage>2</TableClothFormatLanguage>
+  <Space>
+    <In>// Convert tests</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>Q = x1 + x2 + x3 + !(x4 + x5)</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>ConvertToDual(Q)</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>ConvertToSDNF(Q)</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>ConvertToSCNF(Q)</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>ConvertToJegalkinPoly(Q)</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>// ConvertToBasis(Q)</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+</TableClothNote>

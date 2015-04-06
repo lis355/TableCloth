@@ -1,0 +1,115 @@
+﻿<!--TableCloth version 1.2.4158.2828-->
+<TableClothNote name="TutorialAndPresentation">
+  <TableClothFormatLanguage>2</TableClothFormatLanguage>
+  <Space>
+    <In>A = x^y</In>
+    <Out>x^y</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>B = x~y</In>
+    <Out>x~y</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>GetScheme(ConvertToJegalkinPoly(A^B))</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>C = ConvertToJegalkinPoly(A^B)</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>MinimizeQuine(C)</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>GetFormulaVector(C)</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>GetFormulaVector(A^B)</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>MinimizeQuine(!x*!y*!w*t + !x*y*!w*t + x*!y*!w*t + !x*y*w*t + x*!y*w*t + !x*!y*w*t)</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>CheckBasis(!x, x+y, x*y)</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>CheckBasis(x*y, x^y, 1)</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>ConvertToJegalkinPoly(x+y+z+w+t+g+h)</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>CreateFromVector(newfunc,0,1,0,0,1,1,1,0)</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>MinimizeQuine(newfunc)</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>primer = (x|y)^(z|w)</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>GetScheme(ConvertToSDNF(primer))</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>GetTruthTable(primer)</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space>
+  <Space>
+    <In>GetScheme(!x1 * (x2 > x3) * !(x4 ^ !x5) + (x1>x2>x3>x4>x5) * (!x1^!x2^!x3^!x4^!x5))</In>
+    <Out>NULL</Out>
+    <Min>False</Min>
+  </Space> 
+  <Variable>
+    <Name>A</Name>
+    <Commands>2(0)2(1)6</Commands>
+    <Arguments>
+      <Id>x</Id>
+      <Id>y</Id>
+    </Arguments>
+  </Variable>
+  <Variable>
+    <Name>B</Name>
+    <Commands>2(0)2(1)9</Commands>
+    <Arguments>
+      <Id>x</Id>
+      <Id>y</Id>
+    </Arguments>
+  </Variable>
+  <Variable>
+    <Name>primer</Name>
+    <Commands>2(0)2(1)82(2)2(3)86</Commands>
+    <Arguments>
+      <Id>x</Id>
+      <Id>y</Id>
+      <Id>z</Id>
+      <Id>w</Id>
+    </Arguments>
+  </Variable>
+</TableClothNote>

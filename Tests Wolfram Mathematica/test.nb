@@ -1,0 +1,114 @@
+(* Content-type: application/mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 7.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       145,          7]
+NotebookDataLength[      3148,        105]
+NotebookOptionsPosition[      2577,         82]
+NotebookOutlinePosition[      3021,         99]
+CellTagsIndexPosition[      2978,         96]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"n", " ", 
+       SuperscriptBox["2", "n"]}], ")"}], "/", "256"}], "/", "1024"}], "/.", 
+   RowBox[{"n", "\[Rule]", "20"}]}], "//", "N", 
+  RowBox[{"(*", "megabait", "*)"}]}]], "Input",
+ CellChangeTimes->{{3.5126369355152206`*^9, 3.512637003450106*^9}, {
+  3.512637163194243*^9, 3.5126371939900045`*^9}, {3.512637231728163*^9, 
+  3.512637257784653*^9}}],
+
+Cell[BoxData["80.`"], "Output",
+ CellChangeTimes->{{3.51263694494376*^9, 3.5126369595575953`*^9}, {
+  3.5126371523876247`*^9, 3.5126371964551454`*^9}, {3.5126372341162996`*^9, 
+  3.512637258393688*^9}}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"Boole", "[", 
+  RowBox[{"BooleanTable", "[", 
+   RowBox[{
+   "x1", "||", "x2", "||", "x3", "||", "x4", "||", "x5", "||", "x6", "||", 
+    "x7", "||", "x8", "||", "x9", "||", "x10", "||", "x11"}], "]"}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.5126379050556755`*^9, 3.5126380375022507`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"BooleanConvert", "[", 
+   RowBox[{
+    RowBox[{"Or", "[", 
+     RowBox[{"x1", ",", "x2", ",", "x3"}], "]"}], ",", "\"\<ANF\>\""}], "]"}], 
+  RowBox[{"(*", 
+   RowBox[{
+   "\:043f\:043e\:043b\:0438\:043d\:043e\:043c", " ", 
+    "\:0436\:0438\:0433\:0430\:043b\:043a\:0438\:043d\:0430"}], 
+   "*)"}]}]], "Input",
+ CellChangeTimes->{{3.512638159633236*^9, 3.512638181453484*^9}, {
+   3.5126383677151375`*^9, 3.5126383790017834`*^9}, {3.5126384257974596`*^9, 
+   3.5126384499088387`*^9}, {3.5126386117150936`*^9, 3.5126386198625593`*^9}, 
+   3.512932250565092*^9}],
+
+Cell[BoxData[
+ RowBox[{"x1", "\[Xor]", "x2", "\[Xor]", "x3", "\[Xor]", 
+  RowBox[{"(", 
+   RowBox[{"x1", "&&", "x2"}], ")"}], "\[Xor]", 
+  RowBox[{"(", 
+   RowBox[{"x1", "&&", "x3"}], ")"}], "\[Xor]", 
+  RowBox[{"(", 
+   RowBox[{"x2", "&&", "x3"}], ")"}], "\[Xor]", 
+  RowBox[{"(", 
+   RowBox[{"x1", "&&", "x2", "&&", "x3"}], ")"}]}]], "Output",
+ CellChangeTimes->{3.5129322518831673`*^9}]
+}, Open  ]]
+},
+WindowSize->{969, 850},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification:>FEPrivate`If[
+  FEPrivate`Equal[FEPrivate`$VersionNumber, 6.], 1.25, 1.25 Inherited],
+FrontEndVersion->"7.0 for Microsoft Windows (32-bit) (November 10, 2008)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[567, 22, 446, 12, 35, "Input"],
+Cell[1016, 36, 202, 3, 35, "Output"]
+}, Open  ]],
+Cell[1233, 42, 316, 7, 35, "Input"],
+Cell[CellGroupData[{
+Cell[1574, 53, 595, 14, 35, "Input"],
+Cell[2172, 69, 389, 10, 35, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
