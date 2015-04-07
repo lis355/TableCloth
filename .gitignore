@@ -17,14 +17,11 @@ Thumbs.db
 *.ilk
 *.log
 [Bb]in
-[Dd]ebug*/
 *.lib
 *.sbr
 *.rar
 obj/
-[Rr]elease*/
 _ReSharper*/
-[Tt]est[Rr]esult*
 
 exe_debug/
 exe_release/
