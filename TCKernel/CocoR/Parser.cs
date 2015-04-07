@@ -131,16 +131,36 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 	}
 
 	void Command() {
-		if (GetNextTokenKind() != _Equal) {
-			ExpressionCode();
-			AddCh(new ExpressionCommandNode()); /*resultString += ExpressionString.ConstantToString(tmpExpression.Root.CalcExpressionOnThisVertex()) + "; ";*/ 
-		} else if (la.kind == 1 || la.kind == 6) {
-			CreateNewVariableCommand();
+		if (StartOf(2)) {
+			ExpressionOrCreateNewVariableCommand();
 		} else if (la.kind == 7) {
 			DeleteVariableCommand();
 		} else if (la.kind == 8) {
 			GetExpressionTypeCommand();
 		} else SynErr(25);
+	}
+
+	void ExpressionOrCreateNewVariableCommand() {
+		if (GetNextTokenKind() != _Equal) {
+			ExpressionCode();
+			AddCh( new ExpressionCommandNode() ); 
+		} else if (la.kind == 1 || la.kind == 6) {
+			CreateNewVariableCommand();
+		} else SynErr(26);
+	}
+
+	void DeleteVariableCommand() {
+		Expect(7);
+		Expect(18);
+		Expect(1);
+		Expect(19);
+	}
+
+	void GetExpressionTypeCommand() {
+		Expect(8);
+		Expect(18);
+		ExpressionCode();
+		Expect(19);
 	}
 
 	void ExpressionCode() {
@@ -164,21 +184,7 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 			Expect(23);
 			ExpressionCode();
 			Expect(19);
-		} else SynErr(26);
-	}
-
-	void DeleteVariableCommand() {
-		Expect(7);
-		Expect(18);
-		Expect(1);
-		Expect(19);
-	}
-
-	void GetExpressionTypeCommand() {
-		Expect(8);
-		Expect(18);
-		ExpressionCode();
-		Expect(19);
+		} else SynErr(27);
 	}
 
 	void Expression() {
@@ -239,37 +245,34 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 	}
 
 	void NotExpression() {
-		if (StartOf(2)) {
+		if (StartOf(3)) {
 			SimplyExpression();
 		} else if (la.kind == 10) {
 			Get();
 			NotExpression();
 			PushNot(); 
-		} else SynErr(27);
+		} else SynErr(28);
 	}
 
 	void SimplyExpression() {
-		if (GetNextTokenKind() == _LeftRoundBracket ) {
-			Expect(1);
-			FunctionBracketsAndArguments();
-		} else if (la.kind == 1) {
-			Get();
-			PushVariable(t.val); 
-		} else if (StartOf(3)) {
+		if (la.kind == 1) {
+			IdentifierOrFunction();
+		} else if (StartOf(4)) {
 			Constant();
 		} else if (la.kind == 18) {
 			Get();
 			Expression();
 			Expect(19);
-		} else SynErr(28);
+		} else SynErr(29);
 	}
 
-	void FunctionBracketsAndArguments() {
-		Expect(18);
-		if (StartOf(4)) {
-			ListOfArguments();
+	void IdentifierOrFunction() {
+		Expect(1);
+		PushVariable(t.val); 
+		if (la.kind == 18) {
+			FunctionBracketsAndArguments();
+			TcDebug.Log( "func" ); 
 		}
-		Expect(19);
 	}
 
 	void Constant() {
@@ -285,15 +288,23 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 		} else if (la.kind == 3) {
 			Get();
 			PushFalseConstant(); 
-		} else SynErr(29);
+		} else SynErr(30);
+	}
+
+	void FunctionBracketsAndArguments() {
+		Expect(18);
+		if (StartOf(5)) {
+			ListOfArguments();
+		}
+		Expect(19);
 	}
 
 	void ListOfArguments() {
-		if (StartOf(5)) {
+		if (StartOf(6)) {
 			ExpressionCode();
 		} else if (la.kind == 20) {
 			ListOfExpression();
-		} else SynErr(30);
+		} else SynErr(31);
 		if (la.kind == 23) {
 			Get();
 			ListOfArguments();
@@ -338,6 +349,7 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 	{
 		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
 		{x,T,T,T, T,T,T,T, T,x,T,x, x,x,x,x, x,x,T,x, x,x,x,x, x,x},
+		{x,T,T,T, T,T,T,x, x,x,T,x, x,x,x,x, x,x,T,x, x,x,x,x, x,x},
 		{x,T,T,T, T,T,x,x, x,x,x,x, x,x,x,x, x,x,T,x, x,x,x,x, x,x},
 		{x,x,T,T, T,T,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
 		{x,T,T,T, T,T,x,x, x,x,T,x, x,x,x,x, x,x,T,x, T,x,x,x, x,x},
@@ -414,11 +426,12 @@ public class ParserErrors
 			case 23: s = "Comma expected"; break;
 			case 24: s = "??? expected"; break;
 			case 25: s = "invalid Command"; break;
-			case 26: s = "invalid CreateNewVariableCommand"; break;
-			case 27: s = "invalid NotExpression"; break;
-			case 28: s = "invalid SimplyExpression"; break;
-			case 29: s = "invalid Constant"; break;
-			case 30: s = "invalid ListOfArguments"; break;
+			case 26: s = "invalid ExpressionOrCreateNewVariableCommand"; break;
+			case 27: s = "invalid CreateNewVariableCommand"; break;
+			case 28: s = "invalid NotExpression"; break;
+			case 29: s = "invalid SimplyExpression"; break;
+			case 30: s = "invalid Constant"; break;
+			case 31: s = "invalid ListOfArguments"; break;
 
 			default: s = "error " + n; break;
 		}

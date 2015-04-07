@@ -58,12 +58,15 @@ ManyOrOneCommand =
 	Command [ EndOfCommand [ ManyOrOneCommand ] ] .
 
 Command = 
-	IF ( GetNextTokenKind() != _Equal)
-	ExpressionCode	(. AddCh(new ExpressionCommandNode()); /*resultString += ExpressionString.ConstantToString(tmpExpression.Root.CalcExpressionOnThisVertex()) + "; ";*/ .)
-	| CreateNewVariableCommand
+	ExpressionOrCreateNewVariableCommand
 	| DeleteVariableCommand
 	| GetExpressionTypeCommand .
 
+ExpressionOrCreateNewVariableCommand =
+	IF ( GetNextTokenKind() != _Equal)
+	ExpressionCode	(. AddCh( new ExpressionCommandNode() ); .)
+	| CreateNewVariableCommand .
+	
 CreateNewVariableCommand =
 	Identifier (. tmpIdentifier = t.val; .)
 	Equal ExpressionCode (. GlobalVariableList.New(tmpIdentifier, tmpExpression); .)
@@ -103,11 +106,14 @@ NotExpression =
 	| Not NotExpression (. PushNot(); .) .
 
 SimplyExpression =
-	IF ( GetNextTokenKind() == _LeftRoundBracket ) Identifier FunctionBracketsAndArguments
-	| Identifier (. PushVariable(t.val); .)
+	IdentifierOrFunction
 	| Constant 
 	| LeftRoundBracket Expression RightRoundBracket .
 
+IdentifierOrFunction =
+	Identifier (. PushVariable(t.val); .)
+	[ FunctionBracketsAndArguments (. TcDebug.Log( "func" ); .) ] .
+	
 Constant = 
 	True (. PushTrueConstant(); .)
 	| TrueConstant (. PushTrueConstant(); .)

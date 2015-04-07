@@ -34,6 +34,11 @@ namespace TableClothKernel
 
         void App()
         {
+            while ( true )
+            {
+                Calc.CalcExpression( Console.ReadLine() );
+            }
+
             Options.ConstantOutType = StringConstantType.Word;
 
             for ( int i = 0; i < _expressions.Length; i += 2 )
