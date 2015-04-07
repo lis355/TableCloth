@@ -4,14 +4,15 @@ using System.Collections.Generic;
 
 -->namespace
 
-partial class Parser {
+public partial class Parser
+{
 -->constants
 	const bool T = true;
 	const bool x = false;
 	const int minErrDist = 2;
 	
-	public Scanner scanner;
-	public Errors  errors;
+	Scanner _scanner;
+	public ParserErrors Errors { get; set; }
 
 	public Token t;    // last recognized token
 	public Token la;   // lookahead token
@@ -19,113 +20,190 @@ partial class Parser {
 
 -->declarations
 
-	public Parser(Scanner scanner) {
-		this.scanner = scanner;
-		errors = new Errors();
-	}
+    public Parser()
+    {
+        Errors = new ParserErrors();
+    }
 
-	void SynErr (int n) {
-		if (errDist >= minErrDist) errors.SynErr(la.line, la.col, n);
+	void SynErr (int n)
+	{
+		if (errDist >= minErrDist) Errors.SynErr(la.line, la.col, n);
 		errDist = 0;
 	}
 
-	public void SemErr (string msg) {
-		if (errDist >= minErrDist) errors.SemErr(t.line, t.col, msg);
+	public void SemErr (string msg)
+	{
+		if (errDist >= minErrDist) Errors.SemErr(t.line, t.col, msg);
 		errDist = 0;
 	}
 	
-	void Get () {
-		for (;;) {
+	void Get ()
+	{
+		for (;;)
+		{
 			t = la;
-			la = scanner.Scan();
+			la = _scanner.Scan();
 			if (la.kind <= maxT) { ++errDist; break; }
 -->pragmas
 			la = t;
 		}
 	}
 	
-	void Expect (int n) {
+	void Expect (int n)
+	{
 		if (la.kind==n) Get(); else { SynErr(n); }
 	}
 	
-	bool StartOf (int s) {
+	bool StartOf (int s)
+	{
 		return set[s, la.kind];
 	}
 	
-	void ExpectWeak (int n, int follow) {
+	void ExpectWeak (int n, int follow)
+	{
 		if (la.kind == n) Get();
-		else {
+		else
+		{
 			SynErr(n);
 			while (!StartOf(follow)) Get();
 		}
 	}
 
-
-	bool WeakSeparator(int n, int syFol, int repFol) {
+	bool WeakSeparator(int n, int syFol, int repFol)
+	{
 		int kind = la.kind;
 		if (kind == n) {Get(); return true;}
 		else if (StartOf(repFol)) {return false;}
-		else {
+		else 
+		{
 			SynErr(n);
-			while (!(set[syFol, kind] || set[repFol, kind] || set[0, kind])) {
+			while (!(set[syFol, kind] || set[repFol, kind] || set[0, kind])) 
+			{
 				Get();
 				kind = la.kind;
 			}
 			return StartOf(syFol);
 		}
 	}
-
 	
 -->productions
 
-	public void Parse() {
+    public void Parse( Scanner s )
+    {
+        _scanner = s;
+        Errors.Clear();
+
+        Parse();
+    }
+	
+	public void Parse() 
+	{
 		la = new Token();
 		la.val = "";		
 		Get();
 -->parseRoot
 	}
 	
-	static readonly bool[,] set = {
+	static readonly bool[,] set =
+	{
 -->initialization
 	};
-} // end Parser
+}
 
+public class ParserErrors
+{
+    public int TotalErrorsAmount { get; set; }
+    public int TotalWarningsAmount { get; set; }
 
-class Errors {
-	public int count = 0;                                    // number of errors detected
-	public System.IO.TextWriter errorStream = Console.Out;   // error messages go to this stream
-	public string errMsgFormat = "-- line {0} col {1}: {2}"; // 0=line, 1=column, 2=text
+    public enum EType 
+    {
+        Error,
+        Warning
+    }
 
-	public virtual void SynErr (int line, int col, int n) {
+    public struct Data
+    {
+        public int Line;
+        public int Column;
+
+        public EType Type;
+
+        public string Text;
+    }
+
+    public delegate void MessageDelegate( Data data );
+
+    public event MessageDelegate Message;
+
+    public ParserErrors()
+    {
+        Clear();
+    }
+
+    public void Clear()
+    {
+        TotalErrorsAmount = 0;
+        TotalWarningsAmount = 0;
+    }
+	
+    public virtual void SynErr( int line, int col, int n )
+    {
 		string s;
-		switch (n) {
+
+		switch ( n )
+		{
 -->errors
 			default: s = "error " + n; break;
 		}
-		errorStream.WriteLine(errMsgFormat, line, col, s);
-		count++;
+
+		TotalErrorsAmount++;
+        if ( Message != null )
+        {
+            Message( new Data { Line = line, Column = col, Type = EType.Error, Text = s } );
+        }
 	}
 
-	public virtual void SemErr (int line, int col, string s) {
-		errorStream.WriteLine(errMsgFormat, line, col, s);
-		count++;
-	}
-	
-	public virtual void SemErr (string s) {
-		errorStream.WriteLine(s);
-		count++;
-	}
-	
-	public virtual void Warning (int line, int col, string s) {
-		errorStream.WriteLine(errMsgFormat, line, col, s);
-	}
-	
-	public virtual void Warning(string s) {
-		errorStream.WriteLine(s);
-	}
-} // Errors
+    public virtual void SemErr( int line, int col, string s )
+    {
+        TotalErrorsAmount++;
+        if ( Message != null )
+        {
+            Message( new Data { Line = line, Column = col, Type = EType.Error, Text = s } );
+        }
+    }
 
+    public virtual void SemErr( string s )
+    {
+        TotalErrorsAmount++;
+        if ( Message != null )
+        {
+            Message( new Data { Type = EType.Error, Text = s } );
+        }
+    }
 
-class FatalError: Exception {
-	public FatalError(string m): base(m) {}
+    public virtual void Warning( int line, int col, string s )
+    {
+        TotalWarningsAmount++;
+        if ( Message != null )
+        {
+            Message( new Data { Line = line, Column = col, Type = EType.Warning, Text = s } );
+        }
+    }
+
+    public virtual void Warning( string s )
+    {
+        TotalWarningsAmount++;
+        if ( Message != null )
+        {
+            Message( new Data { Type = EType.Warning, Text = s } );
+        }
+    }
+}
+
+public class FatalError : Exception
+{
+	public FatalError( string m ):
+		base( m )
+	{
+	}
 }

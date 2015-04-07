@@ -3,7 +3,7 @@
 namespace TableClothKernel
 {
     // ParserFunctions
-    partial class Parser
+    public partial class Parser
     {
         public RootNode Tree = new RootNode();
 
@@ -45,7 +45,7 @@ namespace TableClothKernel
             EV.Push( new OperandVertex( CommandsCode.Pirse, EV.Pop(), EV.Pop() ) );
         }
 
-        void PushShef()
+        void PushSheffer()
         {
             TcDebug.Log( "shef" );
             EV.Push( new OperandVertex( CommandsCode.Sheffer, EV.Pop(), EV.Pop() ) );
@@ -57,7 +57,7 @@ namespace TableClothKernel
             EV.Push( new OperandVertex( CommandsCode.Equivalence, EV.Pop(), EV.Pop() ) );
         }
 
-        void PushImpl()
+        void PushImplication()
         {
             TcDebug.Log( "impl" );
             EV.Push( new OperandVertex( CommandsCode.Implication, EV.Pop(), EV.Pop() ) );

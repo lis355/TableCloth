@@ -19,7 +19,6 @@ Thumbs.db
 [Bb]in
 *.lib
 *.sbr
-*.rar
 obj/
 _ReSharper*/
 

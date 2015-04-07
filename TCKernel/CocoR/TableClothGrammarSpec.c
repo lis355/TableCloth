@@ -3,7 +3,7 @@ $namespace=TableClothKernel
 COMPILER TableCloth
 
 // Решение неоднозначностей LL грамматики
-int GetNextTokenTypeEqual() { return scanner.Peek().kind; }
+int GetNextTokenKind() { return _scanner.Peek().kind; }
 
 CHARACTERS
 	Letter = 'A' .. 'Z' + 'a' .. 'z' .
@@ -14,7 +14,7 @@ CHARACTERS
 	Tab = '\t' .
 
 TOKENS
-	Identifier = Letter {Letter | Digit} .
+	Identifier = Letter { Letter | Digit } .
 	TrueConstant = '1' . 
 	FalseConstant = '0' .
 
@@ -50,11 +50,16 @@ IGNORE CaretSymbol + EOL + EOF + Tab
 
 PRODUCTIONS
 
-TableCloth = ManyOrOneCommand .
+TableCloth =
+	ManyOrOneCommand .
 
-ManyOrOneCommand = (. Cur = Tree; .) Command [EndOfCommand [ManyOrOneCommand]] .
+ManyOrOneCommand = 
+	(. Cur = Tree; .)
+	Command [ EndOfCommand [ ManyOrOneCommand ] ] .
 
-Command = IF (GetNextTokenTypeEqual() != _Equal) ExpressionCode (. AddCh(new ExpressionCommandNode()); /*resultString += ExpressionString.ConstantToString(tmpExpression.Root.CalcExpressionOnThisVertex()) + "; ";*/ .)
+Command = 
+	IF ( GetNextTokenKind() != _Equal)
+	ExpressionCode	(. AddCh(new ExpressionCommandNode()); /*resultString += ExpressionString.ConstantToString(tmpExpression.Root.CalcExpressionOnThisVertex()) + "; ";*/ .)
 	| CreateNewVariableCommand
 	| DeleteVariableCommand
 	| GetExpressionTypeCommand .
@@ -68,26 +73,37 @@ DeleteVariableCommand = Clear LeftRoundBracket Identifier RightRoundBracket	.
 GetExpressionTypeCommand = ExpressionType LeftRoundBracket ExpressionCode RightRoundBracket .
 
 // Приоритет булевых операций
-// Скобки, отрицание, конъюнкция, дизъюнкция, сумма по модулю 2, импликация, эквиваленция, штрих Шеффера, стрелка Пирса
+// Скобки, отрицание, конъюнкция, дизъюнкция, сумма по модулю 2, 
+// импликация, эквиваленция, штрих Шеффера, стрелка Пирса
+
 ExpressionCode = (. tmpExpression = new Expression(); .)
 				Expression
 				(. tmpExpression.Root = EV.Pop(); .)
  				(. AddCh(new ExpressionNode(tmpExpression.Root.ToString())); .) .
 
-Expression = EquImplExpression [Pirse Expression (. PushPirse(); .)
-							| Sheffer Expression (. PushShef(); .) ] .
-EquImplExpression = XorExpression [Equivalence EquImplExpression (. PushEqu(); .)
-							| Implication EquImplExpression (. PushImpl(); .)] .
-XorExpression = OrExpression [Xor XorExpression (. PushXor(); .)] .
-OrExpression = AndExpression [Or OrExpression (. PushOr(); .)] .
-AndExpression = NotExpression [And AndExpression (. PushAnd(); .)] .
+Expression =
+	EquImplExpression [ Pirse Expression (. PushPirse(); .)
+	| Sheffer Expression (. PushSheffer(); .) ] .
+
+EquImplExpression =
+	XorExpression [ Equivalence EquImplExpression (. PushEqu(); .)
+	| Implication EquImplExpression (. PushImplication(); .) ] .
+
+XorExpression =
+	OrExpression [ Xor XorExpression (. PushXor(); .)] .
+
+OrExpression =
+	AndExpression [ Or OrExpression (. PushOr(); .)] .
+
+AndExpression =
+	NotExpression [ And AndExpression (. PushAnd(); .)] .
+
 NotExpression =
 	SimplyExpression
-	| Not NotExpression (. PushNot(); .) 
-	.
+	| Not NotExpression (. PushNot(); .) .
 
-SimplyExpression = 
-	IF (GetNextTokenTypeEqual() == _LeftRoundBracket) Identifier FunctionBracketsAndArguments
+SimplyExpression =
+	IF ( GetNextTokenKind() == _LeftRoundBracket ) Identifier FunctionBracketsAndArguments
 	| Identifier (. PushVariable(t.val); .)
 	| Constant 
 	| LeftRoundBracket Expression RightRoundBracket .
@@ -96,12 +112,18 @@ Constant =
 	True (. PushTrueConstant(); .)
 	| TrueConstant (. PushTrueConstant(); .)
 	| False (. PushFalseConstant(); .)
-	| FalseConstant (. PushFalseConstant(); .)
-	.
+	| FalseConstant (. PushFalseConstant(); .) .
 	
-FunctionBracketsAndArguments = LeftRoundBracket [ListOfArguments] RightRoundBracket.
-ListOfArguments = (ExpressionCode | ListOfExpression) [Comma ListOfArguments] . 
-ListOfExpression = LeftListBracket ExpressionEnumeration RightListBracket .
-ExpressionEnumeration = ExpressionCode [Comma ExpressionEnumeration] .  
+FunctionBracketsAndArguments =
+	LeftRoundBracket [ ListOfArguments ] RightRoundBracket .
 
-END TableCloth.
+ListOfArguments =
+	( ExpressionCode | ListOfExpression) [ Comma ListOfArguments] .
+
+ListOfExpression =
+	LeftListBracket ExpressionEnumeration RightListBracket .
+
+ExpressionEnumeration =
+	ExpressionCode [ Comma ExpressionEnumeration ] . 
+
+END TableCloth .

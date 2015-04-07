@@ -62,7 +62,7 @@
     <Compile Include="Debug\TcDebug.cs" />
     <Compile Include="Enums\StringTypes.cs" />
     <Compile Include="StringTree.cs" />
-    <Compile Include="TCException.cs" />
+    <Compile Include="TcException.cs" />
     <Compile Include="StaticClasses\Calc.cs" />
     <Compile Include="CocoR\Parser.cs" />
     <Compile Include="CocoR\Scanner.cs" />

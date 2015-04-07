@@ -2,7 +2,7 @@
 
 namespace TableClothKernel
 {
-    abstract class Node
+    public abstract class Node
     {
         public string Type() { return GetType().Name.ToString(); }
         public string Label = "";
@@ -21,7 +21,7 @@ namespace TableClothKernel
         }
     }
 
-    class RootNode : Node
+    public class RootNode : Node
     {
         public void ToDot()
         {
@@ -34,23 +34,23 @@ namespace TableClothKernel
         }
     }
 
-    class ExpressionCommandNode : Node { }
-    class CreateNewVariableCommandNode : Node { }
-    class DeleteVariableCommandNode : Node { }
-    class GetExpressionTypeCommandNode : Node { }
+    public class ExpressionCommandNode : Node { }
+    public class CreateNewVariableCommandNode : Node { }
+    public class DeleteVariableCommandNode : Node { }
+    public class GetExpressionTypeCommandNode : Node { }
 
-    class ExpressionNode : Node { public ExpressionNode( string e ) { Label = e; } }
+    public class ExpressionNode : Node { public ExpressionNode( string e ) { Label = e; } }
 
-    class PirseNode : Node { }
-    class ShefferNode : Node { }
-    class EquivalenceNode : Node { }
-    class ImplicationNode : Node { }
-    class XorNode : Node { }
-    class OrNode : Node { }
-    class AndNode : Node { }
-    class NotNode : Node { }
+    public class PirseNode : Node { }
+    public class ShefferNode : Node { }
+    public class EquivalenceNode : Node { }
+    public class ImplicationNode : Node { }
+    public class XorNode : Node { }
+    public class OrNode : Node { }
+    public class AndNode : Node { }
+    public class NotNode : Node { }
 
-    class ConstantNode : Node { }
-    class TrueNode : Node { }
-    class FalseNode : Node { }
+    public class ConstantNode : Node { }
+    public class TrueNode : Node { }
+    public class FalseNode : Node { }
 }

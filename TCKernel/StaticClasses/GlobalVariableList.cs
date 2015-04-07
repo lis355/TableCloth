@@ -6,8 +6,8 @@
 
         public static bool GetCalcValue( string name )
         {
-            if ( !IsExist( name ) )
-                throw new TcException( "no defined variable " + name );
+            //if ( !IsExist( name ) )
+            //    throw new TcException( "no defined variable " + name );
 
             return V[name].Calc();
         }

@@ -4,23 +4,19 @@ namespace TableClothKernel
 {
     public abstract class Operand
     {
-        public abstract Constant Calc();
+        public virtual Operand Calc()
+        {
+            return this;
+        }
     }
 
     public class Constant : Operand
     {
-        public static Constant True = new Constant { value = true };
-        public static Constant False = new Constant { value = false };
-
-        bool value;
-
-        public override Constant Calc()
-        {
-            return ( value ) ? True : False;
-        }
+        public static Constant True = new Constant();
+        public static Constant False = new Constant();
     }
 
-    /*public class Variable : Operand
+    public class Variable : Operand
     {
         public string Name { set; get; }
 
@@ -28,7 +24,7 @@ namespace TableClothKernel
         {
             Name = name;
         }
-    }*/
+    }
 
     public abstract class Operator : Operand
     {
