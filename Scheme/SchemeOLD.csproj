@@ -11,7 +11,8 @@
     <RootNamespace>Scheme</RootNamespace>
     <AssemblyName>Scheme</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -47,7 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DrawTree.cs" />
-    <Compile Include="ExpressionScheme.cs" />
+    <Compile Include="ExpressionScheme.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ExpressionScheme.Designer.cs">
       <DependentUpon>ExpressionScheme.cs</DependentUpon>
     </Compile>
@@ -70,10 +73,12 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Content Include="Font\courier_math.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

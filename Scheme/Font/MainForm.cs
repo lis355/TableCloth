@@ -1069,7 +1069,7 @@ namespace Scheme
                     #region Проверим идентификатор на функцию
                     if (Syntax.IsFunction(Identificator) == true)
                     {
-                        bool SingleFunction = false;
+                        //bool SingleFunction = false;
 
                         // Если встретили функцию, то есть 4 вида функций, которые могут встретиться в
                         // простом выражении и которые возвращают формулу
@@ -1082,7 +1082,7 @@ namespace Scheme
                             if (S.LastIndexOf(Identificator) == 0)
                             {
                                 // ставим флаг обрабатываем функцию
-                                SingleFunction = true;
+                                //SingleFunction = true;
                             }
                             else
                             {
@@ -1165,14 +1165,14 @@ namespace Scheme
                     #region Проверим идентификатор на формулу из списка переменных
                     // сначала проверим, не является ли обнаруженный идентификатор
                     // глобальной переменной - формулой
-                    if (/*V.IsExist(Identificator) == */false)
-                    {
-                        S = S.Remove(i, Identificator.Length);
-                        S = S.Insert(i, "(" /*+ V[Identificator].ConvertToString()*/ + ")");
-                        //теперь нужно заного попасть на этот символ
-                        i--;
-                        continue;
-                    }
+                    //if ( !V.IsExist(Identificator) )
+                    //{
+                    //    S = S.Remove(i, Identificator.Length);
+                    //    S = S.Insert(i, "(" /*+ V[Identificator].ConvertToString()*/ + ")");
+                    //    //теперь нужно заного попасть на этот символ
+                    //    i--;
+                    //    continue;
+                    //}
                     #endregion
 
                     // Добавляем переменную в список

@@ -12,9 +12,9 @@ using System.Drawing.Imaging;
 
 namespace TableClothKernel
 {
-    internal partial class ExpressionScheme : UserControl
+    partial class ExpressionScheme : UserControl
     {
-        Graphics myGraphics;
+        /*Graphics myGraphics;
 
         Expression Exp;
 
@@ -102,7 +102,7 @@ namespace TableClothKernel
             myGraphics.TextRenderingHint = TextRenderingHint.AntiAlias;
             myGraphics.FillRectangle(Brushes.White, 0, 0, SchemeSize.Width - 1, SchemeSize.Height - 1);
 
-            /**/myGraphics.DrawRectangle(SPen, 0, 0, SchemeSize.Width - 1, SchemeSize.Height - 1);
+            //myGraphics.DrawRectangle(SPen, 0, 0, SchemeSize.Width - 1, SchemeSize.Height - 1);
 
             DrawLeftOperands(SchemeSize.Height);
             TreeLevelsFill = new int[SchemeDeep];
@@ -173,7 +173,7 @@ namespace TableClothKernel
         {
             for (int i = 0, y; i < Exp.VariableCount; i++)
             {
-                y = UpIndent + BoxHeight / 2 + i * 30/** (BoxDistanceVertical * 2 + BoxHeight)*/;
+                y = UpIndent + BoxHeight / 2 + i * 30;// (BoxDistanceVertical * 2 + BoxHeight);
                 myGraphics.DrawLine(SPen, RightIndent, y, SchemeStart, y);
                 DrawCircle(RightIndent - BoxPointDiam / 2, y - BoxPointDiam / 2, false);
                 DrawText(RightIndent + 5, y - TextHeight - 5, Exp.VariableNames[i]);
@@ -222,13 +222,13 @@ namespace TableClothKernel
             }
         }
 
-        /*
-        private void LoadFont()
-        {
-            MathFont.CourierMathFont = new PrivateFontCollection();
-            MathFont.CourierMathFont.AddFontFile(Application.StartupPath + @"\font\courier_math.ttf");
-        }
-        */
+        
+        //private void LoadFont()
+        //{
+        //    MathFont.CourierMathFont = new PrivateFontCollection();
+        //    MathFont.CourierMathFont.AddFontFile(Application.StartupPath + @"\font\courier_math.ttf");
+        //}
+        
         
         /// <summary>
         /// Сохранить изображение
@@ -236,6 +236,6 @@ namespace TableClothKernel
         public void SaveScheme(string filename)
         {
             BackgroundImage.Save(filename + ".PNG");
-        }
+        }*/
     }
 }

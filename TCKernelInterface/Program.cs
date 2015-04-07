@@ -9,9 +9,9 @@ namespace TCKernelInterface
         static void PrintHeader()
         {
             Console.WriteLine();
-            Console.WriteLine( "TableCloth Kernel Interface" );
-            Console.WriteLine( "Kernel Version {0}", TableClothKernel.Information.KernelVersion() );
-            Console.WriteLine( "Kernel Assembly {0}", TableClothKernel.Information.KernelAssembly() );
+            Console.WriteLine( TableClothKernel.Information.KernelName + " Interface" );
+            Console.WriteLine( "Kernel Version {0}", TableClothKernel.Information.KernelVersion );
+            Console.WriteLine( "Kernel Assembly {0}", TableClothKernel.Information.KernelAssembly );
         }
 
         static void Main( string[] args )
