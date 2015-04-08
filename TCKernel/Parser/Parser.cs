@@ -2,40 +2,40 @@
 using System;
 using System.Collections.Generic;
 
-namespace TableClothKernel {
-
+namespace TableClothKernel
+{
 
 
 public partial class Parser
 {
-	public const int _EOF = 0;
-	public const int _Identifier = 1;
-	public const int _TrueConstant = 2;
-	public const int _FalseConstant = 3;
-	public const int _True = 4;
-	public const int _False = 5;
-	public const int _New = 6;
-	public const int _Clear = 7;
-	public const int _ExpressionType = 8;
-	public const int _Equal = 9;
-	public const int _Not = 10;
-	public const int _And = 11;
-	public const int _Or = 12;
-	public const int _Xor = 13;
-	public const int _Equivalence = 14;
-	public const int _Implication = 15;
-	public const int _Sheffer = 16;
-	public const int _Pirse = 17;
-	public const int _LeftRoundBracket = 18;
-	public const int _RightRoundBracket = 19;
-	public const int _LeftListBracket = 20;
-	public const int _RightListBracket = 21;
-	public const int _EndOfCommand = 22;
-	public const int _Comma = 23;
+	public const int EOF = 0;
+	public const int IdentifierString = 1;
+	public const int TrueConstant = 2;
+	public const int FalseConstant = 3;
+	public const int True = 4;
+	public const int False = 5;
+	public const int New = 6;
+	public const int Clear = 7;
+	public const int ExpressionType = 8;
+	public const int Equal = 9;
+	public const int Not = 10;
+	public const int And = 11;
+	public const int Or = 12;
+	public const int Xor = 13;
+	public const int Equivalence = 14;
+	public const int Implication = 15;
+	public const int Sheffer = 16;
+	public const int Pirse = 17;
+	public const int LeftRoundBracket = 18;
+	public const int RightRoundBracket = 19;
+	public const int LeftListBracket = 20;
+	public const int RightListBracket = 21;
+	public const int EndOfCommand = 22;
+	public const int Comma = 23;
 	public const int maxT = 24;
 
-	const bool T = true;
-	const bool x = false;
+	const bool _T = true;
+	const bool _x = false;
 	const int minErrDist = 2;
 	
 	Scanner _scanner;
@@ -120,9 +120,8 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 	}
 
 	void ManyOrOneCommand() {
-		Cur = Tree; 
 		Command();
-		if (la.kind == 22) {
+		if (la.kind == EndOfCommand) {
 			Get();
 			if (StartOf(1)) {
 				ManyOrOneCommand();
@@ -133,64 +132,63 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 	void Command() {
 		if (StartOf(2)) {
 			ExpressionOrCreateNewVariableCommand();
-		} else if (la.kind == 7) {
+		} else if (la.kind == Clear) {
 			DeleteVariableCommand();
-		} else if (la.kind == 8) {
+		} else if (la.kind == ExpressionType) {
 			GetExpressionTypeCommand();
 		} else SynErr(25);
 	}
 
 	void ExpressionOrCreateNewVariableCommand() {
-		if (GetNextTokenKind() != _Equal) {
+		if (GetNextTokenKind() != Equal) {
 			ExpressionCode();
-			AddCh( new ExpressionCommandNode() ); 
-		} else if (la.kind == 1 || la.kind == 6) {
+		} else if (la.kind == IdentifierString || la.kind == New) {
 			CreateNewVariableCommand();
 		} else SynErr(26);
 	}
 
 	void DeleteVariableCommand() {
-		Expect(7);
-		Expect(18);
-		Expect(1);
-		Expect(19);
+		Expect(Clear);
+		Expect(LeftRoundBracket);
+		Identifier();
+		Expect(RightRoundBracket);
 	}
 
 	void GetExpressionTypeCommand() {
-		Expect(8);
-		Expect(18);
+		Expect(ExpressionType);
+		Expect(LeftRoundBracket);
 		ExpressionCode();
-		Expect(19);
+		Expect(RightRoundBracket);
 	}
 
 	void ExpressionCode() {
-		tmpExpression = new Expression(); 
 		Expression();
-		tmpExpression.Root = EV.Pop(); 
-		AddCh(new ExpressionNode(tmpExpression.Root.ToString())); 
 	}
 
 	void CreateNewVariableCommand() {
-		if (la.kind == 1) {
-			Get();
-			tmpIdentifier = t.val; 
-			Expect(9);
+		if (la.kind == IdentifierString) {
+			Identifier();
+			Expect(Equal);
 			ExpressionCode();
-			GlobalVariableList.New(tmpIdentifier, tmpExpression); 
-		} else if (la.kind == 6) {
+		} else if (la.kind == New) {
 			Get();
-			Expect(18);
-			Expect(1);
-			Expect(23);
+			Expect(LeftRoundBracket);
+			Identifier();
+			Expect(Comma);
 			ExpressionCode();
-			Expect(19);
+			Expect(RightRoundBracket);
 		} else SynErr(27);
+	}
+
+	void Identifier() {
+		Expect(IdentifierString);
+		PushString( t.val ); 
 	}
 
 	void Expression() {
 		EquImplExpression();
-		if (la.kind == 16 || la.kind == 17) {
-			if (la.kind == 17) {
+		if (la.kind == Sheffer || la.kind == Pirse) {
+			if (la.kind == Pirse) {
 				Get();
 				Expression();
 				PushPirse(); 
@@ -204,8 +202,8 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 
 	void EquImplExpression() {
 		XorExpression();
-		if (la.kind == 14 || la.kind == 15) {
-			if (la.kind == 14) {
+		if (la.kind == Equivalence || la.kind == Implication) {
+			if (la.kind == Equivalence) {
 				Get();
 				EquImplExpression();
 				PushEqu(); 
@@ -219,7 +217,7 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 
 	void XorExpression() {
 		OrExpression();
-		if (la.kind == 13) {
+		if (la.kind == Xor) {
 			Get();
 			XorExpression();
 			PushXor(); 
@@ -228,7 +226,7 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 
 	void OrExpression() {
 		AndExpression();
-		if (la.kind == 12) {
+		if (la.kind == Or) {
 			Get();
 			OrExpression();
 			PushOr(); 
@@ -237,7 +235,7 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 
 	void AndExpression() {
 		NotExpression();
-		if (la.kind == 11) {
+		if (la.kind == And) {
 			Get();
 			AndExpression();
 			PushAnd(); 
@@ -247,7 +245,7 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 	void NotExpression() {
 		if (StartOf(3)) {
 			SimplyExpression();
-		} else if (la.kind == 10) {
+		} else if (la.kind == Not) {
 			Get();
 			NotExpression();
 			PushNot(); 
@@ -255,71 +253,71 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 	}
 
 	void SimplyExpression() {
-		if (la.kind == 1) {
+		if (la.kind == IdentifierString) {
 			IdentifierOrFunction();
 		} else if (StartOf(4)) {
 			Constant();
-		} else if (la.kind == 18) {
+		} else if (la.kind == LeftRoundBracket) {
 			Get();
 			Expression();
-			Expect(19);
+			Expect(RightRoundBracket);
 		} else SynErr(29);
 	}
 
 	void IdentifierOrFunction() {
-		Expect(1);
+		Identifier();
 		PushVariable(t.val); 
-		if (la.kind == 18) {
+		if (la.kind == LeftRoundBracket) {
 			FunctionBracketsAndArguments();
 			TcDebug.Log( "func" ); 
 		}
 	}
 
 	void Constant() {
-		if (la.kind == 4) {
+		if (la.kind == True) {
 			Get();
 			PushTrueConstant(); 
-		} else if (la.kind == 2) {
+		} else if (la.kind == TrueConstant) {
 			Get();
 			PushTrueConstant(); 
-		} else if (la.kind == 5) {
+		} else if (la.kind == False) {
 			Get();
 			PushFalseConstant(); 
-		} else if (la.kind == 3) {
+		} else if (la.kind == FalseConstant) {
 			Get();
 			PushFalseConstant(); 
 		} else SynErr(30);
 	}
 
 	void FunctionBracketsAndArguments() {
-		Expect(18);
+		Expect(LeftRoundBracket);
 		if (StartOf(5)) {
 			ListOfArguments();
 		}
-		Expect(19);
+		Expect(RightRoundBracket);
 	}
 
 	void ListOfArguments() {
 		if (StartOf(6)) {
 			ExpressionCode();
-		} else if (la.kind == 20) {
+		} else if (la.kind == LeftListBracket) {
 			ListOfExpression();
 		} else SynErr(31);
-		if (la.kind == 23) {
+		if (la.kind == Comma) {
 			Get();
 			ListOfArguments();
 		}
 	}
 
 	void ListOfExpression() {
-		Expect(20);
+		Expect(LeftListBracket);
 		ExpressionEnumeration();
-		Expect(21);
+		Expect(RightListBracket);
 	}
 
 	void ExpressionEnumeration() {
 		ExpressionCode();
-		if (la.kind == 23) {
+		if (la.kind == Comma) {
 			Get();
 			ExpressionEnumeration();
 		}
@@ -341,19 +339,19 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 		la.val = "";		
 		Get();
 		TableCloth();
-		Expect(0);
+		Expect(EOF);
 
 	}
 	
 	static readonly bool[,] set =
 	{
-		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
-		{x,T,T,T, T,T,T,T, T,x,T,x, x,x,x,x, x,x,T,x, x,x,x,x, x,x},
-		{x,T,T,T, T,T,T,x, x,x,T,x, x,x,x,x, x,x,T,x, x,x,x,x, x,x},
-		{x,T,T,T, T,T,x,x, x,x,x,x, x,x,x,x, x,x,T,x, x,x,x,x, x,x},
-		{x,x,T,T, T,T,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
-		{x,T,T,T, T,T,x,x, x,x,T,x, x,x,x,x, x,x,T,x, T,x,x,x, x,x},
-		{x,T,T,T, T,T,x,x, x,x,T,x, x,x,x,x, x,x,T,x, x,x,x,x, x,x}
+		{_T,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x},
+		{_x,_T,_T,_T, _T,_T,_T,_T, _T,_x,_T,_x, _x,_x,_x,_x, _x,_x,_T,_x, _x,_x,_x,_x, _x,_x},
+		{_x,_T,_T,_T, _T,_T,_T,_x, _x,_x,_T,_x, _x,_x,_x,_x, _x,_x,_T,_x, _x,_x,_x,_x, _x,_x},
+		{_x,_T,_T,_T, _T,_T,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_T,_x, _x,_x,_x,_x, _x,_x},
+		{_x,_x,_T,_T, _T,_T,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x},
+		{_x,_T,_T,_T, _T,_T,_x,_x, _x,_x,_T,_x, _x,_x,_x,_x, _x,_x,_T,_x, _T,_x,_x,_x, _x,_x},
+		{_x,_T,_T,_T, _T,_T,_x,_x, _x,_x,_T,_x, _x,_x,_x,_x, _x,_x,_T,_x, _x,_x,_x,_x, _x,_x}
 
 	};
 }
@@ -401,7 +399,7 @@ public class ParserErrors
 		switch ( n )
 		{
 			case 0: s = "EOF expected"; break;
-			case 1: s = "Identifier expected"; break;
+			case 1: s = "IdentifierString expected"; break;
 			case 2: s = "TrueConstant expected"; break;
 			case 3: s = "FalseConstant expected"; break;
 			case 4: s = "True expected"; break;

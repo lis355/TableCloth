@@ -6,7 +6,7 @@ namespace TableClothKernel
     {
         static readonly string[] _expressions =
         {  
-            "!(!(1 ^ 0) => !(1 [equ] wy)) && r!q", "True"
+            "!( !( 1 ^ 0 ) => !( 1 == wy ) ) && r || !q", "True"
             //"x = false", "False",
             //"y = true || false", "True",
             //"y => x", "True",
@@ -34,9 +34,9 @@ namespace TableClothKernel
 
         void App()
         {
-            while ( true )
+            foreach ( var exp in _expressions )
             {
-                Calc.CalcExpression( Console.ReadLine() );
+                bool result = Calc.CalcExpression( exp );
             }
 
             Options.ConstantOutType = StringConstantType.Word;

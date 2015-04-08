@@ -42,6 +42,9 @@ namespace TableClothKernel
                     exception.TcData.Column,
                     exception.TcData.Text ) );
             }
+            catch
+            {
+            }
 
             return false;
         }

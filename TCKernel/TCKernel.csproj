@@ -55,17 +55,21 @@
     <Compile Include="Expression\ExpressionString.cs" />
     <Compile Include="Expression\ExpressionVertex.cs" />
     <Compile Include="FastCalc\DynamicFastCalc.cs" />
+    <Compile Include="Parser\Parser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parser\Scanner.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="StaticClasses\GlobalVariableList.cs" />
     <Compile Include="Expression\Expression.cs" />
     <Compile Include="StaticClasses\Options.cs" />
-    <Compile Include="CocoR\ParserFunctions.cs" />
+    <Compile Include="Parser\ParserStack.cs" />
     <Compile Include="Debug\TcDebug.cs" />
     <Compile Include="Enums\StringTypes.cs" />
     <Compile Include="StringTree.cs" />
     <Compile Include="TcException.cs" />
     <Compile Include="StaticClasses\Calc.cs" />
-    <Compile Include="CocoR\Parser.cs" />
-    <Compile Include="CocoR\Scanner.cs" />
     <Compile Include="Enums\CommandsCode.cs" />
     <Compile Include="StaticClasses\Information.cs" />
     <Compile Include="MathFunctions\Check.cs" />
@@ -78,11 +82,7 @@
     <Compile Include="VariableList.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CocoR\TableClothGrammarSpec.c" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Config\app.config" />
-    <None Include="CocoR\build.bat" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

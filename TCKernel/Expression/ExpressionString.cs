@@ -8,7 +8,7 @@
         static readonly string[] _stringConstantNumber = { "0", "1" };
         static readonly string[] _stringConstantWord = { "false", "true" };
 
-        public delegate string CommandsCodeToStringConverter( CommandsCode c );
+        public delegate string CommandsCodeToStringConverter( ECommandsCode c );
         public static CommandsCodeToStringConverter CommandsCodeToString = CommandCodeToStringSymbol;
 
         static StringCommandType _commandCodeTypeVariable = StringCommandType.Symbol;
@@ -33,12 +33,12 @@
             }
         }
 
-        static string CommandCodeToStringSymbol( CommandsCode c )
+        static string CommandCodeToStringSymbol( ECommandsCode c )
         {
             return _stringCommandsCodeSymbol[ ( byte )c ];
         }
 
-        static string CommandCodeToStringWord( CommandsCode c )
+        static string CommandCodeToStringWord( ECommandsCode c )
         {
             return _stringCommandsCodeWord[ ( byte )c ];
         }

@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchemeOLD", "Scheme\SchemeOLD.csproj", "{43066604-1D8B-491A-BF31-D124E9058B64}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableClothWork", "TableClothWork\TableClothWork.csproj", "{7326A697-244E-499C-8E1D-4380AC5B99A5}"
@@ -14,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableClothGUI", "TableClothGUI\TableClothGUI.csproj", "{FC033DA0-F1EC-4D86-8590-61A3C6B825EC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestGUI", "TestGUI\TestGUI.csproj", "{EF28A2B3-AE5A-48ED-ADD7-23C01C8610FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CocoSourcesCS", "CocoSourcesCS\CocoSourcesCS.csproj", "{EFA0C233-8DAF-4596-BAAA-470946153411}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +85,16 @@ Global
 		{EF28A2B3-AE5A-48ED-ADD7-23C01C8610FE}.Release|Mixed Platforms.Build.0 = Release|x86
 		{EF28A2B3-AE5A-48ED-ADD7-23C01C8610FE}.Release|x86.ActiveCfg = Release|x86
 		{EF28A2B3-AE5A-48ED-ADD7-23C01C8610FE}.Release|x86.Build.0 = Release|x86
+		{EFA0C233-8DAF-4596-BAAA-470946153411}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFA0C233-8DAF-4596-BAAA-470946153411}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFA0C233-8DAF-4596-BAAA-470946153411}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EFA0C233-8DAF-4596-BAAA-470946153411}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EFA0C233-8DAF-4596-BAAA-470946153411}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EFA0C233-8DAF-4596-BAAA-470946153411}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFA0C233-8DAF-4596-BAAA-470946153411}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFA0C233-8DAF-4596-BAAA-470946153411}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EFA0C233-8DAF-4596-BAAA-470946153411}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EFA0C233-8DAF-4596-BAAA-470946153411}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

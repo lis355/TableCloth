@@ -14,7 +14,7 @@ CHARACTERS
 	Tab = '\t' .
 
 TOKENS
-	Identifier = Letter { Letter | Digit } .
+	IdentifierString = Letter { Letter | Digit } .
 	TrueConstant = '1' . 
 	FalseConstant = '0' .
 
@@ -54,7 +54,6 @@ TableCloth =
 	ManyOrOneCommand .
 
 ManyOrOneCommand = 
-	(. Cur = Tree; .)
 	Command [ EndOfCommand [ ManyOrOneCommand ] ] .
 
 Command = 
@@ -63,13 +62,13 @@ Command =
 	| GetExpressionTypeCommand .
 
 ExpressionOrCreateNewVariableCommand =
-	IF ( GetNextTokenKind() != _Equal)
-	ExpressionCode	(. AddCh( new ExpressionCommandNode() ); .)
+	IF ( GetNextTokenKind() != Equal)
+	ExpressionCode
 	| CreateNewVariableCommand .
 	
 CreateNewVariableCommand =
-	Identifier (. tmpIdentifier = t.val; .)
-	Equal ExpressionCode (. GlobalVariableList.New(tmpIdentifier, tmpExpression); .)
+	Identifier 
+	Equal ExpressionCode 
 	| New LeftRoundBracket Identifier Comma ExpressionCode RightRoundBracket .
 
 DeleteVariableCommand = Clear LeftRoundBracket Identifier RightRoundBracket	.
@@ -79,10 +78,8 @@ GetExpressionTypeCommand = ExpressionType LeftRoundBracket ExpressionCode RightR
 // Скобки, отрицание, конъюнкция, дизъюнкция, сумма по модулю 2, 
 // импликация, эквиваленция, штрих Шеффера, стрелка Пирса
 
-ExpressionCode = (. tmpExpression = new Expression(); .)
-				Expression
-				(. tmpExpression.Root = EV.Pop(); .)
- 				(. AddCh(new ExpressionNode(tmpExpression.Root.ToString())); .) .
+ExpressionCode =
+	Expression .
 
 Expression =
 	EquImplExpression [ Pirse Expression (. PushPirse(); .)
@@ -132,4 +129,7 @@ ListOfExpression =
 ExpressionEnumeration =
 	ExpressionCode [ Comma ExpressionEnumeration ] . 
 
+Identifier =
+	IdentifierString (. PushString( t.val ); .) .
+	
 END TableCloth .

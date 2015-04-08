@@ -14,22 +14,22 @@
 
     class ConstantVertex : ExpressionVertex
     {
-        public BooleanConstants Constant;
+        public EBooleanConstants Constant;
 
-        public ConstantVertex( BooleanConstants bc )
+        public ConstantVertex( EBooleanConstants bc )
         {
             Constant = bc;
         }
 
         public override bool CalcExpressionOnThisVertex()
         {
-            return Constant == BooleanConstants.True;
+            return Constant == EBooleanConstants.True;
         }
 
         public override bool IsOperand() { return false; }
         public override bool IsConstant() { return true; }
         public override bool IsVariable() { return false; }
-        public override string ToString() { return ( Constant == BooleanConstants.True ) ? "1" : "0"; }
+        public override string ToString() { return ( Constant == EBooleanConstants.True ) ? "1" : "0"; }
     }
 
     class VariableVertex : ExpressionVertex
@@ -51,10 +51,10 @@
 
     class OperandVertex : ExpressionVertex
     {
-        public CommandsCode OperationCode;
+        public ECommandsCode OperationCode;
         public ExpressionVertex L, R;
 
-        public OperandVertex( CommandsCode c, ExpressionVertex lv, ExpressionVertex rv )
+        public OperandVertex( ECommandsCode c, ExpressionVertex lv, ExpressionVertex rv )
         {
             OperationCode = c;
             L = lv;
@@ -63,7 +63,7 @@
 
         public override bool CalcExpressionOnThisVertex()
         {
-            if ( OperationCode == CommandsCode.Not )
+            if ( OperationCode == ECommandsCode.Not )
             {
                 return !L.CalcExpressionOnThisVertex();
             }
@@ -72,13 +72,13 @@
                 bool t1 = L.CalcExpressionOnThisVertex(), t2 = R.CalcExpressionOnThisVertex();
                 switch ( OperationCode )
                 {
-                    case CommandsCode.And: return t1 && t2;
-                    case CommandsCode.Or: return t1 || t2;
-                    case CommandsCode.Xor: return t1 ^ t2;
-                    case CommandsCode.Equivalence: return ( !t1 || t2 ) && ( t1 || !t2 );
-                    case CommandsCode.Implication: return !t1 || t2;
-                    case CommandsCode.Sheffer: return !( t1 && t2 );
-                    case CommandsCode.Pirse: return !( t1 || t2 );
+                    case ECommandsCode.And: return t1 && t2;
+                    case ECommandsCode.Or: return t1 || t2;
+                    case ECommandsCode.Xor: return t1 ^ t2;
+                    case ECommandsCode.Equivalence: return ( !t1 || t2 ) && ( t1 || !t2 );
+                    case ECommandsCode.Implication: return !t1 || t2;
+                    case ECommandsCode.Sheffer: return !( t1 && t2 );
+                    case ECommandsCode.Pirse: return !( t1 || t2 );
                 }
             }
             return false;
@@ -89,7 +89,7 @@
         public override bool IsVariable() { return false; }
         public override string ToString()
         {
-            if ( OperationCode == CommandsCode.Not )
+            if ( OperationCode == ECommandsCode.Not )
             {
                 return ExpressionString.CommandsCodeToString( OperationCode ) + L;
             }
