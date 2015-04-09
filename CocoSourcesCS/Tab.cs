@@ -29,6 +29,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace at.jku.ssw.Coco {
 
@@ -238,8 +239,8 @@ public class Tab {
 	//---------------------------------------------------------------------
 	//  Symbol list management
 	//---------------------------------------------------------------------
-	
-	public ArrayList terminals = new ArrayList();
+
+    public List<Symbol> terminals = new List<Symbol>();
 	public ArrayList pragmas = new ArrayList();
 	public ArrayList nonterminals = new ArrayList();
 	

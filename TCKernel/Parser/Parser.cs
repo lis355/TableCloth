@@ -8,43 +8,44 @@ namespace TableClothKernel
 
 public partial class Parser
 {
-	public const int EOF = 0;
-	public const int IdentifierString = 1;
-	public const int TrueConstant = 2;
-	public const int FalseConstant = 3;
-	public const int True = 4;
-	public const int False = 5;
-	public const int New = 6;
-	public const int Clear = 7;
-	public const int ExpressionType = 8;
-	public const int Equal = 9;
-	public const int Not = 10;
-	public const int And = 11;
-	public const int Or = 12;
-	public const int Xor = 13;
-	public const int Equivalence = 14;
-	public const int Implication = 15;
-	public const int Sheffer = 16;
-	public const int Pirse = 17;
-	public const int LeftRoundBracket = 18;
-	public const int RightRoundBracket = 19;
-	public const int LeftListBracket = 20;
-	public const int RightListBracket = 21;
-	public const int EndOfCommand = 22;
-	public const int Comma = 23;
+	const int EOF = 0;
+	const int IdentifierString = 1;
+	const int TrueConstant = 2;
+	const int FalseConstant = 3;
+	const int True = 4;
+	const int False = 5;
+	const int New = 6;
+	const int Clear = 7;
+	const int ExpressionType = 8;
+	const int Equal = 9;
+	const int Not = 10;
+	const int And = 11;
+	const int Or = 12;
+	const int Xor = 13;
+	const int Equivalence = 14;
+	const int Implication = 15;
+	const int Sheffer = 16;
+	const int Pirse = 17;
+	const int LeftRoundBracket = 18;
+	const int RightRoundBracket = 19;
+	const int LeftListBracket = 20;
+	const int RightListBracket = 21;
+	const int EndOfCommand = 22;
+	const int Comma = 23;
 	public const int maxT = 24;
 
-	const bool _T = true;
-	const bool _x = false;
+	const bool T = true;
+	const bool F = false;
 	const int minErrDist = 2;
 	
 	Scanner _scanner;
+
+	Token t;    // last recognized token
+	Token la;   // lookahead token
+	int errDist;
+	
 	public ParserErrors Errors { get; set; }
-
-	public Token t;    // last recognized token
-	public Token la;   // lookahead token
-	int errDist = minErrDist;
-
+	
 int GetNextTokenKind() { return _scanner.Peek().kind; }
 
 
@@ -54,21 +55,21 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
         Errors = new ParserErrors();
     }
 
-	void SynErr (int n)
+	void SynErr(int n)
 	{
 		if (errDist >= minErrDist) Errors.SynErr(la.line, la.col, n);
 		errDist = 0;
 	}
 
-	public void SemErr (string msg)
+	void SemErr(string msg)
 	{
 		if (errDist >= minErrDist) Errors.SemErr(t.line, t.col, msg);
 		errDist = 0;
 	}
 	
-	void Get ()
+	void Get()
 	{
-		for (;;)
+		while (true)
 		{
 			t = la;
 			la = _scanner.Scan();
@@ -78,17 +79,17 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 		}
 	}
 	
-	void Expect (int n)
+	void Expect(int n)
 	{
 		if (la.kind==n) Get(); else { SynErr(n); }
 	}
 	
-	bool StartOf (int s)
+	bool StartOf(int s)
 	{
 		return set[s, la.kind];
 	}
 	
-	void ExpectWeak (int n, int follow)
+	void ExpectWeak(int n, int follow)
 	{
 		if (la.kind == n) Get();
 		else
@@ -328,6 +329,7 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
     public void Parse( Scanner s )
     {
         _scanner = s;
+		errDist = minErrDist;
         Errors.Clear();
 
         Parse();
@@ -345,13 +347,13 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 	
 	static readonly bool[,] set =
 	{
-		{_T,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x},
-		{_x,_T,_T,_T, _T,_T,_T,_T, _T,_x,_T,_x, _x,_x,_x,_x, _x,_x,_T,_x, _x,_x,_x,_x, _x,_x},
-		{_x,_T,_T,_T, _T,_T,_T,_x, _x,_x,_T,_x, _x,_x,_x,_x, _x,_x,_T,_x, _x,_x,_x,_x, _x,_x},
-		{_x,_T,_T,_T, _T,_T,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_T,_x, _x,_x,_x,_x, _x,_x},
-		{_x,_x,_T,_T, _T,_T,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x},
-		{_x,_T,_T,_T, _T,_T,_x,_x, _x,_x,_T,_x, _x,_x,_x,_x, _x,_x,_T,_x, _T,_x,_x,_x, _x,_x},
-		{_x,_T,_T,_T, _T,_T,_x,_x, _x,_x,_T,_x, _x,_x,_x,_x, _x,_x,_T,_x, _x,_x,_x,_x, _x,_x}
+		{T,F,F,F, F,F,F,F, F,F,F,F, F,F,F,F, F,F,F,F, F,F,F,F, F,F},
+		{F,T,T,T, T,T,T,T, T,F,T,F, F,F,F,F, F,F,T,F, F,F,F,F, F,F},
+		{F,T,T,T, T,T,T,F, F,F,T,F, F,F,F,F, F,F,T,F, F,F,F,F, F,F},
+		{F,T,T,T, T,T,F,F, F,F,F,F, F,F,F,F, F,F,T,F, F,F,F,F, F,F},
+		{F,F,T,T, T,T,F,F, F,F,F,F, F,F,F,F, F,F,F,F, F,F,F,F, F,F},
+		{F,T,T,T, T,T,F,F, F,F,T,F, F,F,F,F, F,F,T,F, T,F,F,F, F,F},
+		{F,T,T,T, T,T,F,F, F,F,T,F, F,F,F,F, F,F,T,F, F,F,F,F, F,F}
 
 	};
 }

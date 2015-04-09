@@ -7,17 +7,18 @@ using System.Collections.Generic;
 public partial class Parser
 {
 -->constants
-	const bool _T = true;
-	const bool _x = false;
+	const bool T = true;
+	const bool F = false;
 	const int minErrDist = 2;
 	
 	Scanner _scanner;
+
+	Token t;    // last recognized token
+	Token la;   // lookahead token
+	int errDist;
+	
 	public ParserErrors Errors { get; set; }
-
-	public Token t;    // last recognized token
-	public Token la;   // lookahead token
-	int errDist = minErrDist;
-
+	
 -->declarations
 
     public Parser()
@@ -25,21 +26,21 @@ public partial class Parser
         Errors = new ParserErrors();
     }
 
-	void SynErr (int n)
+	void SynErr(int n)
 	{
 		if (errDist >= minErrDist) Errors.SynErr(la.line, la.col, n);
 		errDist = 0;
 	}
 
-	public void SemErr (string msg)
+	void SemErr(string msg)
 	{
 		if (errDist >= minErrDist) Errors.SemErr(t.line, t.col, msg);
 		errDist = 0;
 	}
 	
-	void Get ()
+	void Get()
 	{
-		for (;;)
+		while (true)
 		{
 			t = la;
 			la = _scanner.Scan();
@@ -49,17 +50,17 @@ public partial class Parser
 		}
 	}
 	
-	void Expect (int n)
+	void Expect(int n)
 	{
 		if (la.kind==n) Get(); else { SynErr(n); }
 	}
 	
-	bool StartOf (int s)
+	bool StartOf(int s)
 	{
 		return set[s, la.kind];
 	}
 	
-	void ExpectWeak (int n, int follow)
+	void ExpectWeak(int n, int follow)
 	{
 		if (la.kind == n) Get();
 		else
@@ -91,6 +92,7 @@ public partial class Parser
     public void Parse( Scanner s )
     {
         _scanner = s;
+		errDist = minErrDist;
         Errors.Clear();
 
         Parse();

@@ -1,6 +1,6 @@
 Thumbs.db
 *.obj
-#*.exe
+*.exe
 *.pdb
 *.user
 *.aps
@@ -19,6 +19,7 @@ Thumbs.db
 [Bb]in
 *.lib
 *.sbr
+trace.txt
 obj/
 _ReSharper*/
 

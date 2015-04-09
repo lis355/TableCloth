@@ -293,13 +293,13 @@ public class ParserGen {
 	void GenTokens() {
 		foreach (Symbol sym in tab.terminals) {
 			if (Char.IsLetter(sym.name[0]))
-				gen.WriteLine("\tpublic const int {0} = {1};", sym.name, sym.n);
+				gen.WriteLine("\tconst int {0} = {1};", sym.name, sym.n);
 		}
 	}
 	
 	void GenPragmas() {
 		foreach (Symbol sym in tab.pragmas) {
-			gen.WriteLine("\tpublic const int _{0} = {1};", sym.name, sym.n);
+			gen.WriteLine("\tconst int _{0} = {1};", sym.name, sym.n);
 		}
 	}
 
@@ -329,11 +329,11 @@ public class ParserGen {
 			gen.Write("\t\t{");
 			int j = 0;
 			foreach (Symbol sym in tab.terminals) {
-				if (s[sym.n]) gen.Write("_T,"); else gen.Write("_x,");
+				if (s[sym.n]) gen.Write("T,"); else gen.Write("F,");
 				++j;
 				if (j%4 == 0) gen.Write(" ");
 			}
-			if (i == symSet.Count-1) gen.WriteLine("_x}"); else gen.WriteLine("_x},");
+			if (i == symSet.Count-1) gen.WriteLine("F}"); else gen.WriteLine("F},");
 		}
 	}
 
@@ -363,7 +363,9 @@ public class ParserGen {
 		g.CopyFramePart("-->declarations"); CopySourcePart(tab.semDeclPos, 0);
 		g.CopyFramePart("-->pragmas"); GenCodePragmas();
 		g.CopyFramePart("-->productions"); GenProductions();
-		g.CopyFramePart("-->parseRoot"); gen.WriteLine("\t\t{0}();", tab.gramSy.name); if (tab.checkEOF) gen.WriteLine("\t\tExpect({0});", ((Symbol)tab.terminals[0]).name );
+		g.CopyFramePart("-->parseRoot");
+        gen.WriteLine("\t\t{0}();", tab.gramSy.name);
+        if (tab.checkEOF) gen.WriteLine("\t\tExpect({0});", ((Symbol)tab.terminals[0]).name );
 		g.CopyFramePart("-->initialization"); InitSets();
 		g.CopyFramePart("-->errors"); gen.Write(err.ToString());
 		g.CopyFramePart(null);
