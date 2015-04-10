@@ -19,11 +19,14 @@ namespace TableClothKernel
 
         static readonly List<string> _logStrings = new List<string>();
 
-        public static void Log( string s )
+        public static void Log( params object[] output )
         {
-            s = String.Format( "[{0}] : {1}", DateTime.Now.ToUniversalTime(), s );
-            _logStrings.Add( s );
-            Console.WriteLine( s );
+            foreach ( var obj in output )
+            {
+                var s = String.Format( "[{0}] : {1}", DateTime.Now.ToUniversalTime(), obj );
+                _logStrings.Add( s );
+                Console.WriteLine( s );
+            }
         }
 
         public static void SaveLog()
@@ -31,5 +34,4 @@ namespace TableClothKernel
             File.WriteAllLines( "log.txt", _logStrings, Encoding.UTF8 );
         }
     }
-
 }

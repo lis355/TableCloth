@@ -17,7 +17,12 @@ public partial class Parser
 	Token la;   // lookahead token
 	int errDist;
 	
+    partial void ProductionBegin( ENonTerminal production );
+    partial void ProductionEnd( ENonTerminal production );
+	
 	public ParserErrors Errors { get; set; }
+	
+    string CurrentToken { get { return t.val; } }
 	
 -->declarations
 

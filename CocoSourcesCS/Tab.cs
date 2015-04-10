@@ -242,7 +242,7 @@ public class Tab {
 
     public List<Symbol> terminals = new List<Symbol>();
 	public ArrayList pragmas = new ArrayList();
-	public ArrayList nonterminals = new ArrayList();
+    public List<Symbol> nonterminals = new List<Symbol>();
 	
 	string[] tKind = {"fixedToken", "classToken", "litToken", "classLitToken"};
 	

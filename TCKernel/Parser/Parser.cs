@@ -32,6 +32,35 @@ public partial class Parser
 	const int RightListBracket = 21;
 	const int EndOfCommand = 22;
 	const int Comma = 23;
+
+	enum ENonTerminal
+	{
+		TableCloth,
+		ManyOrOneCommand,
+		Command,
+		ExpressionOrCreateNewVariableCommand,
+		DeleteVariableCommand,
+		GetExpressionTypeCommand,
+		ExpressionCode,
+		CreateNewVariableCommand,
+		Identifier,
+		Expression,
+		EquImplExpression,
+		XorExpression,
+		OrExpression,
+		AndExpression,
+		NotExpression,
+		SimplyExpression,
+		IdentifierOrFunction,
+		Constant,
+		FunctionBracketsAndArguments,
+		ConstantT,
+		ConstantF,
+		ListOfArguments,
+		ListOfExpression,
+		ExpressionEnumeration
+	}
+
 	public const int maxT = 24;
 
 	const bool T = true;
@@ -44,7 +73,12 @@ public partial class Parser
 	Token la;   // lookahead token
 	int errDist;
 	
+    partial void ProductionBegin( ENonTerminal production );
+    partial void ProductionEnd( ENonTerminal production );
+	
 	public ParserErrors Errors { get; set; }
+	
+    string CurrentToken { get { return t.val; } }
 	
 int GetNextTokenKind() { return _scanner.Peek().kind; }
 
@@ -117,10 +151,13 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 	}
 	
 	void TableCloth() {
+		ProductionBegin( ENonTerminal.TableCloth );
 		ManyOrOneCommand();
+		ProductionEnd( ENonTerminal.TableCloth );
 	}
 
 	void ManyOrOneCommand() {
+		ProductionBegin( ENonTerminal.ManyOrOneCommand );
 		Command();
 		if (la.kind == EndOfCommand) {
 			Get();
@@ -128,9 +165,11 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 				ManyOrOneCommand();
 			}
 		}
+		ProductionEnd( ENonTerminal.ManyOrOneCommand );
 	}
 
 	void Command() {
+		ProductionBegin( ENonTerminal.Command );
 		if (StartOf(2)) {
 			ExpressionOrCreateNewVariableCommand();
 		} else if (la.kind == Clear) {
@@ -138,35 +177,45 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 		} else if (la.kind == ExpressionType) {
 			GetExpressionTypeCommand();
 		} else SynErr(25);
+		ProductionEnd( ENonTerminal.Command );
 	}
 
 	void ExpressionOrCreateNewVariableCommand() {
+		ProductionBegin( ENonTerminal.ExpressionOrCreateNewVariableCommand );
 		if (GetNextTokenKind() != Equal) {
 			ExpressionCode();
 		} else if (la.kind == IdentifierString || la.kind == New) {
 			CreateNewVariableCommand();
 		} else SynErr(26);
+		ProductionEnd( ENonTerminal.ExpressionOrCreateNewVariableCommand );
 	}
 
 	void DeleteVariableCommand() {
+		ProductionBegin( ENonTerminal.DeleteVariableCommand );
 		Expect(Clear);
 		Expect(LeftRoundBracket);
 		Identifier();
 		Expect(RightRoundBracket);
+		ProductionEnd( ENonTerminal.DeleteVariableCommand );
 	}
 
 	void GetExpressionTypeCommand() {
+		ProductionBegin( ENonTerminal.GetExpressionTypeCommand );
 		Expect(ExpressionType);
 		Expect(LeftRoundBracket);
 		ExpressionCode();
 		Expect(RightRoundBracket);
+		ProductionEnd( ENonTerminal.GetExpressionTypeCommand );
 	}
 
 	void ExpressionCode() {
+		ProductionBegin( ENonTerminal.ExpressionCode );
 		Expression();
+		ProductionEnd( ENonTerminal.ExpressionCode );
 	}
 
 	void CreateNewVariableCommand() {
+		ProductionBegin( ENonTerminal.CreateNewVariableCommand );
 		if (la.kind == IdentifierString) {
 			Identifier();
 			Expect(Equal);
@@ -179,14 +228,18 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 			ExpressionCode();
 			Expect(RightRoundBracket);
 		} else SynErr(27);
+		ProductionEnd( ENonTerminal.CreateNewVariableCommand );
 	}
 
 	void Identifier() {
+		ProductionBegin( ENonTerminal.Identifier );
 		Expect(IdentifierString);
 		PushString( t.val ); 
+		ProductionEnd( ENonTerminal.Identifier );
 	}
 
 	void Expression() {
+		ProductionBegin( ENonTerminal.Expression );
 		EquImplExpression();
 		if (la.kind == Sheffer || la.kind == Pirse) {
 			if (la.kind == Pirse) {
@@ -199,9 +252,11 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 				PushSheffer(); 
 			}
 		}
+		ProductionEnd( ENonTerminal.Expression );
 	}
 
 	void EquImplExpression() {
+		ProductionBegin( ENonTerminal.EquImplExpression );
 		XorExpression();
 		if (la.kind == Equivalence || la.kind == Implication) {
 			if (la.kind == Equivalence) {
@@ -214,36 +269,44 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 				PushImplication(); 
 			}
 		}
+		ProductionEnd( ENonTerminal.EquImplExpression );
 	}
 
 	void XorExpression() {
+		ProductionBegin( ENonTerminal.XorExpression );
 		OrExpression();
 		if (la.kind == Xor) {
 			Get();
 			XorExpression();
 			PushXor(); 
 		}
+		ProductionEnd( ENonTerminal.XorExpression );
 	}
 
 	void OrExpression() {
+		ProductionBegin( ENonTerminal.OrExpression );
 		AndExpression();
 		if (la.kind == Or) {
 			Get();
 			OrExpression();
 			PushOr(); 
 		}
+		ProductionEnd( ENonTerminal.OrExpression );
 	}
 
 	void AndExpression() {
+		ProductionBegin( ENonTerminal.AndExpression );
 		NotExpression();
 		if (la.kind == And) {
 			Get();
 			AndExpression();
 			PushAnd(); 
 		}
+		ProductionEnd( ENonTerminal.AndExpression );
 	}
 
 	void NotExpression() {
+		ProductionBegin( ENonTerminal.NotExpression );
 		if (StartOf(3)) {
 			SimplyExpression();
 		} else if (la.kind == Not) {
@@ -251,9 +314,11 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 			NotExpression();
 			PushNot(); 
 		} else SynErr(28);
+		ProductionEnd( ENonTerminal.NotExpression );
 	}
 
 	void SimplyExpression() {
+		ProductionBegin( ENonTerminal.SimplyExpression );
 		if (la.kind == IdentifierString) {
 			IdentifierOrFunction();
 		} else if (StartOf(4)) {
@@ -263,65 +328,90 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 			Expression();
 			Expect(RightRoundBracket);
 		} else SynErr(29);
+		ProductionEnd( ENonTerminal.SimplyExpression );
 	}
 
 	void IdentifierOrFunction() {
+		ProductionBegin( ENonTerminal.IdentifierOrFunction );
 		Identifier();
 		PushVariable(t.val); 
 		if (la.kind == LeftRoundBracket) {
 			FunctionBracketsAndArguments();
 			TcDebug.Log( "func" ); 
 		}
+		ProductionEnd( ENonTerminal.IdentifierOrFunction );
 	}
 
 	void Constant() {
-		if (la.kind == True) {
-			Get();
-			PushTrueConstant(); 
-		} else if (la.kind == TrueConstant) {
-			Get();
-			PushTrueConstant(); 
-		} else if (la.kind == False) {
-			Get();
-			PushFalseConstant(); 
-		} else if (la.kind == FalseConstant) {
-			Get();
-			PushFalseConstant(); 
+		ProductionBegin( ENonTerminal.Constant );
+		if (la.kind == TrueConstant || la.kind == True) {
+			ConstantT();
+		} else if (la.kind == FalseConstant || la.kind == False) {
+			ConstantF();
 		} else SynErr(30);
+		ProductionEnd( ENonTerminal.Constant );
 	}
 
 	void FunctionBracketsAndArguments() {
+		ProductionBegin( ENonTerminal.FunctionBracketsAndArguments );
 		Expect(LeftRoundBracket);
 		if (StartOf(5)) {
 			ListOfArguments();
 		}
 		Expect(RightRoundBracket);
+		ProductionEnd( ENonTerminal.FunctionBracketsAndArguments );
+	}
+
+	void ConstantT() {
+		ProductionBegin( ENonTerminal.ConstantT );
+		if (la.kind == True) {
+			Get();
+		} else if (la.kind == TrueConstant) {
+			Get();
+		} else SynErr(31);
+		ProductionEnd( ENonTerminal.ConstantT );
+	}
+
+	void ConstantF() {
+		ProductionBegin( ENonTerminal.ConstantF );
+		if (la.kind == False) {
+			Get();
+		} else if (la.kind == FalseConstant) {
+			Get();
+		} else SynErr(32);
+		ProductionEnd( ENonTerminal.ConstantF );
 	}
 
 	void ListOfArguments() {
+		ProductionBegin( ENonTerminal.ListOfArguments );
 		if (StartOf(6)) {
 			ExpressionCode();
 		} else if (la.kind == LeftListBracket) {
 			ListOfExpression();
-		} else SynErr(31);
+		} else SynErr(33);
 		if (la.kind == Comma) {
 			Get();
 			ListOfArguments();
 		}
+		ProductionEnd( ENonTerminal.ListOfArguments );
 	}
 
 	void ListOfExpression() {
+		ProductionBegin( ENonTerminal.ListOfExpression );
 		Expect(LeftListBracket);
 		ExpressionEnumeration();
 		Expect(RightListBracket);
+		ProductionEnd( ENonTerminal.ListOfExpression );
 	}
 
 	void ExpressionEnumeration() {
+		ProductionBegin( ENonTerminal.ExpressionEnumeration );
 		ExpressionCode();
 		if (la.kind == Comma) {
 			Get();
 			ExpressionEnumeration();
 		}
+		ProductionEnd( ENonTerminal.ExpressionEnumeration );
 	}
 
 
@@ -431,7 +521,9 @@ public class ParserErrors
 			case 28: s = "invalid NotExpression"; break;
 			case 29: s = "invalid SimplyExpression"; break;
 			case 30: s = "invalid Constant"; break;
-			case 31: s = "invalid ListOfArguments"; break;
+			case 31: s = "invalid ConstantT"; break;
+			case 32: s = "invalid ConstantF"; break;
+			case 33: s = "invalid ListOfArguments"; break;
 
 			default: s = "error " + n; break;
 		}

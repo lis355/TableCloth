@@ -4,12 +4,22 @@ namespace TableClothKernel
 {
     class Tests
     {
+        //Equal = '=' .
+	    //Not  = '!'  | "[not]" .
+	    //And  = "&&" | "[and]" .
+	    //Or   = "||" | "[or]" .
+	    //Xor  = "^"  | "[xor]" .
+	    //Equivalence = "==" | "[equ]" .
+	    //Implication = "=>" | "[impl]" .
+	    //Sheffer = "[shef]" .
+	    //Pirse = "[pirse]" .
+
         static readonly string[] _expressions =
         {  
-            "!( !( 1 ^ 0 ) => !( 1 == wy ) ) && r || !q", "True"
-            //"x = false", "False",
-            //"y = true || false", "True",
-            //"y => x", "True",
+            "!( !( 1 ^ 0 ) => !( 1 == wy ) ) && r || !q", 
+            "x = false",
+            "y = true || false",
+            "y => x()",
             //"q || !0 && 1", "True",
             //"!!!1 && 0 && 1", "False",
             //"!(0 && 1)", "True",
@@ -22,36 +32,25 @@ namespace TableClothKernel
 
         public void Run()
         {
-            try
-            {
-                App();
-            }
-            catch( Exception e )
-            {
-                TcDebug.Log( "Exception : " + e.Message );
-            } 
-        }
-
-        void App()
-        {
             foreach ( var exp in _expressions )
             {
+                TcDebug.Log( exp );
                 bool result = Calc.CalcExpression( exp );
+                TcDebug.Log( "RESULT:", result );
+                TcDebug.Log( "" );
             }
 
-            Options.ConstantOutType = StringConstantType.Word;
-
-            for ( int i = 0; i < _expressions.Length; i += 2 )
-            {
-                CheckExp( i / 2, _expressions[i], _expressions[i + 1] );
-            }
-
-            foreach ( var vp in GlobalVariableList.V.GetAllVariablesNames() )
-            {
-                TcDebug.Log( "{ " + vp + " := " + GlobalVariableList.GetCalcValue( vp ) + " } " );
-            }
-
-            TcDebug.Log( "[not] [and] [or] [xor \u2295] [equ] [impl \u21D2] [shef] [pirse \u2193]" );
+            //Options.ConstantOutType = StringConstantType.Word;
+            //
+            //for ( int i = 0; i < _expressions.Length; i += 2 )
+            //{
+            //    CheckExp( i / 2, _expressions[i], _expressions[i + 1] );
+            //}
+            //
+            //foreach ( var vp in GlobalVariableList.V.GetAllVariablesNames() )
+            //{
+            //    TcDebug.Log( "{ " + vp + " := " + GlobalVariableList.GetCalcValue( vp ) + " } " );
+            //}
         }
 
         void CheckExp( int num, string exp, string res )

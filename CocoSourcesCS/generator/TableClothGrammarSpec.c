@@ -112,10 +112,16 @@ IdentifierOrFunction =
 	[ FunctionBracketsAndArguments (. TcDebug.Log( "func" ); .) ] .
 	
 Constant = 
-	True (. PushTrueConstant(); .)
-	| TrueConstant (. PushTrueConstant(); .)
-	| False (. PushFalseConstant(); .)
-	| FalseConstant (. PushFalseConstant(); .) .
+	ConstantT 
+	| ConstantF .
+	
+ConstantT =
+	True
+	| TrueConstant .
+	
+ConstantF =
+	False
+	| FalseConstant .
 	
 FunctionBracketsAndArguments =
 	LeftRoundBracket [ ListOfArguments ] RightRoundBracket .

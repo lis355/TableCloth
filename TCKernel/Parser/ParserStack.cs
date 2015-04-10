@@ -1,43 +1,61 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TableClothKernel
 {
     public partial class Parser
     {
-        class SToken { }
+        abstract class SToken
+        {
+        }
 
         class Name : SToken
         {
             public string String { set; get; }
+
+            public override string ToString() { return String; }
         }
 
-        class Operand : SToken
+        abstract class Operand : SToken
         {
         }
 
         class Variable : Operand
         {
-            public string String { set; get; }
+            public string Name { set; get; }
+
+            public override string ToString() { return Name; }
         }
 
         class ConstantToken : Operand
         {
             public EBooleanConstants Value { set; get; }
+
+            public override string ToString() { return Value.ToString(); }
         }
 
-        class Operator : SToken
+        abstract class Function : Operand
         {
-        }
+            public string Name { set; get; }
+            public List<Operand> Operands { set; get; }
 
-        class MonoOperator : Operator
-        {
+            public Function():
+                base()
+            {
+                Operands = new List<Operand>();
+            }
+
+            public override string ToString() 
+            {
+                return Name + "(" + String.Join( ",", Operands ) + ")";
+            }
         }
 
         static readonly Stack<SToken> _stack = new Stack<SToken>( 100 );
 
         void PushToken( SToken t )
         {
-            TcDebug.Log( t.GetType().Name );
+            TcDebug.Log( t.GetType().Name + " " + t );
             _stack.Push( t );
         }
 
@@ -142,6 +160,23 @@ namespace TableClothKernel
             //TcDebug.Log( "var " + name );
             //_stack.Push( new VariableVertex( name ) );
             //tmpExpression.AddVariable( name );
+        }
+
+        partial void ProductionBegin( ENonTerminal production )
+        {
+        }
+
+        partial void ProductionEnd( ENonTerminal production )
+        {
+            switch ( production )
+            {
+                case ENonTerminal.Command: break;
+                case ENonTerminal.Expression: break;
+                case ENonTerminal.IdentifierOrFunction: break;
+                case ENonTerminal.ConstantT: PushTrueConstant(); break;
+                case ENonTerminal.ConstantF: PushFalseConstant(); break;
+                case ENonTerminal.Identifier: PushString( CurrentToken ); break;
+            }
         }
     }
 }

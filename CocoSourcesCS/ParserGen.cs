@@ -29,6 +29,7 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Text;
+using System.Linq;
 
 namespace at.jku.ssw.Coco {
 
@@ -290,35 +291,56 @@ public class ParserGen {
 		}
 	}
 	
-	void GenTokens() {
-		foreach (Symbol sym in tab.terminals) {
+	void GenTokens() 
+    {
+		foreach (Symbol sym in tab.terminals)
+        {
 			if (Char.IsLetter(sym.name[0]))
 				gen.WriteLine("\tconst int {0} = {1};", sym.name, sym.n);
 		}
 	}
+
+    void GenNonterminals()
+    {
+        if ( tab.nonterminals.Count == 0 )
+            return;
+
+        gen.WriteLine( "\n\tenum ENonTerminal" );
+        gen.WriteLine( "\t{" );
+        gen.WriteLine( "\t\t{0}", String.Join( ",\n\t\t", tab.nonterminals.Select( x => x.name ).ToList() ) );
+        gen.WriteLine( "\t}\n" );
+    }
 	
-	void GenPragmas() {
-		foreach (Symbol sym in tab.pragmas) {
+	void GenPragmas()
+    {
+		foreach (Symbol sym in tab.pragmas) 
+        {
 			gen.WriteLine("\tconst int _{0} = {1};", sym.name, sym.n);
 		}
 	}
 
-	void GenCodePragmas() {
-		foreach (Symbol sym in tab.pragmas) {
+	void GenCodePragmas()
+    {
+		foreach (Symbol sym in tab.pragmas)
+        {
 			gen.WriteLine("\t\t\t\tif (la.kind == {0}) {{", sym.name /*n*/ );
 			CopySourcePart(sym.semPos, 4);
 			gen.WriteLine("\t\t\t\t}");
 		}
 	}
 
-	void GenProductions() {
-		foreach (Symbol sym in tab.nonterminals) {
+    void GenProductions( bool generateProductionEvents = false )
+    {
+		foreach (Symbol sym in tab.nonterminals)
+        {
 			curSy = sym;
 			gen.Write("\tvoid {0}(", sym.name);
 			CopySourcePart(sym.attrPos, 0);
 			gen.WriteLine(") {");
+            if ( generateProductionEvents ) gen.Write( "\t\tProductionBegin( ENonTerminal." + sym.name + " );\n" );
 			CopySourcePart(sym.semPos, 2);
 			GenCode(sym.graph, 2, new BitArray(tab.terminals.Count));
+            if ( generateProductionEvents ) gen.Write( "\t\tProductionEnd( ENonTerminal." + sym.name + " );\n" );
 			gen.WriteLine("\t}"); gen.WriteLine();
 		}
 	}
@@ -357,12 +379,13 @@ public class ParserGen {
 			gen.WriteLine("namespace {0}" + gen.NewLine +"{{", tab.nsName);
 		}
 		g.CopyFramePart("-->constants");
-		GenTokens(); /* ML 2002/09/07 write the token kinds */
+		GenTokens();
+        GenNonterminals();
 		gen.WriteLine("\tpublic const int maxT = {0};", tab.terminals.Count-1);
 		GenPragmas(); /* ML 2005/09/23 write the pragma kinds */
 		g.CopyFramePart("-->declarations"); CopySourcePart(tab.semDeclPos, 0);
 		g.CopyFramePart("-->pragmas"); GenCodePragmas();
-		g.CopyFramePart("-->productions"); GenProductions();
+		g.CopyFramePart("-->productions"); GenProductions(true);
 		g.CopyFramePart("-->parseRoot");
         gen.WriteLine("\t\t{0}();", tab.gramSy.name);
         if (tab.checkEOF) gen.WriteLine("\t\tExpect({0});", ((Symbol)tab.terminals[0]).name );
