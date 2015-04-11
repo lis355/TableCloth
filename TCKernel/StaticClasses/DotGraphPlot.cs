@@ -95,8 +95,15 @@ namespace TableClothKernel
 		{
 			var dotPath = Path.ChangeExtension( pngFile, "dot" );
 			File.WriteAllText( dotPath, Dot );
-			var args = dotPath + " -Tpng -o" + pngFile;
-			Process.Start( dotExe, args );
+
+			var startInfo = new ProcessStartInfo();
+			startInfo.FileName = dotExe;
+			startInfo.Arguments = dotPath + " -Tpng -o" + pngFile;
+			startInfo.CreateNoWindow = true;
+			startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
+			var process = Process.Start( startInfo );
+			process.WaitForExit();
 		}
 	}
 }
