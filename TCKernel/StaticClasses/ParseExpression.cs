@@ -2,11 +2,11 @@
 
 namespace TableClothKernel
 {
-    public static class Calc
+    public static class ExpressionParser
     {
         static readonly Parser _parser;
 
-        static Calc()
+        static ExpressionParser()
         {
             _parser = new Parser();
             _parser.Errors.Message += MessagesDispatcher;
@@ -20,7 +20,7 @@ namespace TableClothKernel
             }
         }
 
-	    public class CalcResult
+	    public class ParseResult
 	    {
 			public bool Success;
 			public TcToken Result;
@@ -28,9 +28,9 @@ namespace TableClothKernel
 	    }
 
         // Основная функция рассчета строки
-        public static CalcResult CalcExpression( string s )
+        public static ParseResult ParseExpression( string s )
         {
-			var result = new CalcResult();
+			var result = new ParseResult();
 
             try
             {

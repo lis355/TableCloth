@@ -4,6 +4,7 @@
     {
         public static EStringConstantType ConstantOutType { get; set; }
         public static EStringOperatorType OperatorOutType { get; set; }
+		public static bool PrettyPrint { get; set; }
     }
 }
 

@@ -41,6 +41,8 @@ namespace TableClothKernel
 
 			_form.Text = Information.KernelName + " " + Information.KernelVersion + " " + Information.KernelAssembly;
 
+			Options.PrettyPrint = true;
+
 			TcDebug.LogDelegate = s => _form.OutBox.Text += s + Environment.NewLine;
 
 			_form.ConstantType.DataSource = Enum.GetValues( typeof( EStringConstantType ) );
@@ -66,7 +68,7 @@ namespace TableClothKernel
 
 			TcDebug.Log( s );
 			
-			var result = Calc.CalcExpression( s );
+			var result = ExpressionParser.ParseExpression( s );
 			
 			TcDebug.Log( "RESULT:", result.Success );
 

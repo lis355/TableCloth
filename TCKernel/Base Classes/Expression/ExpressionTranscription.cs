@@ -58,7 +58,11 @@ namespace TableClothKernel
 
 		static string GetFunctionArgumentsTranscription( Function function )
 		{
-			return "(" + String.Join( ",", function.Operands.Select( x => x.ToExpressionString() ) ) + ")";
+			return _kLeftRoundBracket 
+				+ Space()
+				+ String.Join( _kComma + Space(), function.Operands.Select( x => x.ToExpressionString() ) )
+				+ Space()
+				+ _kRightRoundBracket;
 		}
 
 		public static string GetOperatorTranscription( Operator op )
@@ -94,14 +98,32 @@ namespace TableClothKernel
 
 		static string PrintDefaultMonoOperator( Operator op )
 		{
-			return GetSimplyOperatorName( op ) + op.Operands[0].ToExpressionString();
+			return GetSimplyOperatorName( op )
+				+ op.Operands[0].ToExpressionString();
 		}
 
 		static string PrintDefaultBinaryOperator( Operator op )
 		{
-			return "(" + op.Operands[0].ToExpressionString()
-				+ GetSimplyOperatorName( op ) + op.Operands[1].ToExpressionString() + ")";
+			return _kLeftRoundBracket
+				+ Space()
+				+ op.Operands[0].ToExpressionString()
+				+ Space()
+				+ GetSimplyOperatorName( op )
+				+ Space()
+				+ op.Operands[1].ToExpressionString()
+				+ Space()
+				+ _kRightRoundBracket;
 		}
+
+		static string Space()
+		{
+			return ( Options.PrettyPrint ) ? _kSpace : string.Empty;
+		}
+
+		const string _kLeftRoundBracket = "(";
+		const string _kRightRoundBracket = ")";
+		const string _kComma = ",";
+		const string _kSpace = " ";
 
 		static readonly Dictionary<EBooleanConstants, Dictionary<EStringConstantType, string>> _constantTranscription;
 		static readonly Dictionary<EOperator, Dictionary<EStringOperatorType, string>> _operatorsTranscription;
