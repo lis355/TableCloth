@@ -21,6 +21,8 @@ TOKENS
 // Константы
 	True = "true" .
 	False = "false" .
+	TrueCaps = "True" .
+	FalseCaps = "False" .
 // Работа с переменными
 	New = "new" .
 	Clear = "clear" . 
@@ -62,8 +64,7 @@ Command =
 	//| GetExpressionTypeCommand .
 
 ExpressionOrDefineVariableCommand =
-	//IF ( GetNextTokenKind() != Equal )
-	ExpressionCode
+	IF ( GetNextTokenKind() != Equal && la.kind != New ) ExpressionCode
 	| DefineVariableCommand .
 	
 DefineVariableCommand =
@@ -116,10 +117,12 @@ Constant =
 	
 ConstantT =
 	True
+	| TrueCaps
 	| TrueConstant .
 	
 ConstantF =
 	False
+	| FalseCaps
 	| FalseConstant .
 	
 FunctionBracketsAndArguments =

@@ -27,6 +27,9 @@ namespace TableClothKernel
 		{
 			return ExpressionTranscription.GetOperandCurrentTranscription( this );
 		}
+
+		public virtual void Validate() { }
+		public virtual Operand Simplify() { return this; }
 	}
 	
 	public class Variable : Operand
@@ -37,23 +40,21 @@ namespace TableClothKernel
 	public class Constant : Operand
 	{
 	    public EBooleanConstants Value { set; get; }
-	}
 
-	public class Function : Operand
-	{
-	    public string Name { set; get; }
-	    public List<Operand> Operands { set; get; }
-	
-	    public Function():
-	        base()
+		public static Constant True = new Constant { Value = EBooleanConstants.True };
+		public static Constant False = new Constant { Value = EBooleanConstants.False };
+
+		public static implicit operator Constant( bool value )
 	    {
-	        Operands = new List<Operand>();
+			return ( value ) ? True : False;
 	    }
-	}
-	
-	public class Operator : Function
-	{
-	    public EOperator Type { get; set; }
+
+		public static implicit operator bool( Constant value )
+	    {
+			return value == True;
+	    }
+
+		Constant() { }
 	}
 
 	#endregion
@@ -69,21 +70,28 @@ namespace TableClothKernel
 	public abstract class Command : TcToken
 	{
 		public override string ToDebugString() { return GetType().Name; }
+		public abstract void Validate();
 	}
 
 	public class DefineVariableCommand : Command
 	{
 		public Variable Variable { get; set; }
 		public Expression Expression { get; set; }
+
+		public override void Validate()
+		{
+			Variable.Validate();
+			Expression.Validate();
+		}
 	}
 	
 	public class DeleteVariableCommand : Command
 	{
 		public Variable Variable { get; set; }
-	}
 
-	public class Expression : Command
-	{
-		public Operand Root { get; set; }
+		public override void Validate()
+		{
+			Variable.Validate();
+		}
 	}
 }

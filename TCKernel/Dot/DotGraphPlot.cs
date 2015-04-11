@@ -20,22 +20,22 @@ namespace TableClothKernel
 			}
 		}
 
-		public TcToken Root { get; set; }
+		public Expression Expression { get; set; }
 		public Graph RootGraph { get; set; }
 		public string Dot { get; set; }
 
-		public DotGraphPlot( TcToken root )
+		public DotGraphPlot( Expression expression )
 		{
-			Root = root;
+			Expression = expression;
 		}
 
 		public void PlotGraph()
 		{
 			RootGraph = new Graph();
-			RecursivePlot( Root );
+			RecursivePlot( Expression.Root );
 		}
 
-		void RecursivePlot( TcToken root )
+		void RecursivePlot( Operand root )
 		{
 			if ( root is Function )
 			{
@@ -46,14 +46,8 @@ namespace TableClothKernel
 					RecursivePlot( child );
 				}
 			}
-			else if ( root is Operand )
-			{
-				RootGraph.V.Add( root );
-			}
-			else
-			{
-				throw new Exception( "Bad tokens." );
-			}
+
+			RootGraph.V.Add( root );
 		}
 
 		public void PlotDot()
@@ -103,7 +97,10 @@ namespace TableClothKernel
 			startInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
 			var process = Process.Start( startInfo );
-			process.WaitForExit();
+			if ( process != null )
+			{
+				process.WaitForExit();
+			}
 		}
 	}
 }

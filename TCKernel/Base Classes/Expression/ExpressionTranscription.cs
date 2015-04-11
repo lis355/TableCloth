@@ -90,11 +90,9 @@ namespace TableClothKernel
 			return _operatorsTranscription[op.Type][type];
 		}
 
-		static bool SimplyOperatorIsMono( Operator op )
+		public static bool SimplyOperatorIsMono( Operator op )
 		{
-			return op.Type == EOperator.Not
-				|| op.Type == EOperator.Sheffer
-				|| op.Type == EOperator.Pirse;
+			return op.Type == EOperator.Not;
 		}
 
 		static string PrintDefaultMonoOperator( Operator op )
@@ -119,6 +117,18 @@ namespace TableClothKernel
 		static string Space()
 		{
 			return ( Options.PrettyPrint ) ? _kSpace : string.Empty;
+		}
+
+		public static bool IsValidName( string name )
+		{
+			return !String.IsNullOrWhiteSpace( name );
+		}
+
+		public static EOperator? GetEOperatorFromName( string name )
+		{
+			EOperator result;
+			return ( Enum.TryParse<EOperator>( name, false, out result ) ) ?
+				new EOperator?( result ) : null;
 		}
 
 		const string _kLeftRoundBracket = "(";

@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 
 namespace TableClothKernel
 {
 	class TestFormController
 	{
 		readonly TestForm _form;
+
+		readonly Solution _solution;
 
 		//Equal = '=' .
 	    //Not  = '!'  | "[not]" .
@@ -22,8 +25,7 @@ namespace TableClothKernel
         {  
             //"!( !( 1 ^ 0 ) => !( 1 == wy ) ) && r || !q", 
             //"Or(Not(q),And(r,Not(Implication(Not(Xor(False,True)),Not(Equivalence(wy,True))))))",
-			//"g(f); x = 1 || 0;" +
-			"new( y, 1 )"//" ; clear( x );",
+			"!(!1); x = 1 || 0; new( y, 1 ); clear( x );",
             //"y = true || false",
             //"y => x()",
             //"q || !0 && 1", "True",
@@ -43,8 +45,11 @@ namespace TableClothKernel
 			_form.Text = Information.KernelName + " " + Information.KernelVersion + " " + Information.KernelAssembly;
 
 			Options.PrettyPrint = true;
-			TcDebug.PrintLog = true;
+			
+			//TcDebug.PrintLog = true;
 			TcDebug.LogDelegate = s => _form.OutBox.Text += s + Environment.NewLine;
+
+			_solution = new Solution();
 
 			_form.ConstantType.DataSource = Enum.GetValues( typeof( EStringConstantType ) );
 			_form.OperatorsType.DataSource = Enum.GetValues( typeof( EStringOperatorType ) );
@@ -60,6 +65,9 @@ namespace TableClothKernel
 
 		public void InBoxReturnDown()
 		{
+			Options.ConstantOutType = ( EStringConstantType )_form.ConstantType.SelectedItem;
+			Options.OperatorOutType = ( EStringOperatorType )_form.OperatorsType.SelectedItem;
+
 			CalcExpression( _form.InBox.Text );
 		}
 
@@ -67,27 +75,23 @@ namespace TableClothKernel
 		{
 			_form.OutBox.Text = String.Empty;
 
-			TcDebug.Log( s );
-			
-			var result = InputParser.ParseExpression( s );
-			
-			TcDebug.Log( "RESULT:", result.Success );
+			var result = _solution.Input.Process( s );
 
 			if ( !result.Success )
 				return;
+			
+			//TcDebug.Log( result.Output );
 
-			Options.ConstantOutType = ( EStringConstantType )_form.ConstantType.SelectedItem;
-			Options.OperatorOutType = ( EStringOperatorType )_form.OperatorsType.SelectedItem;
-			TcDebug.Log( result.Result.ToExpressionString() );
-
-			GenerateDot( result.Result );
+			var exp = result.Input.Commands.FirstOrDefault() as Expression;
+			if ( exp != null
+				&& _form.GenDotCheckBox.Checked )
+			{
+				GenerateDot( exp );
+			}
 		}
 
-		void GenerateDot( TcToken root )
+		void GenerateDot( Expression expression )
 		{
-			if ( !_form.GenDotCheckBox.Checked )
-				return;
-
 			const string imageName = "test.png";
 
 			if ( _form.DotGraphImage.Image != null )
@@ -98,7 +102,7 @@ namespace TableClothKernel
 			File.Delete( "test.dot" );
 			File.Delete( imageName );
 
-			var g = new DotGraphPlot( root );
+			var g = new DotGraphPlot( expression );
 			g.PlotGraph();
 			g.PlotDot();
 			g.SaveDotAndImage( @"C:\Program Files (x86)\Graphviz2.38\bin\dot.exe", imageName );

@@ -35,14 +35,14 @@
 			this.TabControls = new System.Windows.Forms.TabControl();
 			this.ParsePage = new System.Windows.Forms.TabPage();
 			this.DotPage = new System.Windows.Forms.TabPage();
-			this.DotGraphImage = new System.Windows.Forms.PictureBox();
 			this.ImgPanel = new System.Windows.Forms.Panel();
+			this.DotGraphImage = new System.Windows.Forms.PictureBox();
 			this.GenDotCheckBox = new System.Windows.Forms.CheckBox();
 			this.TabControls.SuspendLayout();
 			this.ParsePage.SuspendLayout();
 			this.DotPage.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.DotGraphImage)).BeginInit();
 			this.ImgPanel.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.DotGraphImage)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// InBox
@@ -82,7 +82,8 @@
 			this.OutBox.Location = new System.Drawing.Point(3, 3);
 			this.OutBox.Multiline = true;
 			this.OutBox.Name = "OutBox";
-			this.OutBox.Size = new System.Drawing.Size(504, 380);
+			this.OutBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+			this.OutBox.Size = new System.Drawing.Size(504, 357);
 			this.OutBox.TabIndex = 5;
 			// 
 			// TabControls
@@ -104,7 +105,7 @@
 			this.ParsePage.Location = new System.Drawing.Point(4, 22);
 			this.ParsePage.Name = "ParsePage";
 			this.ParsePage.Padding = new System.Windows.Forms.Padding(3);
-			this.ParsePage.Size = new System.Drawing.Size(510, 386);
+			this.ParsePage.Size = new System.Drawing.Size(510, 363);
 			this.ParsePage.TabIndex = 0;
 			this.ParsePage.Text = "ParsePage";
 			this.ParsePage.UseVisualStyleBackColor = true;
@@ -120,15 +121,6 @@
 			this.DotPage.Text = "DotPage";
 			this.DotPage.UseVisualStyleBackColor = true;
 			// 
-			// DotGraphImage
-			// 
-			this.DotGraphImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.DotGraphImage.Location = new System.Drawing.Point(3, 3);
-			this.DotGraphImage.Name = "DotGraphImage";
-			this.DotGraphImage.Size = new System.Drawing.Size(544, 467);
-			this.DotGraphImage.TabIndex = 0;
-			this.DotGraphImage.TabStop = false;
-			// 
 			// ImgPanel
 			// 
 			this.ImgPanel.AutoScroll = true;
@@ -138,6 +130,15 @@
 			this.ImgPanel.Name = "ImgPanel";
 			this.ImgPanel.Size = new System.Drawing.Size(504, 357);
 			this.ImgPanel.TabIndex = 1;
+			// 
+			// DotGraphImage
+			// 
+			this.DotGraphImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.DotGraphImage.Location = new System.Drawing.Point(3, 3);
+			this.DotGraphImage.Name = "DotGraphImage";
+			this.DotGraphImage.Size = new System.Drawing.Size(544, 467);
+			this.DotGraphImage.TabIndex = 0;
+			this.DotGraphImage.TabStop = false;
 			// 
 			// GenDotCheckBox
 			// 
@@ -166,8 +167,8 @@
 			this.ParsePage.ResumeLayout(false);
 			this.ParsePage.PerformLayout();
 			this.DotPage.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.DotGraphImage)).EndInit();
 			this.ImgPanel.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.DotGraphImage)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace TableClothKernel
 {
     /// <summary>
     /// Список переменных, основан на словаре для более быстрой проверки на существование элемента
     /// </summary>
-    public class VariableList
+    public class VariableList : IEnumerable<KeyValuePair<string, Expression>>
     {
         readonly Dictionary<string, Expression> _variablesTable;
 
@@ -26,16 +27,16 @@ namespace TableClothKernel
         /// Установить новое значение существующей переменной либо
         /// при ее отсутствии создать новую
         /// </summary>
-        public void Set( string name, Expression f )
+        public void Set( string name, Expression expression )
         {
             if ( !IsExist( name ) )
             {
                 // добавляем
-                _variablesTable.Add( name, f );
+                _variablesTable.Add( name, expression );
             }
             else
             {
-                _variablesTable[name] = f;
+                _variablesTable[name] = expression;
             }
         }
 
@@ -53,16 +54,24 @@ namespace TableClothKernel
         public Expression this[string name]
         {
             get
-            {
-                return _variablesTable[name];
+            { 
+				if ( IsExist( name ) )
+				{
+					return _variablesTable[name];
+				}
+
+				throw new TcException( "Can't find variable " + name );
             }
         }
 
-        public string[] GetAllVariablesNames()
-        {
-            var res = new string[_variablesTable.Keys.Count];
-            _variablesTable.Keys.CopyTo( res, 0 );
-            return res;
-        }
+	    public IEnumerator<KeyValuePair<string, Expression>> GetEnumerator()
+	    {
+		    return _variablesTable.GetEnumerator();
+	    }
+
+	    IEnumerator IEnumerable.GetEnumerator()
+	    {
+		    return _variablesTable.GetEnumerator();
+	    }
     }
 }

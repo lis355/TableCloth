@@ -246,8 +246,8 @@ public class Scanner
 {
 	const char EOL = '\n';
 	const int eofSym = 0; /* pdt */
-	const int maxT = 21;
-	const int noSym = 21;
+	const int maxT = 23;
+	const int noSym = 23;
 
 
 	public Buffer buffer; // scanner buffer
@@ -405,8 +405,10 @@ public class Scanner
 		switch (t.val) {
 			case "true": t.kind = 4; break;
 			case "false": t.kind = 5; break;
-			case "new": t.kind = 6; break;
-			case "clear": t.kind = 7; break;
+			case "True": t.kind = 6; break;
+			case "False": t.kind = 7; break;
+			case "new": t.kind = 8; break;
+			case "clear": t.kind = 9; break;
 			default: break;
 		}
 	}
@@ -456,7 +458,7 @@ public class Scanner
 				if (ch == ']') {AddCh(); goto case 7;}
 				else {goto case 0;}
 			case 7:
-				{t.kind = 9; break;}
+				{t.kind = 11; break;}
 			case 8:
 				if (ch == '&') {AddCh(); goto case 12;}
 				else {goto case 0;}
@@ -470,7 +472,7 @@ public class Scanner
 				if (ch == ']') {AddCh(); goto case 12;}
 				else {goto case 0;}
 			case 12:
-				{t.kind = 10; break;}
+				{t.kind = 12; break;}
 			case 13:
 				if (ch == '|') {AddCh(); goto case 16;}
 				else {goto case 0;}
@@ -481,7 +483,7 @@ public class Scanner
 				if (ch == ']') {AddCh(); goto case 16;}
 				else {goto case 0;}
 			case 16:
-				{t.kind = 11; break;}
+				{t.kind = 13; break;}
 			case 17:
 				if (ch == 'o') {AddCh(); goto case 18;}
 				else {goto case 0;}
@@ -492,7 +494,7 @@ public class Scanner
 				if (ch == ']') {AddCh(); goto case 20;}
 				else {goto case 0;}
 			case 20:
-				{t.kind = 12; break;}
+				{t.kind = 14; break;}
 			case 21:
 				if (ch == 'q') {AddCh(); goto case 22;}
 				else {goto case 0;}
@@ -503,7 +505,7 @@ public class Scanner
 				if (ch == ']') {AddCh(); goto case 24;}
 				else {goto case 0;}
 			case 24:
-				{t.kind = 13; break;}
+				{t.kind = 15; break;}
 			case 25:
 				if (ch == 'm') {AddCh(); goto case 26;}
 				else {goto case 0;}
@@ -517,7 +519,7 @@ public class Scanner
 				if (ch == ']') {AddCh(); goto case 29;}
 				else {goto case 0;}
 			case 29:
-				{t.kind = 14; break;}
+				{t.kind = 16; break;}
 			case 30:
 				if (ch == 'h') {AddCh(); goto case 31;}
 				else {goto case 0;}
@@ -531,7 +533,7 @@ public class Scanner
 				if (ch == ']') {AddCh(); goto case 34;}
 				else {goto case 0;}
 			case 34:
-				{t.kind = 15; break;}
+				{t.kind = 17; break;}
 			case 35:
 				if (ch == 'i') {AddCh(); goto case 36;}
 				else {goto case 0;}
@@ -548,20 +550,20 @@ public class Scanner
 				if (ch == ']') {AddCh(); goto case 40;}
 				else {goto case 0;}
 			case 40:
-				{t.kind = 16; break;}
-			case 41:
-				{t.kind = 17; break;}
-			case 42:
 				{t.kind = 18; break;}
-			case 43:
+			case 41:
 				{t.kind = 19; break;}
-			case 44:
+			case 42:
 				{t.kind = 20; break;}
+			case 43:
+				{t.kind = 21; break;}
+			case 44:
+				{t.kind = 22; break;}
 			case 45:
-				recEnd = pos; recKind = 8;
+				recEnd = pos; recKind = 10;
 				if (ch == '=') {AddCh(); goto case 24;}
 				else if (ch == '>') {AddCh(); goto case 29;}
-				else {t.kind = 8; break;}
+				else {t.kind = 10; break;}
 			case 46:
 				if (ch == 'n') {AddCh(); goto case 4;}
 				else if (ch == 'a') {AddCh(); goto case 9;}

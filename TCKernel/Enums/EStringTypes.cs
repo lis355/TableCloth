@@ -6,8 +6,8 @@
     /// </summary>
     public enum EStringConstantType
     {
-        Number,
-        Word  
+        Word,  
+        Number
     }
 
     /// <summary>

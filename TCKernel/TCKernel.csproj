@@ -54,6 +54,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base Classes\CommandProcessor.cs" />
+    <Compile Include="Base Classes\Function.cs" />
+    <Compile Include="Base Classes\Solution.cs" />
     <Compile Include="Base Classes\TcTokens.cs" />
     <Compile Include="Debug\DebugExpressionTranscription.cs" />
     <Compile Include="Debug\TestForm.cs">
@@ -77,9 +80,9 @@
     <Compile Include="Parser\ParserStack.cs" />
     <Compile Include="Debug\TcDebug.cs" />
     <Compile Include="Enums\EStringTypes.cs" />
-    <Compile Include="StaticClasses\DotGraphPlot.cs" />
+    <Compile Include="Dot\DotGraphPlot.cs" />
     <Compile Include="Base Classes\TcException.cs" />
-    <Compile Include="StaticClasses\InputParser.cs" />
+    <Compile Include="Base Classes\InputProcessor.cs" />
     <Compile Include="Enums\EBooleanConstants.cs" />
     <Compile Include="StaticClasses\Information.cs" />
     <Compile Include="old_and_tests\MathFunctions\Check.cs" />
@@ -89,7 +92,7 @@
     <Compile Include="old_and_tests\MathFunctions\Minimize.cs" />
     <Compile Include="old_and_tests\old_classes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="old_and_tests\VariableList.cs" />
+    <Compile Include="Base Classes\VariableList.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\app.config" />

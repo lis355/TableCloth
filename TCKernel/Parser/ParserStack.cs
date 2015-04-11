@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TableClothKernel
@@ -48,12 +49,12 @@ namespace TableClothKernel
 
         void PushTrueConstant()
         {
-            PushToken( new Constant { Value = EBooleanConstants.True } );
+            PushToken( TableClothKernel.Constant.True );
         }
 
         void PushFalseConstant()
         {
-            PushToken( new Constant { Value = EBooleanConstants.False } );
+            PushToken( TableClothKernel.Constant.False );
         }
 
         void PushNot()
@@ -105,7 +106,13 @@ namespace TableClothKernel
 
         void PushOperator( EOperator type, params Operand[] operands )
         {
-            PushToken( new Operator { Type = type, Operands = operands.ToList() } );
+			var op = new Operator { Type = type };
+	        if ( operands != null )
+	        {
+		        op.Operands = operands.ToList();
+	        }
+
+            PushToken( op );
         }
 
         void PushVariable( string name )
@@ -116,7 +123,15 @@ namespace TableClothKernel
         void PopVariablePushFunction()
         {
             var variable = PopToken<Variable>();
-			PushToken( new Function { Name = variable.Name } );
+			var simplyOperator = ExpressionTranscription.GetEOperatorFromName( variable.Name );
+	        if ( !simplyOperator.HasValue )
+	        {
+				PushToken( new Function { Name = variable.Name } );
+	        }
+	        else
+	        {
+				PushOperator( simplyOperator.Value, null );
+	        }
         }
 
 	    void PushArgumentToFunction()

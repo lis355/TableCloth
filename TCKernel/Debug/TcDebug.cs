@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace TableClothKernel
 {
-    public class TcDebug
+    public static class TcDebug
     {
 	    static void Main()
 	    {
