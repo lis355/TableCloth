@@ -12,14 +12,15 @@ namespace TableClothKernel
 		    _stack.Clear();
 	    }
 
-	    public TcToken ParseResult
+	    public UserInput ParseResult
 	    {
 		    get
 		    {
-				if ( _stack.Count != 1 )
+				if ( _stack.Count != 1 
+					|| !( _stack.Peek() is UserInput ) )
 					throw new TcException( new ParserErrors.Data { Text = "Bad TcTokens stack." } );
 
-			    return _stack.Peek();
+			    return _stack.Peek() as UserInput;
 		    }
 	    }
 
@@ -125,6 +126,37 @@ namespace TableClothKernel
 			func.Operands.Add( arg );
 			PushToken( func );
 	    }
+
+	    void PushUserInput()
+	    {
+		    var commands = new List<Command>();
+		    while ( _stack.Count > 0 )
+		    {
+			    commands.Insert( 0, PopToken<Command>() );
+		    }
+
+			PushToken( new UserInput { Commands = commands } );
+		}
+
+	    void PushDefineVariableCommand()
+	    {
+		    PushToken( new DefineVariableCommand
+		    {
+				Expression = PopToken<Expression>(),
+			    Variable = PopToken<Variable>()
+		    } );
+	    }
+
+	    void PushDeleteVariableCommand()
+	    {
+		    PushToken( new DeleteVariableCommand { Variable = PopToken<Variable>() } );
+	    }
+
+	    void PushExpressionCode()
+	    {
+		    PushToken( new Expression { Root = PopToken<Operand>() } );
+	    }
+
         partial void ProductionBegin( ENonTerminal production )
         {
 			switch ( production )
@@ -138,8 +170,10 @@ namespace TableClothKernel
         {
 			switch ( production )
             {
-                case ENonTerminal.Command: break;
-                case ENonTerminal.Expression: break;
+				case ENonTerminal.TableCloth: PushUserInput(); break;
+				case ENonTerminal.DefineVariableCommand: PushDefineVariableCommand(); break;
+				case ENonTerminal.DeleteVariableCommand: PushDeleteVariableCommand(); break;
+                case ENonTerminal.ExpressionCode: PushExpressionCode(); break;
                 case ENonTerminal.ConstantT: PushTrueConstant(); break;
                 case ENonTerminal.ConstantF: PushFalseConstant(); break;
                 case ENonTerminal.Identifier: PushVariable( CurrentToken ); break;

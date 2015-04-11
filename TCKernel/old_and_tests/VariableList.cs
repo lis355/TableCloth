@@ -5,12 +5,9 @@ namespace TableClothKernel
     /// <summary>
     /// Список переменных, основан на словаре для более быстрой проверки на существование элемента
     /// </summary>
-    internal class VariableList
+    public class VariableList
     {
-        /// <summary>
-        /// Список переменных
-        /// </summary>
-        private readonly Dictionary<string, Expression> _variablesTable;
+        readonly Dictionary<string, Expression> _variablesTable;
 
         public VariableList()
         {

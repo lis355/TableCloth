@@ -20,9 +20,10 @@ namespace TableClothKernel
 
         static readonly string[] _expressions =
         {  
-            "!( !( 1 ^ 0 ) => !( 1 == wy ) ) && r || !q", 
+            //"!( !( 1 ^ 0 ) => !( 1 == wy ) ) && r || !q", 
             //"Or(Not(q),And(r,Not(Implication(Not(Xor(False,True)),Not(Equivalence(wy,True))))))",
-			"g(f(x,y,t(x),y),x,y,t(y))",
+			//"g(f); x = 1 || 0;" +
+			"new( y, 1 )"//" ; clear( x );",
             //"y = true || false",
             //"y => x()",
             //"q || !0 && 1", "True",
@@ -42,7 +43,7 @@ namespace TableClothKernel
 			_form.Text = Information.KernelName + " " + Information.KernelVersion + " " + Information.KernelAssembly;
 
 			Options.PrettyPrint = true;
-
+			TcDebug.PrintLog = true;
 			TcDebug.LogDelegate = s => _form.OutBox.Text += s + Environment.NewLine;
 
 			_form.ConstantType.DataSource = Enum.GetValues( typeof( EStringConstantType ) );
@@ -68,7 +69,7 @@ namespace TableClothKernel
 
 			TcDebug.Log( s );
 			
-			var result = ExpressionParser.ParseExpression( s );
+			var result = InputParser.ParseExpression( s );
 			
 			TcDebug.Log( "RESULT:", result.Success );
 

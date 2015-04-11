@@ -3,9 +3,9 @@
 	/// <summary>
 	/// Математическое выражение
 	/// Это либо константа, либо переменная, либо функция,
-	///  либо суперпозиция вышеперечисленного
+	/// либо суперпозиция вышеперечисленного
 	/// </summary>
-    public class Expression
+    /*public class Expression
     {
 		/// <summary>
 		/// Создает выражение по входящему операнду
@@ -20,6 +20,7 @@
 
 		public Expression()
 		{
+			//Root
 		}
 
 		public void Validate()
@@ -37,6 +38,13 @@
 			return this;
 		}
 
+		/// <summary>
+		/// Рассчитать на наборе переменных
+		/// </summary>
+		public Expression Calc( VariableList variables )
+		{
+			return this;
+		}
 		
 
         //public override bool CalcExpressionOnThisVertex()
@@ -61,5 +69,5 @@
         //    }
         //    return false;
         //}
-    }
+    }*/
 }

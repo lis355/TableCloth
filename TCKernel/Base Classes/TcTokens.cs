@@ -1,15 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace TableClothKernel
 {
+	/// <summary>
+	/// Базовый токен из парсера
+	/// </summary>
 	[DebuggerDisplay("{ToDebugString()}")]
 	public abstract class TcToken
 	{
-		public abstract string ToDebugString();
-		public abstract string ToExpressionString();
+		public virtual string ToDebugString() { return String.Empty; }
+		public virtual string ToExpressionString() { return String.Empty; }
 	}
 
+	#region Operands
+	
 	public abstract class Operand : TcToken
 	{
 		public override string ToDebugString()
@@ -48,5 +54,36 @@ namespace TableClothKernel
 	public class Operator : Function
 	{
 	    public EOperator Type { get; set; }
+	}
+
+	#endregion
+
+	/// <summary>
+	/// Весь ввод юзера в одной строке
+	/// </summary>
+	public class UserInput : TcToken
+	{
+	    public List<Command> Commands;
+	}
+
+	public abstract class Command : TcToken
+	{
+		public override string ToDebugString() { return GetType().Name; }
+	}
+
+	public class DefineVariableCommand : Command
+	{
+		public Variable Variable { get; set; }
+		public Expression Expression { get; set; }
+	}
+	
+	public class DeleteVariableCommand : Command
+	{
+		public Variable Variable { get; set; }
+	}
+
+	public class Expression : Command
+	{
+		public Operand Root { get; set; }
 	}
 }

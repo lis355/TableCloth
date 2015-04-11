@@ -19,11 +19,13 @@ namespace TableClothKernel
 			}
 			else if ( operand is Operator )
 			{
-				return ExpressionTranscription.GetSimplyOperatorName( operand as Operator );
+				return ExpressionTranscription.GetSimplyOperatorName( operand as Operator, EStringOperatorType.Function )
+					+ "(" + ( operand as Operator ).Operands.Count + ")";
 			}
 			else if ( operand is Function )
 			{
-				return ExpressionTranscription.GetFunctionName( operand as Function );
+				return ExpressionTranscription.GetFunctionName( operand as Function ) +
+					"(" + ( operand as Function ).Operands.Count + ")";
 			}
 
 			throw new TcException( "Unknown operand" );

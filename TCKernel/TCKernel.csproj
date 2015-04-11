@@ -72,7 +72,6 @@
     <Compile Include="Parser\Scanner.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="old_and_tests\GlobalVariableList.cs" />
     <Compile Include="Base Classes\Expression\Expression.cs" />
     <Compile Include="Config\Options.cs" />
     <Compile Include="Parser\ParserStack.cs" />
@@ -80,7 +79,7 @@
     <Compile Include="Enums\EStringTypes.cs" />
     <Compile Include="StaticClasses\DotGraphPlot.cs" />
     <Compile Include="Base Classes\TcException.cs" />
-    <Compile Include="StaticClasses\ParseExpression.cs" />
+    <Compile Include="StaticClasses\InputParser.cs" />
     <Compile Include="Enums\EBooleanConstants.cs" />
     <Compile Include="StaticClasses\Information.cs" />
     <Compile Include="old_and_tests\MathFunctions\Check.cs" />

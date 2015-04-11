@@ -69,7 +69,8 @@ namespace TableClothKernel
 		{
 			if ( Options.OperatorOutType == EStringOperatorType.Function )
 			{
-				return GetSimplyOperatorName( op ) + GetFunctionArgumentsTranscription( op );
+				return GetSimplyOperatorName( op, Options.OperatorOutType )
+					+ GetFunctionArgumentsTranscription( op );
 			}
 			else
 			{
@@ -84,9 +85,9 @@ namespace TableClothKernel
 			}
 		}
 
-		public static string GetSimplyOperatorName( Operator op )
+		public static string GetSimplyOperatorName( Operator op, EStringOperatorType type )
 		{
-			return _operatorsTranscription[op.Type][Options.OperatorOutType];
+			return _operatorsTranscription[op.Type][type];
 		}
 
 		static bool SimplyOperatorIsMono( Operator op )
@@ -98,7 +99,7 @@ namespace TableClothKernel
 
 		static string PrintDefaultMonoOperator( Operator op )
 		{
-			return GetSimplyOperatorName( op )
+			return GetSimplyOperatorName( op, Options.OperatorOutType )
 				+ op.Operands[0].ToExpressionString();
 		}
 
@@ -108,7 +109,7 @@ namespace TableClothKernel
 				+ Space()
 				+ op.Operands[0].ToExpressionString()
 				+ Space()
-				+ GetSimplyOperatorName( op )
+				+ GetSimplyOperatorName( op, Options.OperatorOutType )
 				+ Space()
 				+ op.Operands[1].ToExpressionString()
 				+ Space()

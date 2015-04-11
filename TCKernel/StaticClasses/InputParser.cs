@@ -2,11 +2,11 @@
 
 namespace TableClothKernel
 {
-    public static class ExpressionParser
+    public static class InputParser
     {
         static readonly Parser _parser;
 
-        static ExpressionParser()
+        static InputParser()
         {
             _parser = new Parser();
             _parser.Errors.Message += MessagesDispatcher;

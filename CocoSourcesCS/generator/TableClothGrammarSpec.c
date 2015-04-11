@@ -24,7 +24,7 @@ TOKENS
 // Работа с переменными
 	New = "new" .
 	Clear = "clear" . 
-	ExpressionType = "type" .
+//	ExpressionType = "type" .
 // Операторы
 	Equal = '=' .
 	Not  = '!'  | "[not]" .
@@ -38,8 +38,8 @@ TOKENS
 // Символы
 	LeftRoundBracket = '(' .
 	RightRoundBracket = ')' .
-	LeftListBracket = '{' .
-	RightListBracket = '}' .
+	//LeftListBracket = '{' .
+	//RightListBracket = '}' .
 	EndOfCommand = ';' .
 	Comma = ',' .
 
@@ -57,22 +57,21 @@ ManyOrOneCommand =
 	Command [ EndOfCommand [ ManyOrOneCommand ] ] .
 
 Command = 
-	ExpressionOrCreateNewVariableCommand
-	| DeleteVariableCommand
-	| GetExpressionTypeCommand .
+	ExpressionOrDefineVariableCommand
+	| DeleteVariableCommand .
+	//| GetExpressionTypeCommand .
 
-ExpressionOrCreateNewVariableCommand =
-	IF ( GetNextTokenKind() != Equal)
+ExpressionOrDefineVariableCommand =
+	//IF ( GetNextTokenKind() != Equal )
 	ExpressionCode
-	| CreateNewVariableCommand .
+	| DefineVariableCommand .
 	
-CreateNewVariableCommand =
-	Identifier 
-	Equal ExpressionCode 
+DefineVariableCommand =
+	Identifier Equal ExpressionCode 
 	| New LeftRoundBracket Identifier Comma ExpressionCode RightRoundBracket .
 
 DeleteVariableCommand = Clear LeftRoundBracket Identifier RightRoundBracket	.
-GetExpressionTypeCommand = ExpressionType LeftRoundBracket ExpressionCode RightRoundBracket .
+//GetExpressionTypeCommand = ExpressionType LeftRoundBracket ExpressionCode RightRoundBracket .
 
 // Приоритет булевых операций
 // Скобки, отрицание, конъюнкция, дизъюнкция, сумма по модулю 2, 
@@ -127,13 +126,13 @@ FunctionBracketsAndArguments =
 	LeftRoundBracket [ ListOfArguments ] RightRoundBracket .
 
 ListOfArguments =
-	( ExpressionCode /*| ListOfExpression*/ ) (. PushArgumentToFunction(); .) [ Comma ListOfArguments ] .
-	/*
+	( Expression /*| ListOfExpression*/ ) (. PushArgumentToFunction(); .) [ Comma ListOfArguments ] .
+	/* 
 ListOfExpression =
 	LeftListBracket ExpressionEnumeration RightListBracket .
 
 ExpressionEnumeration =
-	ExpressionCode [ Comma ExpressionEnumeration ] . 
+	Expression [ Comma ExpressionEnumeration ] . 
 	*/
 Identifier =
 	IdentifierString .
