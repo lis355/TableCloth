@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{36DA4EC2-A52F-4B28-B3B4-C0E2A3725254}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TableClothKernel</RootNamespace>
     <AssemblyName>TableClothKernel</AssemblyName>
@@ -48,13 +48,23 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base Classes\TcTokens.cs" />
+    <Compile Include="Debug\DebugExpressionTranscription.cs" />
+    <Compile Include="Debug\TestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Debug\TestForm.Designer.cs">
+      <DependentUpon>TestForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Debug\Tests.cs" />
     <Compile Include="Enums\EOperator.cs" />
-    <Compile Include="Expression\ExpressionString.cs" />
-    <Compile Include="Expression\ExpressionVertex.cs" />
+    <Compile Include="Base Classes\Expression\ExpressionTranscription.cs" />
     <Compile Include="FastCalc\DynamicFastCalc.cs" />
     <Compile Include="Parser\Parser.cs">
       <SubType>Code</SubType>
@@ -63,7 +73,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="old_and_tests\GlobalVariableList.cs" />
-    <Compile Include="Expression\Expression.cs" />
+    <Compile Include="Base Classes\Expression\Expression.cs" />
     <Compile Include="Config\Options.cs" />
     <Compile Include="Parser\ParserStack.cs" />
     <Compile Include="Debug\TcDebug.cs" />
@@ -84,6 +94,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Debug\TestForm.resx">
+      <DependentUpon>TestForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

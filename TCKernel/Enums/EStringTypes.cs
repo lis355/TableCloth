@@ -11,12 +11,12 @@
     }
 
     /// <summary>
-    /// Тип вывода на печать операторов: символами ( напрмиер || && )
-    /// или символьно ( например [not] [and] )
+    /// Тип вывода на печать операторов
     /// </summary>
-    public enum EStringCommandType
+    public enum EStringOperatorType
     {
-        Symbol,
-        Word  
+        Symbol, // символами ( напрмиер || && )
+        Word, // зарезервированными словами ( например [not] [and] )
+  		Function // функциями Not( ... ) And( ..., ... )
     }
 }

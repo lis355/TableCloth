@@ -19,6 +19,11 @@ namespace TableClothKernel
             base( tcData )
         {
         }
+
+		public TcException( string message ):
+            base( new ParserErrors.Data { Text = message, Type =  ParserErrors.EType.Error } )
+        {
+        }
     }
 
     public class TcWarning : TcMessage

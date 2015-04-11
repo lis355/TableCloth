@@ -2,22 +2,31 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Windows.Forms;
 
 namespace TableClothKernel
 {
     public class TcDebug
     {
-        static void Main()
-        {
-            Log( Information.KernelName + " " + Information.KernelVersion + " " + Information.KernelAssembly );
+	    static void Main()
+	    {
+		    Log( Information.KernelName + " " + Information.KernelVersion + " " + Information.KernelAssembly );
 
-            var tests = new Tests();
-            tests.Run();
+		    //LogDelegate = Console.WriteLine;
 
-            Console.ReadLine();
-        }
+		    //var tests = new Tests();
+		    //tests.Run();
 
-        static readonly List<string> _logStrings = new List<string>();
+		    Application.EnableVisualStyles();
+		    Application.SetCompatibleTextRenderingDefault( false );
+		    Application.Run( new TestForm() );
+	    }
+
+	    static readonly List<string> _logStrings = new List<string>();
+
+		public static bool PrintLog { get; set; }
+
+		public static Action<string> LogDelegate { get; set; }
 
         public static void Log( params object[] output )
         {
@@ -25,7 +34,10 @@ namespace TableClothKernel
             {
                 var s = String.Format( "[{0}] : {1}", DateTime.Now.ToUniversalTime(), obj );
                 _logStrings.Add( s );
-                Console.WriteLine( s );
+	            if ( LogDelegate != null )
+	            {
+		            LogDelegate( s );
+	            }
             }
         }
 

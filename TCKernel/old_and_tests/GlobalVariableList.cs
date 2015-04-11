@@ -1,6 +1,6 @@
 ﻿namespace TableClothKernel
 {
-    static class GlobalVariableList
+    /*static class GlobalVariableList
     {
         public static VariableList V = new VariableList();
 
@@ -26,5 +26,5 @@
         {
             V.Delete( name );
         }
-    }
+    }*/
 }

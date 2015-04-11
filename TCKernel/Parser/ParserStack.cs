@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace TableClothKernel
@@ -7,23 +6,6 @@ namespace TableClothKernel
     public partial class Parser
     {
 		readonly Stack<TcToken> _stack = new Stack<TcToken>( 100 );
-
-		/// <summary>
-		/// Пользователь может ввести And( x, y ) - это нужно корректно обработать как x && y
-		/// </summary>
-		//readonly Dictionary<string,Action> _operatorsDefaultFunctionNames;
-
-		/*_operatorsDefaultFunctionNames = new Dictionary<string,Action>
-		{
-			{ "Not", () =>  },
-			//{ And,
-			//{ Or,
-			//{ Xor,
-			//{ Equivalence,
-			//{ Implication,
-			//{ Sheffer,
-			//{ Pirse
-		};*/
 
 	    void ClearStack()
 	    {
@@ -41,10 +23,14 @@ namespace TableClothKernel
 		    }
 	    }
 
-        void PushToken( TcToken token )
-        {
-            TcDebug.Log( token );
-            _stack.Push( token );
+	    void PushToken( TcToken token )
+	    {
+			_stack.Push( token );
+
+		    if ( TcDebug.PrintLog ) 
+			{ 
+				TcDebug.Log( token.ToDebugString() );
+			}
         }
 
         T PopToken<T>() where T : TcToken
@@ -61,12 +47,17 @@ namespace TableClothKernel
 
         void PushTrueConstant()
         {
-            PushToken( new ConstantTcToken { Value = EBooleanConstants.True } );
+            PushToken( new Constant { Value = EBooleanConstants.True } );
         }
 
         void PushFalseConstant()
         {
-            PushToken( new ConstantTcToken { Value = EBooleanConstants.False } );
+            PushToken( new Constant { Value = EBooleanConstants.False } );
+        }
+
+        void PushNot()
+        {
+            PushOperator( EOperator.Not, PopToken<Operand>() );
         }
 
         void PushPirse()
@@ -79,36 +70,36 @@ namespace TableClothKernel
             PushOperator( EOperator.Sheffer, PopToken<Operand>() );
         }
 
+	    void PushSimplyBinaryOperator( EOperator type )
+	    {
+			var t1 = PopToken<Operand>();
+			var t2 = PopToken<Operand>();
+            PushOperator( type, t2, t1 );
+	    }
+
         void PushEquivalence()
         {
-            PushOperator( EOperator.Equivalence, PopToken<Operand>(), PopToken<Operand>() );
+			PushSimplyBinaryOperator( EOperator.Equivalence );
         }
 
         void PushImplication()
         {
-			var t1 = PopToken<Operand>();
-			var t2 = PopToken<Operand>();
-            PushOperator( EOperator.Implication, t2, t1 );
+			PushSimplyBinaryOperator( EOperator.Implication );
         }
 
         void PushXor()
         {
-            PushOperator( EOperator.Xor, PopToken<Operand>(), PopToken<Operand>() );
+            PushSimplyBinaryOperator( EOperator.Xor );
         }
 
         void PushOr()
         {
-            PushOperator( EOperator.Or, PopToken<Operand>(), PopToken<Operand>() );
+            PushSimplyBinaryOperator( EOperator.Or );
         }
 
         void PushAnd()
         {
-            PushOperator( EOperator.And, PopToken<Operand>(), PopToken<Operand>() );
-        }
-
-        void PushNot()
-        {
-            PushOperator( EOperator.Not, PopToken<Operand>() );
+            PushSimplyBinaryOperator( EOperator.And );
         }
 
         void PushOperator( EOperator type, params Operand[] operands )
@@ -124,10 +115,6 @@ namespace TableClothKernel
         void PopVariablePushFunction()
         {
             var variable = PopToken<Variable>();
-	        //if ( _operatorsFunctionNames.Contains( variable.Name ) )
-	        //{
-		    //    
-	        //}
 			PushToken( new Function { Name = variable.Name } );
         }
 

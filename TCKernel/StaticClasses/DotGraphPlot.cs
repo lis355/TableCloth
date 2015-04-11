@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Text;
 
 namespace TableClothKernel
 {
@@ -71,7 +70,7 @@ namespace TableClothKernel
 
 			for ( int i = 0; i < RootGraph.V.Count; ++i )
 			{
-				writer.WriteLine( "\t{0} [ label = {1} ];", "V" + i, RootGraph.V[i].ToDebugString() );
+				writer.WriteLine( "\t{0} [ label = {1} ];", "V" + i, GetLabelForVertex( RootGraph.V[i] ) );
 			}
 
 			foreach ( var e in RootGraph.E ) 
@@ -85,6 +84,11 @@ namespace TableClothKernel
 
 			writer.Flush();
 			Dot = writer.ToString();
+		}
+
+		string GetLabelForVertex( TcToken token )
+		{
+			return "\"" + token.ToDebugString() + "\"";
 		}
 
 		public void SaveDotAndImage( string dotExe, string pngFile )

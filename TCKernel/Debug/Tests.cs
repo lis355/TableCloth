@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TableClothKernel
+﻿namespace TableClothKernel
 {
     class Tests
     {
@@ -16,9 +14,9 @@ namespace TableClothKernel
 
         static readonly string[] _expressions =
         {  
-            "!( !( 1 ^ 0 ) => !( 1 == wy ) ) && r || !q", 
+            //"!( !( 1 ^ 0 ) => !( 1 == wy ) ) && r || !q", 
             //"Or(Not(q),And(r,Not(Implication(Not(Xor(False,True)),Not(Equivalence(wy,True))))))",
-			//"x = false",
+			"g(f(x,y,t(x),y),x,y,t(y))",
             //"y = true || false",
             //"y => x()",
             //"q || !0 && 1", "True",
@@ -42,10 +40,33 @@ namespace TableClothKernel
                 TcDebug.Log( "RESULT:", result.Success );
 	            if ( result.Success )
 	            {
-					var expressionString = result.Result.ToExpressionString();
-		            TcDebug.Log( expressionString );
+					//Options.ConstantOutType = EStringConstantType.Number;
+					//
+					//Options.OperatorOutType = EStringOperatorType.Symbol;
+					//TcDebug.Log( result.Result.ToExpressionString() );
+					//
+					//Options.OperatorOutType = EStringOperatorType.Word;
+					//TcDebug.Log( result.Result.ToExpressionString() );
+					//
+					//Options.OperatorOutType = EStringOperatorType.Function;
+					//TcDebug.Log( result.Result.ToExpressionString() );
+					//
+					//Options.ConstantOutType = EStringConstantType.Word;
+					//
+					//Options.OperatorOutType = EStringOperatorType.Symbol;
+					//TcDebug.Log( result.Result.ToExpressionString() );
+					//
+					//Options.OperatorOutType = EStringOperatorType.Word;
+					//TcDebug.Log( result.Result.ToExpressionString() );
+					//
+					//Options.OperatorOutType = EStringOperatorType.Function;
+					//TcDebug.Log( result.Result.ToExpressionString() );
 
-					DotGraphPlot g = new DotGraphPlot( result.Result );
+					Options.ConstantOutType = EStringConstantType.Number;
+					Options.OperatorOutType = EStringOperatorType.Symbol;
+					TcDebug.Log( result.Result.ToExpressionString() );
+
+					var g = new DotGraphPlot( result.Result );
 					g.PlotGraph();
 					g.PlotDot();
 					g.SaveDotAndImage( @"C:\Program Files (x86)\Graphviz2.38\bin\dot.exe", "test.png" );
@@ -53,8 +74,6 @@ namespace TableClothKernel
 
                 TcDebug.Log( "" );
             }
-
-            //Options.ConstantOutType = StringConstantType.Word;
         }
     }
 }
