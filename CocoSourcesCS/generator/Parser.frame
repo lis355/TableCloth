@@ -22,7 +22,7 @@ public partial class Parser
 	
 	public ParserErrors Errors { get; set; }
 	
-    string CurrentToken { get { return t.val; } }
+    public string CurrentToken { get { return t.val; } }
 	
 -->declarations
 

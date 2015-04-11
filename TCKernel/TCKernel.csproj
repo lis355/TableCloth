@@ -50,8 +50,9 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base Classes\Base.cs" />
+    <Compile Include="Base Classes\TcTokens.cs" />
     <Compile Include="Debug\Tests.cs" />
+    <Compile Include="Enums\EOperator.cs" />
     <Compile Include="Expression\ExpressionString.cs" />
     <Compile Include="Expression\ExpressionVertex.cs" />
     <Compile Include="FastCalc\DynamicFastCalc.cs" />
@@ -61,25 +62,25 @@
     <Compile Include="Parser\Scanner.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="StaticClasses\GlobalVariableList.cs" />
+    <Compile Include="old_and_tests\GlobalVariableList.cs" />
     <Compile Include="Expression\Expression.cs" />
-    <Compile Include="StaticClasses\Options.cs" />
+    <Compile Include="Config\Options.cs" />
     <Compile Include="Parser\ParserStack.cs" />
     <Compile Include="Debug\TcDebug.cs" />
-    <Compile Include="Enums\StringTypes.cs" />
-    <Compile Include="StringTree.cs" />
-    <Compile Include="TcException.cs" />
+    <Compile Include="Enums\EStringTypes.cs" />
+    <Compile Include="StaticClasses\DotGraphPlot.cs" />
+    <Compile Include="Base Classes\TcException.cs" />
     <Compile Include="StaticClasses\Calc.cs" />
-    <Compile Include="Enums\CommandsCode.cs" />
+    <Compile Include="Enums\EBooleanConstants.cs" />
     <Compile Include="StaticClasses\Information.cs" />
-    <Compile Include="MathFunctions\Check.cs" />
-    <Compile Include="MathFunctions\Convert.cs" />
-    <Compile Include="MathFunctions\Create.cs" />
-    <Compile Include="MathFunctions\Get.cs" />
-    <Compile Include="MathFunctions\Minimize.cs" />
+    <Compile Include="old_and_tests\MathFunctions\Check.cs" />
+    <Compile Include="old_and_tests\MathFunctions\Convert.cs" />
+    <Compile Include="old_and_tests\MathFunctions\Create.cs" />
+    <Compile Include="old_and_tests\MathFunctions\Get.cs" />
+    <Compile Include="old_and_tests\MathFunctions\Minimize.cs" />
     <Compile Include="old_and_tests\old_classes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VariableList.cs" />
+    <Compile Include="old_and_tests\VariableList.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\app.config" />

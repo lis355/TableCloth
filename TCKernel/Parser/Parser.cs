@@ -33,7 +33,7 @@ public partial class Parser
 	const int EndOfCommand = 22;
 	const int Comma = 23;
 
-	enum ENonTerminal
+	public enum ENonTerminal
 	{
 		TableCloth,
 		ManyOrOneCommand,
@@ -56,9 +56,7 @@ public partial class Parser
 		FunctionBracketsAndArguments,
 		ConstantT,
 		ConstantF,
-		ListOfArguments,
-		ListOfExpression,
-		ExpressionEnumeration
+		ListOfArguments
 	}
 
 	public const int maxT = 24;
@@ -78,7 +76,7 @@ public partial class Parser
 	
 	public ParserErrors Errors { get; set; }
 	
-    string CurrentToken { get { return t.val; } }
+    public string CurrentToken { get { return t.val; } }
 	
 int GetNextTokenKind() { return _scanner.Peek().kind; }
 
@@ -234,7 +232,6 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 	void Identifier() {
 		ProductionBegin( ENonTerminal.Identifier );
 		Expect(IdentifierString);
-		PushString( t.val ); 
 		ProductionEnd( ENonTerminal.Identifier );
 	}
 
@@ -262,7 +259,7 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 			if (la.kind == Equivalence) {
 				Get();
 				EquImplExpression();
-				PushEqu(); 
+				PushEquivalence(); 
 			} else {
 				Get();
 				EquImplExpression();
@@ -334,10 +331,8 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 	void IdentifierOrFunction() {
 		ProductionBegin( ENonTerminal.IdentifierOrFunction );
 		Identifier();
-		PushVariable(t.val); 
 		if (la.kind == LeftRoundBracket) {
 			FunctionBracketsAndArguments();
-			TcDebug.Log( "func" ); 
 		}
 		ProductionEnd( ENonTerminal.IdentifierOrFunction );
 	}
@@ -384,34 +379,13 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 
 	void ListOfArguments() {
 		ProductionBegin( ENonTerminal.ListOfArguments );
-		if (StartOf(6)) {
-			ExpressionCode();
-		} else if (la.kind == LeftListBracket) {
-			ListOfExpression();
-		} else SynErr(33);
+		ExpressionCode();
+		PushArgumentToFunction(); 
 		if (la.kind == Comma) {
 			Get();
 			ListOfArguments();
 		}
 		ProductionEnd( ENonTerminal.ListOfArguments );
-	}
-
-	void ListOfExpression() {
-		ProductionBegin( ENonTerminal.ListOfExpression );
-		Expect(LeftListBracket);
-		ExpressionEnumeration();
-		Expect(RightListBracket);
-		ProductionEnd( ENonTerminal.ListOfExpression );
-	}
-
-	void ExpressionEnumeration() {
-		ProductionBegin( ENonTerminal.ExpressionEnumeration );
-		ExpressionCode();
-		if (la.kind == Comma) {
-			Get();
-			ExpressionEnumeration();
-		}
-		ProductionEnd( ENonTerminal.ExpressionEnumeration );
 	}
 
 
@@ -442,7 +416,6 @@ int GetNextTokenKind() { return _scanner.Peek().kind; }
 		{F,T,T,T, T,T,T,F, F,F,T,F, F,F,F,F, F,F,T,F, F,F,F,F, F,F},
 		{F,T,T,T, T,T,F,F, F,F,F,F, F,F,F,F, F,F,T,F, F,F,F,F, F,F},
 		{F,F,T,T, T,T,F,F, F,F,F,F, F,F,F,F, F,F,F,F, F,F,F,F, F,F},
-		{F,T,T,T, T,T,F,F, F,F,T,F, F,F,F,F, F,F,T,F, T,F,F,F, F,F},
 		{F,T,T,T, T,T,F,F, F,F,T,F, F,F,F,F, F,F,T,F, F,F,F,F, F,F}
 
 	};
@@ -523,7 +496,6 @@ public class ParserErrors
 			case 30: s = "invalid Constant"; break;
 			case 31: s = "invalid ConstantT"; break;
 			case 32: s = "invalid ConstantF"; break;
-			case 33: s = "invalid ListOfArguments"; break;
 
 			default: s = "error " + n; break;
 		}

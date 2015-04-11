@@ -10,13 +10,7 @@ namespace TableClothKernel
     {
         static readonly DynamicFastCalc _instance = new DynamicFastCalc();
 
-        public static DynamicFastCalc Instance
-        {
-            get
-            {
-                return _instance;
-            }
-        }
+        public static DynamicFastCalc Instance { get { return _instance; } }
 
         readonly ModuleBuilder _moduleBuilder;
 

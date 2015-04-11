@@ -1,181 +1,162 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TableClothKernel
 {
     public partial class Parser
     {
-        abstract class SToken
+		readonly Stack<TcToken> _stack = new Stack<TcToken>( 100 );
+
+		/// <summary>
+		/// Пользователь может ввести And( x, y ) - это нужно корректно обработать как x && y
+		/// </summary>
+		//readonly Dictionary<string,Action> _operatorsDefaultFunctionNames;
+
+		/*_operatorsDefaultFunctionNames = new Dictionary<string,Action>
+		{
+			{ "Not", () =>  },
+			//{ And,
+			//{ Or,
+			//{ Xor,
+			//{ Equivalence,
+			//{ Implication,
+			//{ Sheffer,
+			//{ Pirse
+		};*/
+
+	    void ClearStack()
+	    {
+		    _stack.Clear();
+	    }
+
+	    public TcToken ParseResult
+	    {
+		    get
+		    {
+				if ( _stack.Count != 1 )
+					throw new TcException( new ParserErrors.Data { Text = "Bad TcTokens stack." } );
+
+			    return _stack.Peek();
+		    }
+	    }
+
+        void PushToken( TcToken token )
         {
+            TcDebug.Log( token );
+            _stack.Push( token );
         }
 
-        class Name : SToken
-        {
-            public string String { set; get; }
-
-            public override string ToString() { return String; }
-        }
-
-        abstract class Operand : SToken
-        {
-        }
-
-        class Variable : Operand
-        {
-            public string Name { set; get; }
-
-            public override string ToString() { return Name; }
-        }
-
-        class ConstantToken : Operand
-        {
-            public EBooleanConstants Value { set; get; }
-
-            public override string ToString() { return Value.ToString(); }
-        }
-
-        abstract class Function : Operand
-        {
-            public string Name { set; get; }
-            public List<Operand> Operands { set; get; }
-
-            public Function():
-                base()
-            {
-                Operands = new List<Operand>();
-            }
-
-            public override string ToString() 
-            {
-                return Name + "(" + String.Join( ",", Operands ) + ")";
-            }
-        }
-
-        static readonly Stack<SToken> _stack = new Stack<SToken>( 100 );
-
-        void PushToken( SToken t )
-        {
-            TcDebug.Log( t.GetType().Name + " " + t );
-            _stack.Push( t );
-        }
-
-        T PopToken<T>() where T : SToken
+        T PopToken<T>() where T : TcToken
         {
             if ( _stack.Count == 0 )
-                throw new TcException( new ParserErrors.Data { Text = "Empty tokens stack." } );
+                throw new TcException( new ParserErrors.Data { Text = "Empty TcTokens stack." } );
 
-            T t = _stack.Pop() as T;
-            if ( t == null )
-                throw new TcException( new ParserErrors.Data { Text = "Another token in stack." } );
+            var popTcToken = _stack.Pop() as T;
+            if ( popTcToken == null )
+                throw new TcException( new ParserErrors.Data { Text = "Another TcToken in stack." } );
 
-            return t;
+            return popTcToken;
         }
 
         void PushTrueConstant()
         {
-            PushToken( new ConstantToken { Value = EBooleanConstants.True } );
+            PushToken( new ConstantTcToken { Value = EBooleanConstants.True } );
         }
 
         void PushFalseConstant()
         {
-            PushToken( new ConstantToken { Value = EBooleanConstants.False } );
+            PushToken( new ConstantTcToken { Value = EBooleanConstants.False } );
         }
 
         void PushPirse()
         {
-            //_stack.Push( new OperandVertex( ECommandsCode.Pirse, _stack.Pop(), _stack.Pop() ) );
+            PushOperator( EOperator.Pirse, PopToken<Operand>() );
         }
 
         void PushSheffer()
         {
-            //_stack.Push( new OperandVertex( ECommandsCode.Sheffer, _stack.Pop(), _stack.Pop() ) );
+            PushOperator( EOperator.Sheffer, PopToken<Operand>() );
         }
 
-        void PushEqu()
+        void PushEquivalence()
         {
-            //_stack.Push( new OperandVertex( ECommandsCode.Equivalence, _stack.Pop(), _stack.Pop() ) );
+            PushOperator( EOperator.Equivalence, PopToken<Operand>(), PopToken<Operand>() );
         }
 
         void PushImplication()
         {
-            //_stack.Push( new OperandVertex( ECommandsCode.Implication, _stack.Pop(), _stack.Pop() ) );
+			var t1 = PopToken<Operand>();
+			var t2 = PopToken<Operand>();
+            PushOperator( EOperator.Implication, t2, t1 );
         }
 
         void PushXor()
         {
-            //_stack.Push( new OperandVertex( ECommandsCode.Xor, _stack.Pop(), _stack.Pop() ) );
+            PushOperator( EOperator.Xor, PopToken<Operand>(), PopToken<Operand>() );
         }
 
         void PushOr()
         {
-            //_stack.Push( new OperandVertex( ECommandsCode.Or, _stack.Pop(), _stack.Pop() ) );
+            PushOperator( EOperator.Or, PopToken<Operand>(), PopToken<Operand>() );
         }
 
         void PushAnd()
         {
-            //_stack.Push( new OperandVertex( ECommandsCode.And, _stack.Pop(), _stack.Pop() ) );
+            PushOperator( EOperator.And, PopToken<Operand>(), PopToken<Operand>() );
         }
 
         void PushNot()
         {
-            //// !!
-            //ExpressionVertex PreviosExp = _stack.Pop();
-            //if ( PreviosExp.IsOperand() )
-            //{
-            //    if ( ( ( OperandVertex )PreviosExp ).OperationCode != ECommandsCode.Not )
-            //    {
-            //        _stack.Push( new OperandVertex( ECommandsCode.Not, PreviosExp, null ) );
-            //    }
-            //    else
-            //    {
-            //        _stack.Push( ( ( OperandVertex )PreviosExp ).L );
-            //        TcDebug.Log( "delete previous not" );
-            //    }
-            //}
-            //else
-            //{
-            //    // предыдущая вершина - константа или переменная, если константа, то сразу заменяем ее
-            //    if ( PreviosExp.IsConstant() )
-            //    {
-            //        ( ( ConstantVertex )PreviosExp ).Constant =
-            //            ( ( ( ConstantVertex )PreviosExp ).Constant == EBooleanConstants.False )
-            //                ? EBooleanConstants.True
-            //                : EBooleanConstants.False;
-            //        _stack.Push( PreviosExp );
-            //    }
-            //    else
-            //    {
-            //        _stack.Push( new OperandVertex( ECommandsCode.Not, PreviosExp, null ) );
-            //    }
-            //}
+            PushOperator( EOperator.Not, PopToken<Operand>() );
         }
 
-        void PushString( string s )
+        void PushOperator( EOperator type, params Operand[] operands )
         {
-            PushToken( new Name { String = s } );
+            PushToken( new Operator { Type = type, Operands = operands.ToList() } );
         }
 
         void PushVariable( string name )
         {
-            //TcDebug.Log( "var " + name );
-            //_stack.Push( new VariableVertex( name ) );
-            //tmpExpression.AddVariable( name );
+            PushToken( new Variable { Name = name } );
         }
 
+        void PopVariablePushFunction()
+        {
+            var variable = PopToken<Variable>();
+	        //if ( _operatorsFunctionNames.Contains( variable.Name ) )
+	        //{
+		    //    
+	        //}
+			PushToken( new Function { Name = variable.Name } );
+        }
+
+	    void PushArgumentToFunction()
+	    {
+			var arg = PopToken<Operand>();
+		    var func = PopToken<Function>();
+			func.Operands.Add( arg );
+			PushToken( func );
+	    }
         partial void ProductionBegin( ENonTerminal production )
         {
+			switch ( production )
+	        {
+		        case ENonTerminal.TableCloth: ClearStack(); break;
+				case ENonTerminal.FunctionBracketsAndArguments: PopVariablePushFunction(); break;
+	        }
         }
 
         partial void ProductionEnd( ENonTerminal production )
         {
-            switch ( production )
+			switch ( production )
             {
                 case ENonTerminal.Command: break;
                 case ENonTerminal.Expression: break;
-                case ENonTerminal.IdentifierOrFunction: break;
                 case ENonTerminal.ConstantT: PushTrueConstant(); break;
                 case ENonTerminal.ConstantF: PushFalseConstant(); break;
-                case ENonTerminal.Identifier: PushString( CurrentToken ); break;
+                case ENonTerminal.Identifier: PushVariable( CurrentToken ); break;
+                case ENonTerminal.FunctionBracketsAndArguments: break;
             }
         }
     }

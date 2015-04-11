@@ -86,7 +86,7 @@ Expression =
 	| Sheffer Expression (. PushSheffer(); .) ] .
 
 EquImplExpression =
-	XorExpression [ Equivalence EquImplExpression (. PushEqu(); .)
+	XorExpression[Equivalence EquImplExpression (.PushEquivalence(); .)
 	| Implication EquImplExpression (. PushImplication(); .) ] .
 
 XorExpression =
@@ -108,8 +108,8 @@ SimplyExpression =
 	| LeftRoundBracket Expression RightRoundBracket .
 
 IdentifierOrFunction =
-	Identifier (. PushVariable(t.val); .)
-	[ FunctionBracketsAndArguments (. TcDebug.Log( "func" ); .) ] .
+	Identifier
+	[ FunctionBracketsAndArguments ] .
 	
 Constant = 
 	ConstantT 
@@ -127,15 +127,15 @@ FunctionBracketsAndArguments =
 	LeftRoundBracket [ ListOfArguments ] RightRoundBracket .
 
 ListOfArguments =
-	( ExpressionCode | ListOfExpression) [ Comma ListOfArguments] .
-
+	( ExpressionCode /*| ListOfExpression*/ ) (. PushArgumentToFunction(); .) [ Comma ListOfArguments ] .
+	/*
 ListOfExpression =
 	LeftListBracket ExpressionEnumeration RightListBracket .
 
 ExpressionEnumeration =
 	ExpressionCode [ Comma ExpressionEnumeration ] . 
-
+	*/
 Identifier =
-	IdentifierString (. PushString( t.val ); .) .
+	IdentifierString .
 	
 END TableCloth .

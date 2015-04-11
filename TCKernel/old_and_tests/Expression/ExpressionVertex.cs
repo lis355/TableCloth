@@ -51,10 +51,10 @@
 
     class OperandVertex : ExpressionVertex
     {
-        public ECommandsCode OperationCode;
+        public EOperator OperationCode;
         public ExpressionVertex L, R;
 
-        public OperandVertex( ECommandsCode c, ExpressionVertex lv, ExpressionVertex rv )
+        public OperandVertex( EOperator c, ExpressionVertex lv, ExpressionVertex rv )
         {
             OperationCode = c;
             L = lv;
@@ -63,7 +63,7 @@
 
         public override bool CalcExpressionOnThisVertex()
         {
-            if ( OperationCode == ECommandsCode.Not )
+            if ( OperationCode == EOperator.Not )
             {
                 return !L.CalcExpressionOnThisVertex();
             }
@@ -72,13 +72,13 @@
                 bool t1 = L.CalcExpressionOnThisVertex(), t2 = R.CalcExpressionOnThisVertex();
                 switch ( OperationCode )
                 {
-                    case ECommandsCode.And: return t1 && t2;
-                    case ECommandsCode.Or: return t1 || t2;
-                    case ECommandsCode.Xor: return t1 ^ t2;
-                    case ECommandsCode.Equivalence: return ( !t1 || t2 ) && ( t1 || !t2 );
-                    case ECommandsCode.Implication: return !t1 || t2;
-                    case ECommandsCode.Sheffer: return !( t1 && t2 );
-                    case ECommandsCode.Pirse: return !( t1 || t2 );
+                    case EOperator.And: return t1 && t2;
+                    case EOperator.Or: return t1 || t2;
+                    case EOperator.Xor: return t1 ^ t2;
+                    case EOperator.Equivalence: return ( !t1 || t2 ) && ( t1 || !t2 );
+                    case EOperator.Implication: return !t1 || t2;
+                    case EOperator.Sheffer: return !( t1 && t2 );
+                    case EOperator.Pirse: return !( t1 || t2 );
                 }
             }
             return false;
@@ -89,7 +89,7 @@
         public override bool IsVariable() { return false; }
         public override string ToString()
         {
-            if ( OperationCode == ECommandsCode.Not )
+            if ( OperationCode == EOperator.Not )
             {
                 return ExpressionString.CommandsCodeToString( OperationCode ) + L;
             }

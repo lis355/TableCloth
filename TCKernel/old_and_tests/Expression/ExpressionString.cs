@@ -8,17 +8,17 @@
         static readonly string[] _stringConstantNumber = { "0", "1" };
         static readonly string[] _stringConstantWord = { "false", "true" };
 
-        public delegate string CommandsCodeToStringConverter( ECommandsCode c );
+        public delegate string CommandsCodeToStringConverter( EOperator c );
         public static CommandsCodeToStringConverter CommandsCodeToString = CommandCodeToStringSymbol;
 
-        static StringCommandType _commandCodeTypeVariable = StringCommandType.Symbol;
-        static public StringCommandType CommandCodeType
+        static EStringCommandType _commandCodeTypeVariable = EStringCommandType.Symbol;
+        static public EStringCommandType CommandCodeType
         {
             set
             {
                 _commandCodeTypeVariable = value;
 
-                if ( value == StringCommandType.Symbol )
+                if ( value == EStringCommandType.Symbol )
                 {
                     CommandsCodeToString = CommandCodeToStringSymbol;
                 }
@@ -33,12 +33,12 @@
             }
         }
 
-        static string CommandCodeToStringSymbol( ECommandsCode c )
+        static string CommandCodeToStringSymbol( EOperator c )
         {
             return _stringCommandsCodeSymbol[ ( byte )c ];
         }
 
-        static string CommandCodeToStringWord( ECommandsCode c )
+        static string CommandCodeToStringWord( EOperator c )
         {
             return _stringCommandsCodeWord[ ( byte )c ];
         }
@@ -46,14 +46,14 @@
         public delegate string ConstantToStringConverter( bool c );
         public static ConstantToStringConverter ConstantToString = ConstantToStringNumber;
 
-        static StringConstantType _constantTypeVariable = StringConstantType.Number;
-        public static StringConstantType ConstantType
+        static EStringConstantType _constantTypeVariable = EStringConstantType.Number;
+        public static EStringConstantType ConstantType
         {
             set
             {
                 _constantTypeVariable = value;
 
-                if ( value == StringConstantType.Number )
+                if ( value == EStringConstantType.Number )
                 {
                     ConstantToString = ConstantToStringNumber;
 

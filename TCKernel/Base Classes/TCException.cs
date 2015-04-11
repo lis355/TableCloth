@@ -6,7 +6,7 @@ namespace TableClothKernel
     {
         public ParserErrors.Data TcData { get; private set; }
 
-        public TcMessage( ParserErrors.Data tcData ) :
+        public TcMessage( ParserErrors.Data tcData ):
             base()
         {
             TcData = tcData;

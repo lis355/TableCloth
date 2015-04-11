@@ -2,9 +2,6 @@
 
 namespace TableClothKernel
 {
-    /// <summary>
-    /// Основной класс для рассчета строки
-    /// </summary>
     public static class Calc
     {
         static readonly Parser _parser;
@@ -21,19 +18,25 @@ namespace TableClothKernel
             {
                 throw new TcException( data );
             }
-            //else if (data.Type == ParserErrors.EType.Warning )
-            //{
-            //    throw new TcWarning( data );
-            //}
         }
 
+	    public class CalcResult
+	    {
+			public bool Success;
+			public TcToken Result;
+		    public TcException Exception;
+	    }
+
         // Основная функция рассчета строки
-        public static bool CalcExpression( string s )
+        public static CalcResult CalcExpression( string s )
         {
+			var result = new CalcResult();
+
             try
             {
                 _parser.Parse( new Scanner( s ) );
-                return true;
+                result.Success = true;
+				result.Result = _parser.ParseResult;
             }
             catch ( TcException exception )
             {
@@ -41,12 +44,14 @@ namespace TableClothKernel
                     exception.TcData.Line,
                     exception.TcData.Column,
                     exception.TcData.Text ) );
+
+				result.Exception = exception;
             }
             catch
             {
             }
 
-            return false;
+	        return result;
         }
     }
 }

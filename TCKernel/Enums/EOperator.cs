@@ -1,6 +1,6 @@
 ﻿namespace TableClothKernel
 {
-    public enum ECommandsCode
+    public enum EOperator
     {
         Not,
         And,
@@ -10,11 +10,5 @@
         Implication,
         Sheffer,
         Pirse
-    }
-
-    public enum EBooleanConstants
-    {
-        True,
-        False
     }
 }
