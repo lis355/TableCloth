@@ -5,6 +5,15 @@ using System.Linq;
 
 namespace TableClothKernel
 {
+	[CalcMethods]
+	class TestMethods
+	{
+		public Operand G()
+		{
+			return Constant.True;
+		}		
+	}
+
 	class TestFormController
 	{
 		readonly TestForm _form;

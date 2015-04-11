@@ -25,11 +25,6 @@ namespace TableClothKernel
 			Root = Root.Simplify();
 		}
 
-		public Expression Calc()
-		{
-			return this;
-		}
-
 		public override string ToDebugString()
 		{
 			return DebugExpressionTranscription.GetOperandCurrentTranscription( Root );
@@ -39,14 +34,6 @@ namespace TableClothKernel
 		{
 			return ExpressionTranscription.GetOperandCurrentTranscription( Root );
 		}
-
-		///// <summary>
-		///// Рассчитать на наборе переменных
-		///// </summary>
-		//public Expression Calc( VariableList variables )
-		//{
-		//	return this;
-		//}
 
 		public static Constant CalcSimplyMonoFunction( EOperator type, Constant constant )
 		{
@@ -70,6 +57,13 @@ namespace TableClothKernel
 				case EOperator.Pirse: return !( t1 || t2 );
 				default: throw new ArgumentOutOfRangeException( "type" );
 			}
+		}
+
+		public Expression Calc()
+		{
+			CalcProvider.Calc( "CreateFromVector", Constant.True );
+
+			return this;
 		}
     }
 }

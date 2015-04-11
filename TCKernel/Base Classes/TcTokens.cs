@@ -28,7 +28,15 @@ namespace TableClothKernel
 			return ExpressionTranscription.GetOperandCurrentTranscription( this );
 		}
 
+		/// <summary>
+		/// Валидирование операнда. При некорректности бросается исключение
+		/// </summary>
 		public virtual void Validate() { }
+
+		/// <summary>
+		/// Упростить операнды ( функции не рассчитываются )
+		/// </summary>
+		/// <returns></returns>
 		public virtual Operand Simplify() { return this; }
 	}
 	

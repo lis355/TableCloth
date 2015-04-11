@@ -34,6 +34,7 @@
 			expression.Simplify();
 
 			// TODO temp
+			expression.Calc();
 			TcDebug.Log( expression.ToExpressionString() );
 		}
 

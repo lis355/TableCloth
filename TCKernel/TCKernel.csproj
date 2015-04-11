@@ -84,6 +84,7 @@
     <Compile Include="Base Classes\TcException.cs" />
     <Compile Include="Base Classes\InputProcessor.cs" />
     <Compile Include="Enums\EBooleanConstants.cs" />
+    <Compile Include="StaticClasses\CalcProvider.cs" />
     <Compile Include="StaticClasses\Information.cs" />
     <Compile Include="old_and_tests\MathFunctions\Check.cs" />
     <Compile Include="old_and_tests\MathFunctions\Convert.cs" />

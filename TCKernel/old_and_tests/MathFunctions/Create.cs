@@ -1,13 +1,16 @@
 ﻿namespace TableClothKernel.MathFunctions
-{/*
-    static class FCreate
+{
+	[CalcMethods]
+    public static class FCreate
     {
         /// <summary>
         /// Создает формулу по вектору значений
         /// </summary>
-        static public Formula CreateFromVector(bool[] B)
+        static public Operand CreateFromVector( params Constant[] constants )
         {
-            Formula G = new Formula();
+			return Constant.True;
+
+            /*Formula G = new Formula();
 
             // если функция константа
             if (B.Length == 1)
@@ -42,7 +45,7 @@
                 }
                 FGet.GetNextVector(b);
             }
-            return G;
+            return G;*/
         }
-    }*/
+    }
 }
