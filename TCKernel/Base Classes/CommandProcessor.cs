@@ -9,19 +9,19 @@
 			_solution = solution;
 		}
 
-		public void Process( Command command )
+		public InputProcessor.ProcessorResult.CommandResult Process( Command command )
 		{
 			if ( command is Expression )
 			{
-				ProcessExpression( command as Expression );
+				return ProcessExpression( command as Expression );
 			}
 			else if ( command is DefineVariableCommand )
 			{
-				ProcessDefineVariableCommand( command as DefineVariableCommand );
+				return ProcessDefineVariableCommand( command as DefineVariableCommand );
 			}
 			else if ( command is DeleteVariableCommand )
 			{
-				ProcessDeleteVariableCommand( command as DeleteVariableCommand );
+				return ProcessDeleteVariableCommand( command as DeleteVariableCommand );
 			}
 			else
 			{
@@ -29,28 +29,40 @@
 			}
 		}
 
-		void ProcessExpression( Expression expression )
+		InputProcessor.ProcessorResult.CommandResult ProcessExpression( Expression expression )
 		{
+			var result = new InputProcessor.ProcessorResult.CommandResult();
+
 			expression.Simplify();
 
 			// TODO temp
 			expression.Calc();
 			TcDebug.Log( expression.ToExpressionString() );
+
+			return result;
 		}
 
-		void ProcessDefineVariableCommand( DefineVariableCommand command )
+		InputProcessor.ProcessorResult.CommandResult ProcessDefineVariableCommand( DefineVariableCommand command )
 		{
+			var result = new InputProcessor.ProcessorResult.CommandResult();
+
 			command.Expression.Simplify();
 
 			_solution.Variables.Set( command.Variable.Name, command.Expression );
 
 			// TODO temp
 			TcDebug.Log( command.Expression.ToExpressionString() );
+
+			return result;
 		}
 
-		void ProcessDeleteVariableCommand( DeleteVariableCommand command )
+		InputProcessor.ProcessorResult.CommandResult ProcessDeleteVariableCommand( DeleteVariableCommand command )
 		{
+			var result = new InputProcessor.ProcessorResult.CommandResult();
+
 			_solution.Variables.Delete( command.Variable.Name );
+
+			return result;
 		}
 	}
 }

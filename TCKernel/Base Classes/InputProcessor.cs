@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TableClothKernel
 {
@@ -6,16 +7,26 @@ namespace TableClothKernel
 	{
 		public class ProcessorResult
 	    {
+			public class CommandResult
+			{
+				public string Output;
+
+				/// <summary>
+				/// Может быть null, это для кеширования
+				/// </summary>
+				public Expression Expression;
+			}
+
 			public bool Success;
 		    public TcException Exception;
 
 			public UserInput Input;
-			public string Output;
+			public List<CommandResult> Output;
 
 			public ProcessorResult()
 			{
 				Success = false;
-				Output = String.Empty;
+				Output = new List<CommandResult>();
 			}
 	    }
 
@@ -58,15 +69,12 @@ namespace TableClothKernel
 		void ProcessWithExceptions( string input, ProcessorResult result )
 		{
 			result.Input = Parse( input );
-			ValidateInput( result.Input );
-			ProcessInput( result );
-		}
-
-		void ValidateInput( UserInput result )
-		{
-			foreach ( var command in result.Commands )
-			{
+			
+			foreach ( var command in result.Input.Commands )
+			{ 
 				ValidateCommand( command );
+				var commandResult = ProcessCommand( command );
+
 			}
 		}
 
@@ -75,17 +83,9 @@ namespace TableClothKernel
 			command.Validate();
 		}
 
-		void ProcessInput( ProcessorResult result )
+		ProcessorResult.CommandResult ProcessCommand( Command cmd )
 		{
-			foreach ( var command in result.Input.Commands )
-			{
-				ProcessCommand( command, result );
-			}
-		}
-
-		void ProcessCommand( Command cmd, ProcessorResult result )
-		{
-			_solution.Commands.Process( cmd );
+			return _solution.Commands.Process( cmd );
 		}
 
         void MessagesDispatcher( ParserErrors.Data data )

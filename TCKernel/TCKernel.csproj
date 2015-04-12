@@ -66,6 +66,7 @@
       <DependentUpon>TestForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Debug\TestFormController.cs" />
+    <Compile Include="Debug\Tests.cs" />
     <Compile Include="Enums\EOperator.cs" />
     <Compile Include="Base Classes\Expression\ExpressionTranscription.cs" />
     <Compile Include="FastCalc\DynamicFastCalc.cs" />

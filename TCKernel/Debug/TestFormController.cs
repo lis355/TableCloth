@@ -49,6 +49,9 @@ namespace TableClothKernel
 
 		public TestFormController( TestForm form )
 		{
+			var tests = new Tests();
+ 			tests.Run();
+
 			_form = form;
 
 			_form.Text = Information.KernelName + " " + Information.KernelVersion + " " + Information.KernelAssembly;
@@ -63,6 +66,7 @@ namespace TableClothKernel
 			_form.ConstantType.DataSource = Enum.GetValues( typeof( EStringConstantType ) );
 			_form.OperatorsType.DataSource = Enum.GetValues( typeof( EStringOperatorType ) );
 
+			CalcProvider.Calc( "CreateFromVector", Constant.True );
 			_form.InBox.Text = _expressions[0];
 			CalcExpression( _form.InBox.Text );
 		}
@@ -89,6 +93,8 @@ namespace TableClothKernel
 			if ( !result.Success )
 				return;
 			
+			FillVariables();
+
 			//TcDebug.Log( result.Output );
 
 			var exp = result.Input.Commands.FirstOrDefault() as Expression;
@@ -97,6 +103,12 @@ namespace TableClothKernel
 			{
 				GenerateDot( exp );
 			}
+		}
+
+		void FillVariables()
+		{
+			_form.VariblesList.Text = String.Join( Environment.NewLine,
+				_solution.Variables.Select( x => x.Key + " = " + x.Value.ToExpressionString() ) );
 		}
 
 		void GenerateDot( Expression expression )

@@ -36,11 +36,11 @@ namespace TableClothKernel
 
 		public static Operand Calc( string functionName, params Operand[] operands )
 		{
-			var method = _methods.Find( x => x.Name == functionName );
+			var method = _methods.FirstOrDefault( x => x.Name == functionName );
 			if ( method == null )
 				throw new TcException( "Can't find method" );
 
-			return method.Invoke( null, operands ) as Operand;
+			return method.Invoke( null, new [] { operands[0] } ) as Operand;
 		}
 	}
 }

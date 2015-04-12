@@ -38,11 +38,14 @@
 			this.ImgPanel = new System.Windows.Forms.Panel();
 			this.DotGraphImage = new System.Windows.Forms.PictureBox();
 			this.GenDotCheckBox = new System.Windows.Forms.CheckBox();
+			this.VariablesPages = new System.Windows.Forms.TabPage();
+			this.VariblesList = new System.Windows.Forms.TextBox();
 			this.TabControls.SuspendLayout();
 			this.ParsePage.SuspendLayout();
 			this.DotPage.SuspendLayout();
 			this.ImgPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.DotGraphImage)).BeginInit();
+			this.VariablesPages.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// InBox
@@ -93,6 +96,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.TabControls.Controls.Add(this.ParsePage);
 			this.TabControls.Controls.Add(this.DotPage);
+			this.TabControls.Controls.Add(this.VariablesPages);
 			this.TabControls.Location = new System.Drawing.Point(12, 99);
 			this.TabControls.Name = "TabControls";
 			this.TabControls.SelectedIndex = 0;
@@ -150,6 +154,27 @@
 			this.GenDotCheckBox.Text = "Generate Dot";
 			this.GenDotCheckBox.UseVisualStyleBackColor = true;
 			// 
+			// VariablesPages
+			// 
+			this.VariablesPages.Controls.Add(this.VariblesList);
+			this.VariablesPages.Location = new System.Drawing.Point(4, 22);
+			this.VariablesPages.Name = "VariablesPages";
+			this.VariablesPages.Size = new System.Drawing.Size(510, 363);
+			this.VariablesPages.TabIndex = 2;
+			this.VariablesPages.Text = "Variables";
+			this.VariablesPages.UseVisualStyleBackColor = true;
+			// 
+			// VariblesList
+			// 
+			this.VariblesList.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.VariblesList.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.VariblesList.Location = new System.Drawing.Point(0, 0);
+			this.VariblesList.Multiline = true;
+			this.VariblesList.Name = "VariblesList";
+			this.VariblesList.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+			this.VariblesList.Size = new System.Drawing.Size(510, 363);
+			this.VariblesList.TabIndex = 6;
+			// 
 			// TestForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -169,6 +194,8 @@
 			this.DotPage.ResumeLayout(false);
 			this.ImgPanel.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.DotGraphImage)).EndInit();
+			this.VariablesPages.ResumeLayout(false);
+			this.VariablesPages.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -186,5 +213,7 @@
 		public System.Windows.Forms.PictureBox DotGraphImage;
 		private System.Windows.Forms.Panel ImgPanel;
 		public System.Windows.Forms.CheckBox GenDotCheckBox;
+		private System.Windows.Forms.TabPage VariablesPages;
+		public System.Windows.Forms.TextBox VariblesList;
 	}
 }

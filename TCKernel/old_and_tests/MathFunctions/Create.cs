@@ -6,7 +6,7 @@
         /// <summary>
         /// Создает формулу по вектору значений
         /// </summary>
-        static public Operand CreateFromVector( params Constant[] constants )
+        static public Operand CreateFromVector( Constant constant )
         {
 			return Constant.True;
 

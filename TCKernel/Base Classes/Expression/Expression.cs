@@ -61,7 +61,6 @@ namespace TableClothKernel
 
 		public Expression Calc()
 		{
-			CalcProvider.Calc( "CreateFromVector", Constant.True );
 
 			return this;
 		}
