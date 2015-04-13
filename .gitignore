@@ -22,6 +22,7 @@ Thumbs.db
 trace.txt
 obj/
 _ReSharper*/
+*vshost*
 
 exe_debug/
 exe_release/
