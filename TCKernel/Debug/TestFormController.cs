@@ -32,11 +32,11 @@ namespace TableClothKernel
 
         static readonly string[] _expressions =
         {  
+            "!!x",
             //"!( !( 1 ^ 0 ) => !( 1 == wy ) ) && r || !q", 
             //"Or(Not(q),And(r,Not(Implication(Not(Xor(False,True)),Not(Equivalence(wy,True))))))",
-			"!(!1); x = 1 || 0; new( y, 1 ); clear( x );",
+			//"!(!1); x = 1 || 0; new( y, 1 ); clear( x );",
             //"y = true || false",
-            //"y => x()",
             //"q || !0 && 1", "True",
             //"!!!1 && 0 && 1", "False",
             //"!(0 && 1)", "True",
@@ -49,9 +49,6 @@ namespace TableClothKernel
 
 		public TestFormController( TestForm form )
 		{
-			var tests = new Tests();
- 			tests.Run();
-
 			_form = form;
 
 			_form.Text = Information.KernelName + " " + Information.KernelVersion + " " + Information.KernelAssembly;
@@ -78,15 +75,15 @@ namespace TableClothKernel
 
 		public void InBoxReturnDown()
 		{
-			Options.ConstantOutType = ( EStringConstantType )_form.ConstantType.SelectedItem;
-			Options.OperatorOutType = ( EStringOperatorType )_form.OperatorsType.SelectedItem;
-
 			CalcExpression( _form.InBox.Text );
 		}
 
 		void CalcExpression( string s )
 		{
-			_form.OutBox.Text = String.Empty;
+			Options.ConstantOutType = ( EStringConstantType )_form.ConstantType.SelectedItem;
+			Options.OperatorOutType = ( EStringOperatorType )_form.OperatorsType.SelectedItem;
+
+            _form.OutBox.Text = String.Empty;
 
 			var result = _solution.Input.Process( s );
 
@@ -95,7 +92,10 @@ namespace TableClothKernel
 			
 			FillVariables();
 
-			//TcDebug.Log( result.Output );
+            foreach ( var cmdResult in result.Output )
+            {
+                TcDebug.Log( cmdResult.Output );
+            }
 
 			var exp = result.Input.Commands.FirstOrDefault() as Expression;
 			if ( exp != null

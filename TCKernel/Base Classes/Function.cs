@@ -82,7 +82,7 @@ namespace TableClothKernel
 				if ( secondNot != null
 					&& secondNot.Type == EOperator.Not )
 				{
-					return FirstOperand;
+					return secondNot.FirstOperand;
 				}
 			}
 

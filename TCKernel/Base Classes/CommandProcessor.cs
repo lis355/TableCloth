@@ -9,7 +9,7 @@
 			_solution = solution;
 		}
 
-		public InputProcessor.ProcessorResult.CommandResult Process( Command command )
+		public RequestResult.CommandResult Process( Command command )
 		{
 			if ( command is Expression )
 			{
@@ -29,36 +29,35 @@
 			}
 		}
 
-		InputProcessor.ProcessorResult.CommandResult ProcessExpression( Expression expression )
+		RequestResult.CommandResult ProcessExpression( Expression expression )
 		{
-			var result = new InputProcessor.ProcessorResult.CommandResult();
+			var result = new RequestResult.CommandResult();
 
 			expression.Simplify();
 
-			// TODO temp
-			expression.Calc();
-			TcDebug.Log( expression.ToExpressionString() );
+            result.Expression = expression.Calc();
+			result.Output = expression.ToExpressionString();
 
 			return result;
 		}
 
-		InputProcessor.ProcessorResult.CommandResult ProcessDefineVariableCommand( DefineVariableCommand command )
+		RequestResult.CommandResult ProcessDefineVariableCommand( DefineVariableCommand command )
 		{
-			var result = new InputProcessor.ProcessorResult.CommandResult();
+			var result = new RequestResult.CommandResult();
 
 			command.Expression.Simplify();
 
 			_solution.Variables.Set( command.Variable.Name, command.Expression );
 
-			// TODO temp
-			TcDebug.Log( command.Expression.ToExpressionString() );
+            result.Expression = command.Expression;
+            result.Output = command.Expression.ToExpressionString();
 
 			return result;
 		}
 
-		InputProcessor.ProcessorResult.CommandResult ProcessDeleteVariableCommand( DeleteVariableCommand command )
+		RequestResult.CommandResult ProcessDeleteVariableCommand( DeleteVariableCommand command )
 		{
-			var result = new InputProcessor.ProcessorResult.CommandResult();
+			var result = new RequestResult.CommandResult();
 
 			_solution.Variables.Delete( command.Variable.Name );
 

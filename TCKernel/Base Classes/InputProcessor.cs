@@ -5,31 +5,6 @@ namespace TableClothKernel
 {
 	public class InputProcessor
 	{
-		public class ProcessorResult
-	    {
-			public class CommandResult
-			{
-				public string Output;
-
-				/// <summary>
-				/// Может быть null, это для кеширования
-				/// </summary>
-				public Expression Expression;
-			}
-
-			public bool Success;
-		    public TcException Exception;
-
-			public UserInput Input;
-			public List<CommandResult> Output;
-
-			public ProcessorResult()
-			{
-				Success = false;
-				Output = new List<CommandResult>();
-			}
-	    }
-
 		readonly Parser _parser;
 		readonly Solution _solution;
 
@@ -41,9 +16,9 @@ namespace TableClothKernel
             _parser.Errors.Message += MessagesDispatcher;
 		}
 
-		public ProcessorResult Process( string input )
+		public RequestResult Process( string input )
 		{
-			var result = new ProcessorResult();
+			var result = new RequestResult();
  
 			try
 			{
@@ -66,15 +41,16 @@ namespace TableClothKernel
 			return result;
 		}
 
-		void ProcessWithExceptions( string input, ProcessorResult result )
+		void ProcessWithExceptions( string input, RequestResult result )
 		{
 			result.Input = Parse( input );
 			
 			foreach ( var command in result.Input.Commands )
 			{ 
 				ValidateCommand( command );
-				var commandResult = ProcessCommand( command );
 
+				var commandResult = ProcessCommand( command );
+                result.Output.Add( commandResult );
 			}
 		}
 
@@ -83,7 +59,7 @@ namespace TableClothKernel
 			command.Validate();
 		}
 
-		ProcessorResult.CommandResult ProcessCommand( Command cmd )
+		RequestResult.CommandResult ProcessCommand( Command cmd )
 		{
 			return _solution.Commands.Process( cmd );
 		}

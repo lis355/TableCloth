@@ -64,6 +64,11 @@ namespace TableClothKernel
             }
         }
 
+        public void Clear()
+        {
+            _variablesTable.Clear();
+        }
+
 	    public IEnumerator<KeyValuePair<string, Expression>> GetEnumerator()
 	    {
 		    return _variablesTable.GetEnumerator();
