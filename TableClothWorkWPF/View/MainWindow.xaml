@@ -1,0 +1,30 @@
+﻿<Window x:Class="TableClothWork.MainWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:local="clr-namespace:TableClothWork"
+		Height="350"
+		Width="525"
+		WindowStartupLocation="CenterScreen"
+		FontFamily="Courier New"
+		FontSize="14">
+	<Window.Background>
+		<SolidColorBrush Color="{DynamicResource BackColor}" />
+	</Window.Background>
+	<ScrollViewer HorizontalScrollBarVisibility="Disabled"
+				  VerticalScrollBarVisibility="Visible">
+		<Grid>
+			<Button BorderBrush="{x:Null}"
+					Foreground="{x:Null}"
+					MouseDoubleClick="Control_OnMouseDoubleClick"
+					Margin="0,33,0,-33">
+				<Button.Background>
+					<SolidColorBrush Color="{DynamicResource BackColor}"></SolidColorBrush>
+				</Button.Background>
+			</Button>
+			<StackPanel Margin="10"
+						x:Name="StackInput">
+				<local:UserInput DockPanel.Dock="Top" />
+			</StackPanel>
+		</Grid>
+	</ScrollViewer>
+</Window>

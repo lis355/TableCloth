@@ -1,0 +1,37 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<Color x:Key="InputBackColor">#E1FFD3</Color>
+	<Color x:Key="OutputBackColor">#D3F4FF</Color>
+	<Color x:Key="ErrorBackColor">#FFE1D3</Color>
+	<Color x:Key="BarColor">#00BDED</Color>
+	<Color x:Key="BackColor">#FAFAFA</Color>
+	<Storyboard x:Key="TextFadeOut">
+		<ColorAnimation Storyboard.TargetName="InBackRectBrush"
+						Storyboard.TargetProperty="Color"
+						To="{DynamicResource InputBackColor}"
+						Duration="0:0:0.2" />
+		<ColorAnimation Storyboard.TargetName="OutBackRectBrush"
+						Storyboard.TargetProperty="Color"
+						To="{DynamicResource OutputBackColor}"
+						Duration="0:0:0.2" />
+		<ColorAnimation Storyboard.TargetName="BarRectBrush"
+						Storyboard.TargetProperty="Color"
+						To="{DynamicResource BarColor}"
+						Duration="0:0:0.2" />
+	</Storyboard>
+	<Storyboard x:Key="TextFadeIn">
+		<ColorAnimation Storyboard.TargetName="InBackRectBrush"
+						Storyboard.TargetProperty="Color"
+						To="{DynamicResource BackColor}"
+						Duration="0:0:0.2"/>
+		<ColorAnimation Storyboard.TargetName="OutBackRectBrush"
+						Storyboard.TargetProperty="Color"
+						To="{DynamicResource BackColor}"
+						Duration="0:0:0.2" />
+		<ColorAnimation Storyboard.TargetName="BarRectBrush"
+						Storyboard.TargetProperty="Color"
+						To="{DynamicResource BackColor}"
+						Duration="0:0:0.2" />
+	</Storyboard>
+
+</ResourceDictionary>

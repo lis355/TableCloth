@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchemeOLD", "Scheme\SchemeOLD.csproj", "{43066604-1D8B-491A-BF31-D124E9058B64}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableClothWork", "TableClothWork\TableClothWork.csproj", "{7326A697-244E-499C-8E1D-4380AC5B99A5}"
@@ -16,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CocoSourcesCS", "CocoSourcesCS\CocoSourcesCS.csproj", "{EFA0C233-8DAF-4596-BAAA-470946153411}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCKernelTests", "TCKernelTests\TCKernelTests.csproj", "{8F531F03-35A3-465D-AF39-4F00E3590D80}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableClothWorkWPF", "TableClothWorkWPF\TableClothWorkWPF.csproj", "{38A4C19C-2948-4F97-82DA-CD788791416A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,6 +111,16 @@ Global
 		{8F531F03-35A3-465D-AF39-4F00E3590D80}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{8F531F03-35A3-465D-AF39-4F00E3590D80}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{8F531F03-35A3-465D-AF39-4F00E3590D80}.Release|x86.ActiveCfg = Release|Any CPU
+		{38A4C19C-2948-4F97-82DA-CD788791416A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38A4C19C-2948-4F97-82DA-CD788791416A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38A4C19C-2948-4F97-82DA-CD788791416A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{38A4C19C-2948-4F97-82DA-CD788791416A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{38A4C19C-2948-4F97-82DA-CD788791416A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{38A4C19C-2948-4F97-82DA-CD788791416A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38A4C19C-2948-4F97-82DA-CD788791416A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38A4C19C-2948-4F97-82DA-CD788791416A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{38A4C19C-2948-4F97-82DA-CD788791416A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{38A4C19C-2948-4F97-82DA-CD788791416A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

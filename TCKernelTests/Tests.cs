@@ -10,7 +10,7 @@ namespace TCKernelTests
 {
 	partial class Tests
 	{
-        Solution _solution = new Solution();
+		readonly Solution _solution = new Solution();
 
         public void Run()
         {
