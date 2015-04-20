@@ -1,11 +1,72 @@
-﻿namespace TableClothKernel
+﻿using System.Linq;
+
+namespace TableClothKernel
 {
 	public class Operator : Function
 	{
 	    public EOperator Type { get; set; }
 
-		public Operator()
+		Operator()
 		{
+		}
+
+		public Operator( EOperator type, params Operand[] operands )
+        {
+			Type = type;
+	        if ( operands != null )
+	        {
+				Operands = operands.ToList();
+	        }
+        }
+
+		public static Operand Not( Operand operand )
+		{
+			var result = new Operator { Type = EOperator.Not };
+			result.Operands.Add( operand );
+			return result.Simplify();
+		}
+
+		static Operand BinaryOperator( EOperator type, Operand firstOperand, Operand secondOperand )
+		{
+			var result = new Operator { Type = type };
+			result.Operands.Add( firstOperand );
+			result.Operands.Add( secondOperand );
+			return result.Simplify();
+		}
+
+		public static Operand And( Operand firstOperand, Operand secondOperand )
+		{
+			return BinaryOperator( EOperator.And, firstOperand, secondOperand );
+		}
+
+		public static Operand Or( Operand firstOperand, Operand secondOperand )
+		{
+			return BinaryOperator( EOperator.Or, firstOperand, secondOperand );
+		}
+
+		public static Operand Xor( Operand firstOperand, Operand secondOperand )
+		{
+			return BinaryOperator( EOperator.Xor, firstOperand, secondOperand );
+		}
+
+		public static Operand Equivalence( Operand firstOperand, Operand secondOperand )
+		{
+			return BinaryOperator( EOperator.Equivalence, firstOperand, secondOperand );
+		}
+
+		public static Operand Implication( Operand firstOperand, Operand secondOperand )
+		{
+			return BinaryOperator( EOperator.Implication, firstOperand, secondOperand );
+		}
+
+		public static Operand Sheffer( Operand firstOperand, Operand secondOperand )
+		{
+			return BinaryOperator( EOperator.Sheffer, firstOperand, secondOperand );
+		}
+
+		public static Operand Pirse( Operand firstOperand, Operand secondOperand )
+		{
+			return BinaryOperator( EOperator.Pirse, firstOperand, secondOperand );
 		}
 
 		public override void Validate()

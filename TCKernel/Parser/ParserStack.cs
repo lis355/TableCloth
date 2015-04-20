@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace TableClothKernel
 {
@@ -62,22 +60,22 @@ namespace TableClothKernel
             PushOperator( EOperator.Not, PopToken<Operand>() );
         }
 
-        void PushPirse()
-        {
-            PushOperator( EOperator.Pirse, PopToken<Operand>() );
-        }
-
-        void PushSheffer()
-        {
-            PushOperator( EOperator.Sheffer, PopToken<Operand>() );
-        }
-
 	    void PushSimplyBinaryOperator( EOperator type )
 	    {
 			var t1 = PopToken<Operand>();
 			var t2 = PopToken<Operand>();
             PushOperator( type, t2, t1 );
 	    }
+
+		void PushPirse()
+        {
+            PushSimplyBinaryOperator( EOperator.Pirse );
+        }
+
+        void PushSheffer()
+        {
+            PushSimplyBinaryOperator( EOperator.Sheffer );
+        }
 
         void PushEquivalence()
         {
@@ -106,13 +104,7 @@ namespace TableClothKernel
 
         void PushOperator( EOperator type, params Operand[] operands )
         {
-			var op = new Operator { Type = type };
-	        if ( operands != null )
-	        {
-		        op.Operands = operands.ToList();
-	        }
-
-            PushToken( op );
+            PushToken( new Operator( type, operands ) );
         }
 
         void PushVariable( string name )

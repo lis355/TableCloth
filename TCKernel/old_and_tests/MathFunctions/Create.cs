@@ -1,5 +1,5 @@
 ﻿namespace TableClothKernel.MathFunctions
-{
+{/*
 	[CalcMethods]
     public static class FCreate
     {
@@ -10,7 +10,7 @@
         {
 			return Constant.True;
 
-            /*Formula G = new Formula();
+            Formula G = new Formula();
 
             // если функция константа
             if (B.Length == 1)
@@ -45,7 +45,7 @@
                 }
                 FGet.GetNextVector(b);
             }
-            return G;*/
+            return G;
         }
-    }
+    }*/
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -8,10 +9,30 @@ namespace TableClothKernel
 	[CalcMethods]
 	class TestMethods
 	{
-		public Operand G()
+		public static Operand T1()
 		{
 			return Constant.True;
 		}		
+
+		public static Operand T2( Operand p1 )
+		{
+			return Operator.Not( p1 );
+		}	
+
+		public static Operand T3( Operand p1, Operand p2 )
+		{
+			return Operator.Xor( p1, p2 );
+		}	
+
+		public static Operand T4( IEnumerable<Operand> operands )
+		{
+			return Constant.True;
+		}		
+
+		public static Operand T5( Operand[] operands )
+		{
+			return Constant.True;
+		}	
 	}
 
 	class TestFormController
@@ -49,7 +70,7 @@ namespace TableClothKernel
 
 		public TestFormController( TestForm form )
 		{
-			CalcProvider.Calc( "CreateFromVector", Constant.True );
+			//CalcProvider.Calc( "fd" );
 
 			_form = form;
 
