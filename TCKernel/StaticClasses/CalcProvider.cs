@@ -9,7 +9,7 @@ namespace TableClothKernel
 
 	public static class CalcProvider
 	{
-		static readonly List<MethodInfo> _methods = new List<MethodInfo>();
+		static readonly Dictionary<string, MethodInfo> _methods = new Dictionary<string, MethodInfo>();
 
 		static CalcProvider()
 		{
@@ -18,29 +18,36 @@ namespace TableClothKernel
 
 		static void GetMethods( Assembly assembly)
 		{
-			foreach( var type in assembly.GetTypes() )
-			{
-				if ( !type.IsClass
-					|| !type.GetCustomAttributes( typeof( CalcMethodsAttribute ), true ).Any() )
-					continue;
+			var types = assembly.GetTypes().Where( 
+				x => x.IsClass
+					&& x.GetCustomAttributes( typeof( CalcMethodsAttribute ), true ).Any() );
 
-				foreach ( var method in type.GetMethods() )
-				{
-					if ( method.ReturnType == typeof( Operand ) )
-					{
-						_methods.Add( method );
-					}
-				}
+			var methods = types.SelectMany( 
+				x => x.GetMethods().Where(
+					m => m.ReturnType == typeof( Operand ) ) );
+
+			foreach ( var method in methods )
+			{
+				_methods.Add( method.Name, method );
 			}
 		}
 
 		public static Operand Calc( string functionName, params Operand[] operands )
 		{
-			var method = _methods.FirstOrDefault( x => x.Name == functionName );
-			if ( method == null )
-				throw new TcException( "Can't find method" );
+			var method = GetMethod( functionName );
 
-			return method.Invoke( null, new [] { operands[0] } ) as Operand;
+			var parameters = new [] { operands[0] };
+
+			return method.Invoke( null, parameters ) as Operand;
+		}
+
+		static MethodInfo GetMethod( string functionName )
+		{
+			MethodInfo method;
+			if ( !_methods.TryGetValue( functionName, out method ) )
+				throw new TcException( "Can't find method " + functionName );
+
+			return method;
 		}
 	}
 }

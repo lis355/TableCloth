@@ -6,6 +6,7 @@ COMPILER TableCloth
 int GetNextTokenKind() { return _scanner.Peek().kind; }
 
 CHARACTERS
+
 	Letter = 'A' .. 'Z' + 'a' .. 'z' .
 	Digit = "0123456789" .
 	CaretSymbol  = '\r' .
@@ -14,6 +15,7 @@ CHARACTERS
 	Tab = '\t' .
 
 TOKENS
+
 	IdentifierString = Letter { Letter | Digit } .
 	TrueConstant = '1' . 
 	FalseConstant = '0' .

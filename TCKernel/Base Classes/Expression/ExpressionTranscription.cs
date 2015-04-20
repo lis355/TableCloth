@@ -11,6 +11,31 @@ namespace TableClothKernel
 		/// Options.ConstantOutType
 		/// Options.CommandOutType
 		/// </summary>
+		public static string GetOperandCurrentTranscriptionWithFormatting( Operand operand )
+		{
+			if ( operand == null )
+				throw new NullReferenceException();
+
+			if ( operand is Constant )
+			{
+				return GetConstantTranscription( operand as Constant );
+			}
+			else if ( operand is Variable )
+			{
+				return GetVariableTranscription( operand as Variable );
+			}
+			else if ( operand is Operator )
+			{
+				return GetOperatorTranscription( operand as Operator );
+			}
+			else if ( operand is Function )
+			{
+				return GetFunctionTranscription( operand as Function );
+			}
+
+			throw new TcException( "Unknown operand" );
+		}
+
 		public static string GetOperandCurrentTranscription( Operand operand )
 		{
 			if ( operand == null )
@@ -105,12 +130,12 @@ namespace TableClothKernel
 		{
 			return _kLeftRoundBracket
 				+ Space()
-				+ op.Operands[0].ToExpressionString()
+				+ op.FirstOperand.ToExpressionString()
 				+ Space()
 				+ GetSimplyOperatorName( op, Options.OperatorOutType )
 				+ Space()
-				+ op.Operands[1].ToExpressionString()
-				+ Space()
+				+ op.SecondOperand.ToExpressionString()
+				+ Space() 
 				+ _kRightRoundBracket;
 		}
 

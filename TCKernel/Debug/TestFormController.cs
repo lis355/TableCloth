@@ -32,7 +32,7 @@ namespace TableClothKernel
 
         static readonly string[] _expressions =
         {  
-            "!!x",
+            "!( !( x ^ y ) => !( z == wy ) ) && r || !q",
             //"!( !( 1 ^ 0 ) => !( 1 == wy ) ) && r || !q", 
             //"Or(Not(q),And(r,Not(Implication(Not(Xor(False,True)),Not(Equivalence(wy,True))))))",
 			//"!(!1); x = 1 || 0; new( y, 1 ); clear( x );",
@@ -49,6 +49,8 @@ namespace TableClothKernel
 
 		public TestFormController( TestForm form )
 		{
+			CalcProvider.Calc( "CreateFromVector", Constant.True );
+
 			_form = form;
 
 			_form.Text = Information.KernelName + " " + Information.KernelVersion + " " + Information.KernelAssembly;
@@ -63,7 +65,6 @@ namespace TableClothKernel
 			_form.ConstantType.DataSource = Enum.GetValues( typeof( EStringConstantType ) );
 			_form.OperatorsType.DataSource = Enum.GetValues( typeof( EStringOperatorType ) );
 
-			CalcProvider.Calc( "CreateFromVector", Constant.True );
 			_form.InBox.Text = _expressions[0];
 			CalcExpression( _form.InBox.Text );
 		}

@@ -19,8 +19,7 @@ namespace TableClothKernel
 			}
 			else if ( operand is Operator )
 			{
-				return ExpressionTranscription.GetSimplyOperatorName( operand as Operator, EStringOperatorType.Function )
-					+ "(" + ( operand as Operator ).Operands.Count + ")";
+				return ExpressionTranscription.GetSimplyOperatorName( operand as Operator, EStringOperatorType.Function );
 			}
 			else if ( operand is Function )
 			{

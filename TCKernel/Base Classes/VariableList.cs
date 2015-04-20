@@ -10,6 +10,11 @@ namespace TableClothKernel
     {
         readonly Dictionary<string, Expression> _variablesTable;
 
+		public delegate void VariableEvent( VariableList list, string variableName );
+
+		public event VariableEvent VariableChanged;
+		public event VariableEvent VariableDeleted;
+
         public VariableList()
         {
             _variablesTable = new Dictionary<string, Expression>();
@@ -38,6 +43,11 @@ namespace TableClothKernel
             {
                 _variablesTable[name] = expression;
             }
+
+	        if ( VariableChanged != null )
+	        {
+		        VariableChanged( this, name );
+	        }
         }
 
         /// <summary>
@@ -45,9 +55,14 @@ namespace TableClothKernel
         /// </summary>
         public void Delete( string name )
         {
-            if ( IsExist( name ) )
-            {
-                _variablesTable.Remove( name );
+            if ( !IsExist( name ) )
+				return;
+
+			_variablesTable.Remove( name );
+
+			if ( VariableDeleted != null )
+	        {
+		        VariableDeleted( this, name );
             }
         }
 

@@ -74,6 +74,8 @@
   <ItemGroup>
     <Compile Include="Base Classes\CommandProcessor.cs" />
     <Compile Include="Base Classes\Function.cs" />
+    <Compile Include="Base Classes\Operand.cs" />
+    <Compile Include="Base Classes\Operator.cs" />
     <Compile Include="Base Classes\RequestResult.cs" />
     <Compile Include="Base Classes\Solution.cs" />
     <Compile Include="Base Classes\TcTokens.cs" />

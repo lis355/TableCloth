@@ -37,17 +37,16 @@ namespace TableClothKernel
 
 		void RecursivePlot( Operand root )
 		{
+			RootGraph.V.Add( root );
+
 			if ( root is Function )
 			{
-				RootGraph.V.Add( root );
 				foreach ( var child in ( root as Function ).Operands )
 				{
 					RootGraph.E.Add( new Tuple<TcToken, TcToken>( root, child ) );
 					RecursivePlot( child );
 				}
 			}
-
-			RootGraph.V.Add( root );
 		}
 
 		public void PlotDot()
