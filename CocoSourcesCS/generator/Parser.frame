@@ -24,6 +24,8 @@ public partial class Parser
 	
     public string CurrentToken { get { return t.val; } }
 	
+	int GetNextTokenKind() { return _scanner.Peek().kind; }
+	
 -->declarations
 
     public Parser()

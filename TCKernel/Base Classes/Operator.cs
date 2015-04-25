@@ -6,16 +6,22 @@ namespace TableClothKernel
 	{
 	    public EOperator Type { get; set; }
 
-		Operator()
+		Operator():
+			base()
 		{
 		}
 
-		public Operator( EOperator type, params Operand[] operands )
+		public Operator( EOperator type, params Operand[] operands ):
+			this()
         {
 			Type = type;
+
 	        if ( operands != null )
 	        {
-				Operands = operands.ToList();
+		        foreach ( var operand in operands )
+		        {
+			        Operands.Add( operand );
+		        }
 	        }
         }
 
@@ -71,6 +77,8 @@ namespace TableClothKernel
 
 		public override void Validate()
 		{
+			base.Validate();
+
 			if ( ExpressionTranscription.SimplyOperatorIsMono( this ) )
 			{
 				if ( Operands.Count != 1 )
@@ -80,6 +88,12 @@ namespace TableClothKernel
 			{
 				if ( Operands.Count != 2 )
 					throw new TcException( "Uncorrect operands count" );
+			}
+
+			foreach ( var operand in Operands )
+			{
+				if ( operand is OperandList )
+					throw new TcException( "Operands in's simply" );
 			}
 		}
 

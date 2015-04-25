@@ -38,11 +38,12 @@ namespace TableClothKernel
             if ( _stack.Count == 0 )
                 throw new TcException( new ParserErrors.Data { Text = "Empty TcTokens stack." } );
 
-            var popTcToken = _stack.Pop() as T;
-            if ( popTcToken == null )
+            var popTcToken = _stack.Pop();
+			var popTokenAsT = popTcToken as T;
+            if ( popTokenAsT == null )
                 throw new TcException( new ParserErrors.Data { Text = "Another TcToken in stack." } );
 
-            return popTcToken;
+            return popTokenAsT;
         }
 
         void PushTrueConstant()
@@ -164,12 +165,26 @@ namespace TableClothKernel
 		    PushToken( new Expression { Root = PopToken<Operand>() } );
 	    }
 
+	    void PushListOfExpressionStart()
+	    {
+		    PushToken( new OperandList() );
+	    }
+
+	    void PushExpressionToList()
+	    {
+			var arg = PopToken<Operand>();
+		    var list = PopToken<OperandList>();
+			list.Add( arg );
+			PushToken( list );
+	    }
+
         partial void ProductionBegin( ENonTerminal production )
         {
 			switch ( production )
 	        {
 		        case ENonTerminal.TableCloth: ClearStack(); break;
 				case ENonTerminal.FunctionBracketsAndArguments: PopVariablePushFunction(); break;
+				case ENonTerminal.ListOfExpression: PushListOfExpressionStart(); break;
 	        }
         }
 
@@ -184,7 +199,6 @@ namespace TableClothKernel
                 case ENonTerminal.ConstantT: PushTrueConstant(); break;
                 case ENonTerminal.ConstantF: PushFalseConstant(); break;
                 case ENonTerminal.Identifier: PushVariable( CurrentToken ); break;
-                case ENonTerminal.FunctionBracketsAndArguments: break;
             }
         }
     }

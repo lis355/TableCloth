@@ -246,8 +246,8 @@ public class Scanner
 {
 	const char EOL = '\n';
 	const int eofSym = 0; /* pdt */
-	const int maxT = 23;
-	const int noSym = 23;
+	const int maxT = 25;
+	const int noSym = 25;
 
 
 	public Buffer buffer; // scanner buffer
@@ -274,16 +274,18 @@ public class Scanner
 		for (int i = 97; i <= 122; ++i) start[i] = 1;
 		start[49] = 2; 
 		start[48] = 3; 
-		start[61] = 45; 
+		start[61] = 47; 
 		start[33] = 7; 
-		start[91] = 46; 
+		start[91] = 48; 
 		start[38] = 8; 
 		start[124] = 13; 
 		start[94] = 20; 
 		start[40] = 41; 
 		start[41] = 42; 
-		start[59] = 43; 
-		start[44] = 44; 
+		start[123] = 43; 
+		start[125] = 44; 
+		start[59] = 45; 
+		start[44] = 46; 
 		start[Buffer.EOF] = -1;
 
 	}
@@ -560,11 +562,15 @@ public class Scanner
 			case 44:
 				{t.kind = 22; break;}
 			case 45:
+				{t.kind = 23; break;}
+			case 46:
+				{t.kind = 24; break;}
+			case 47:
 				recEnd = pos; recKind = 10;
 				if (ch == '=') {AddCh(); goto case 24;}
 				else if (ch == '>') {AddCh(); goto case 29;}
 				else {t.kind = 10; break;}
-			case 46:
+			case 48:
 				if (ch == 'n') {AddCh(); goto case 4;}
 				else if (ch == 'a') {AddCh(); goto case 9;}
 				else if (ch == 'o') {AddCh(); goto case 14;}

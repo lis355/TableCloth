@@ -2,9 +2,6 @@ $namespace=TableClothKernel
 
 COMPILER TableCloth
 
-// Решение неоднозначностей LL грамматики
-int GetNextTokenKind() { return _scanner.Peek().kind; }
-
 CHARACTERS
 
 	Letter = 'A' .. 'Z' + 'a' .. 'z' .
@@ -42,8 +39,8 @@ TOKENS
 // Символы
 	LeftRoundBracket = '(' .
 	RightRoundBracket = ')' .
-	//LeftListBracket = '{' .
-	//RightListBracket = '}' .
+	LeftListBracket = '{' .
+	RightListBracket = '}' .
 	EndOfCommand = ';' .
 	Comma = ',' .
 
@@ -74,6 +71,7 @@ DefineVariableCommand =
 	| New LeftRoundBracket Identifier Comma ExpressionCode RightRoundBracket .
 
 DeleteVariableCommand = Clear LeftRoundBracket Identifier RightRoundBracket	.
+
 //GetExpressionTypeCommand = ExpressionType LeftRoundBracket ExpressionCode RightRoundBracket .
 
 // Приоритет булевых операций
@@ -81,7 +79,11 @@ DeleteVariableCommand = Clear LeftRoundBracket Identifier RightRoundBracket	.
 // импликация, эквиваленция, штрих Шеффера, стрелка Пирса
 
 ExpressionCode =
-	Expression .
+	ExpressionOrListOfExpression .
+
+ExpressionOrListOfExpression =
+	Expression 
+	| ListOfExpression.
 
 Expression =
 	EquImplExpression [ Pirse Expression (. PushPirse(); .)
@@ -130,16 +132,18 @@ ConstantF =
 FunctionBracketsAndArguments =
 	LeftRoundBracket [ ListOfArguments ] RightRoundBracket .
 
-ListOfArguments =
-	( Expression /*| ListOfExpression*/ ) (. PushArgumentToFunction(); .) [ Comma ListOfArguments ] .
-	/* 
-ListOfExpression =
-	LeftListBracket ExpressionEnumeration RightListBracket .
-
-ExpressionEnumeration =
-	Expression [ Comma ExpressionEnumeration ] . 
-	*/
 Identifier =
 	IdentifierString .
+
+ListOfArguments =
+	ExpressionOrListOfExpression (. PushArgumentToFunction(); .)
+	[ Comma ListOfArguments ] .
+	
+ListOfExpression =
+	LeftListBracket [ ExpressionEnumeration ] RightListBracket .
+
+ExpressionEnumeration =
+	ExpressionOrListOfExpression (. PushExpressionToList(); .)
+	[ Comma ExpressionEnumeration ] . 
 	
 END TableCloth .

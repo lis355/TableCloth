@@ -1,24 +1,26 @@
-﻿using System.Collections.Generic;
-
-namespace TableClothKernel
+﻿namespace TableClothKernel
 {
 	public class Function : Operand
 	{
 	    public string Name { set; get; }
-	    public List<Operand> Operands { set; get; }
+	    public OperandList Operands { set; get; }
 	
 	    public Function():
 	        base()
 	    {
-	        Operands = new List<Operand>();
+	        Operands = new OperandList();
 	    }
 
 		public override void Validate()
 		{
-			foreach ( var operand in Operands )
-			{
-				operand.Validate();
-			}
+			Operands.Validate();
+		}
+
+		public override Operand Simplify()
+		{
+			Operands = Operands.Simplify() as OperandList;
+
+			return this;
 		}
 	}
 }

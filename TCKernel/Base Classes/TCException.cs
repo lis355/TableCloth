@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace TableClothKernel
 {
@@ -10,6 +11,7 @@ namespace TableClothKernel
             base()
         {
             TcData = tcData;
+			Debugger.Break();
         }
     }
 

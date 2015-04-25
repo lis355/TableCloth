@@ -23,8 +23,11 @@ namespace TableClothKernel
 			}
 			else if ( operand is Function )
 			{
-				return ExpressionTranscription.GetFunctionName( operand as Function ) +
-					"(" + ( operand as Function ).Operands.Count + ")";
+				return ExpressionTranscription.GetFunctionName( operand as Function ) + "()";
+			}
+			else if ( operand is OperandList )
+			{
+				return "{}";
 			}
 
 			throw new TcException( "Unknown operand" );

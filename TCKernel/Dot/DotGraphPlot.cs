@@ -47,6 +47,14 @@ namespace TableClothKernel
 					RecursivePlot( child );
 				}
 			}
+			else if ( root is OperandList )
+			{
+				foreach ( var child in ( root as OperandList ) )
+				{
+					RootGraph.E.Add( new Tuple<TcToken, TcToken>( root, child ) );
+					RecursivePlot( child );
+				}
+			}
 		}
 
 		public void PlotDot()

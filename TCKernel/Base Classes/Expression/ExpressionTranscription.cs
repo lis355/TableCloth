@@ -57,6 +57,10 @@ namespace TableClothKernel
 			{
 				return GetFunctionTranscription( operand as Function );
 			}
+			if ( operand is OperandList )
+			{
+				return GetOperandListTranscription( operand as OperandList );
+			}
 
 			throw new TcException( "Unknown operand" );
 		}
@@ -123,7 +127,7 @@ namespace TableClothKernel
 		static string PrintDefaultMonoOperator( Operator op )
 		{
 			return GetSimplyOperatorName( op, Options.OperatorOutType )
-				+ op.Operands[0].ToExpressionString();
+				+ op.FirstOperand.ToExpressionString();
 		}
 
 		static string PrintDefaultBinaryOperator( Operator op )
@@ -137,6 +141,15 @@ namespace TableClothKernel
 				+ op.SecondOperand.ToExpressionString()
 				+ Space() 
 				+ _kRightRoundBracket;
+		}
+
+		static public string GetOperandListTranscription( OperandList list )
+		{
+			return _kLeftCurlyBracket
+				+ Space()
+				+ String.Join( _kComma + Space(), list.Select( x => x.ToExpressionString() ) )
+				+ Space()
+				+ _kRightCurlyBracket;
 		}
 
 		static string Space()
@@ -158,6 +171,8 @@ namespace TableClothKernel
 
 		const string _kLeftRoundBracket = "(";
 		const string _kRightRoundBracket = ")";
+		const string _kLeftCurlyBracket = "{";
+		const string _kRightCurlyBracket = "}";
 		const string _kComma = ",";
 		const string _kSpace = " ";
 
