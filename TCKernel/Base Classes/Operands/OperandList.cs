@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TableClothKernel
 {
@@ -15,6 +16,16 @@ namespace TableClothKernel
 		public OperandList( IEnumerable<Operand> operands )
 		{
 			_operands = new List<Operand>( operands );
+		}
+
+		public OperandList( int capacity )
+		{
+			_operands = new List<Operand>( capacity );
+		}
+
+		public override string ToExpressionString()
+		{
+			return ExpressionTranscription.GetOperandListTranscription( this );
 		}
 
 		public override void Validate()
@@ -33,6 +44,18 @@ namespace TableClothKernel
 			}
 
 			return this;
+		}
+
+		public override Operand Calc( Calculator calculator )
+		{
+			var result = new OperandList( Count );
+
+			foreach ( var operand in _operands )
+			{
+				result.Add( operand.Calc( calculator ) );
+			}
+
+			return result;
 		}
 
 		public IEnumerator<Operand> GetEnumerator()

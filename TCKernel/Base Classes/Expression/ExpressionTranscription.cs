@@ -6,65 +6,6 @@ namespace TableClothKernel
 {
 	public static class ExpressionTranscription
     {
-		/// <summary>
-		/// Возвращает текущее написание оператора в зависимости от
-		/// Options.ConstantOutType
-		/// Options.CommandOutType
-		/// </summary>
-		public static string GetOperandCurrentTranscriptionWithFormatting( Operand operand )
-		{
-			if ( operand == null )
-				throw new NullReferenceException();
-
-			if ( operand is Constant )
-			{
-				return GetConstantTranscription( operand as Constant );
-			}
-			else if ( operand is Variable )
-			{
-				return GetVariableTranscription( operand as Variable );
-			}
-			else if ( operand is Operator )
-			{
-				return GetOperatorTranscription( operand as Operator );
-			}
-			else if ( operand is Function )
-			{
-				return GetFunctionTranscription( operand as Function );
-			}
-
-			throw new TcException( "Unknown operand" );
-		}
-
-		public static string GetOperandCurrentTranscription( Operand operand )
-		{
-			if ( operand == null )
-				throw new NullReferenceException();
-
-			if ( operand is Constant )
-			{
-				return GetConstantTranscription( operand as Constant );
-			}
-			else if ( operand is Variable )
-			{
-				return GetVariableTranscription( operand as Variable );
-			}
-			else if ( operand is Operator )
-			{
-				return GetOperatorTranscription( operand as Operator );
-			}
-			else if ( operand is Function )
-			{
-				return GetFunctionTranscription( operand as Function );
-			}
-			if ( operand is OperandList )
-			{
-				return GetOperandListTranscription( operand as OperandList );
-			}
-
-			throw new TcException( "Unknown operand" );
-		}
-
 		public static string GetConstantTranscription( Constant constant )
 		{
 			return _constantTranscription[constant.Value][Options.ConstantOutType];
@@ -165,7 +106,7 @@ namespace TableClothKernel
 		public static EOperator? GetEOperatorFromName( string name )
 		{
 			EOperator result;
-			return ( Enum.TryParse<EOperator>( name, false, out result ) ) ?
+			return ( Enum.TryParse( name, false, out result ) ) ?
 				new EOperator?( result ) : null;
 		}
 

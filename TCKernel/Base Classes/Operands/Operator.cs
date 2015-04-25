@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace TableClothKernel
+﻿namespace TableClothKernel
 {
 	public class Operator : Function
 	{
@@ -24,6 +22,26 @@ namespace TableClothKernel
 		        }
 	        }
         }
+
+		public override string ToExpressionString()
+		{
+			return ExpressionTranscription.GetOperatorTranscription( this );
+		}
+
+		public override Operand Calc( Calculator calculator )
+		{
+			Operator op;
+			if ( Operands.Count == 1 )
+			{
+				op = new Operator( Type, FirstOperand.Calc( calculator ) );
+			}
+			else
+			{
+				op = new Operator( Type, FirstOperand.Calc( calculator ), SecondOperand.Calc( calculator ) );
+			}
+
+			return Simplify();
+		}
 
 		public static Operand Not( Operand operand )
 		{

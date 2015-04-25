@@ -4,7 +4,7 @@ using System.Linq;
 namespace TableClothKernel.MathFunctions
 {
 	[CalcMethods]
-    static class FGet
+    static partial class Math
     {
 		/// <summary>
 		/// Возвращает список всех переменных в операнде.
@@ -24,7 +24,17 @@ namespace TableClothKernel.MathFunctions
 			});
 			
 			return new OperandList( result.Select( x => new Variable( x ) ) );
-		}	
+		}
+
+		/// <summary>
+		/// Возвращает 2 списка: список переменных и вектор значений функции в порядке списка переменных
+		/// </summary>
+		//public static OperandList GetValuesVector( Operand operand )
+		//{
+		//	var variables = GetVariables( operand );
+		//	 
+		//}
+
 		/*
         /// <summary>
         /// Получает строку фиктивных переменных

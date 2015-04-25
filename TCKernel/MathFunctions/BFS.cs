@@ -7,7 +7,7 @@ namespace TableClothKernel.MathFunctions
 	{
 		public static void BreadthFirstSearch( Operand op, Action<Operand> visitor )
 		{
-			Queue<Operand> q = new Queue<Operand>();
+			var q = new Queue<Operand>();
 			q.Enqueue( op );
 
 			while ( q.Count > 0  )

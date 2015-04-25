@@ -73,15 +73,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base Classes\Calculator.cs" />
-    <Compile Include="Base Classes\CommandProcessor.cs" />
-    <Compile Include="Base Classes\Function.cs" />
-    <Compile Include="Base Classes\Operand.cs" />
-    <Compile Include="Base Classes\OperandList.cs" />
-    <Compile Include="Base Classes\Operator.cs" />
-    <Compile Include="Base Classes\RequestResult.cs" />
-    <Compile Include="Base Classes\Solution.cs" />
-    <Compile Include="Base Classes\TcTokens.cs" />
+    <Compile Include="Base Classes\Commands\Command.cs" />
+    <Compile Include="Base Classes\Commands\UserInput.cs" />
+    <Compile Include="Base Classes\Commands\VariableCommands.cs" />
+    <Compile Include="Base Classes\Operands\Constant.cs" />
+    <Compile Include="Base Classes\Operands\Variable.cs" />
+    <Compile Include="Base Classes\Solution\Calculator.cs" />
+    <Compile Include="Base Classes\Solution\CommandProcessor.cs" />
+    <Compile Include="Base Classes\Operands\Function.cs" />
+    <Compile Include="Base Classes\Operands\Operand.cs" />
+    <Compile Include="Base Classes\Operands\OperandList.cs" />
+    <Compile Include="Base Classes\Operands\Operator.cs" />
+    <Compile Include="Base Classes\Solution\RequestResult.cs" />
+    <Compile Include="Base Classes\Solution\Solution.cs" />
+    <Compile Include="Base Classes\TcToken.cs" />
     <Compile Include="Debug\DebugExpressionTranscription.cs" />
     <Compile Include="Debug\TestForm.cs">
       <SubType>Form</SubType>
@@ -107,7 +112,7 @@
     <Compile Include="Enums\EStringTypes.cs" />
     <Compile Include="Dot\DotGraphPlot.cs" />
     <Compile Include="Base Classes\TcException.cs" />
-    <Compile Include="Base Classes\InputProcessor.cs" />
+    <Compile Include="Base Classes\Solution\InputProcessor.cs" />
     <Compile Include="Enums\EBooleanConstants.cs" />
     <Compile Include="StaticClasses\CalcProvider.cs" />
     <Compile Include="StaticClasses\Information.cs" />
@@ -150,6 +155,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

@@ -28,12 +28,12 @@ namespace TableClothKernel
 
 		public override string ToDebugString()
 		{
-			return DebugExpressionTranscription.GetOperandCurrentTranscription( Root );
+			return Root.ToDebugString();
 		}
 
 		public override string ToExpressionString()
 		{
-			return ExpressionTranscription.GetOperandCurrentTranscription( Root );
+			return Root.ToExpressionString();
 		}
 
 		public static Constant CalcSimplyMonoFunction( EOperator type, Constant constant )
