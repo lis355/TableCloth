@@ -10,13 +10,26 @@ namespace TableClothKernel
 	{
 		public class Graph
 		{
-			public List<TcToken> V;
-			public List<Tuple<TcToken, TcToken>> E;
+			public class Vertex
+			{
+				public TcToken Token { get; set; }
+			}
+
+			public class Edge : Tuple<Vertex, Vertex>
+			{
+				public Edge( Vertex v1, Vertex v2 ) :
+					base( v1, v2 )
+				{
+				}
+			}
+
+			public List<Vertex> V;
+			public List<Edge> E;
 
 			public Graph()
 			{
-				V = new List<TcToken>();
-				E = new List<Tuple<TcToken, TcToken>>();
+				V = new List<Vertex>();
+				E = new List<Edge>();
 			}
 		}
 
@@ -35,25 +48,29 @@ namespace TableClothKernel
 			RecursivePlot( Expression.Root );
 		}
 
-		void RecursivePlot( Operand root )
+		Graph.Vertex RecursivePlot( Operand root )
 		{
-			RootGraph.V.Add( root );
+			var vertex = new Graph.Vertex { Token = root };
+			RootGraph.V.Add( vertex );
 
 			if ( root is Function )
 			{
-				foreach ( var child in ( root as Function ).Operands )
-				{
-					RootGraph.E.Add( new Tuple<TcToken, TcToken>( root, child ) );
-					RecursivePlot( child );
-				}
+				RecursivePlotOperandList( vertex, ( root as Function ).Operands );
 			}
 			else if ( root is OperandList )
 			{
-				foreach ( var child in ( root as OperandList ) )
-				{
-					RootGraph.E.Add( new Tuple<TcToken, TcToken>( root, child ) );
-					RecursivePlot( child );
-				}
+				RecursivePlotOperandList( vertex, root as OperandList );
+			}
+
+			return vertex;
+		}
+
+		void RecursivePlotOperandList( Graph.Vertex root, OperandList operands )
+		{
+			foreach ( var child in operands )
+			{
+				var childVertex = RecursivePlot( child );
+				RootGraph.E.Add( new Graph.Edge( root, childVertex ) );
 			}
 		}
 
@@ -87,9 +104,9 @@ namespace TableClothKernel
 			Dot = writer.ToString();
 		}
 
-		string GetLabelForVertex( TcToken token )
+		string GetLabelForVertex( Graph.Vertex v )
 		{
-			return "\"" + token.ToDebugString() + "\"";
+			return "\"" + v.Token.ToDebugString() + "\"";
 		}
 
 		public void SaveDotAndImage( string dotExe, string pngFile )

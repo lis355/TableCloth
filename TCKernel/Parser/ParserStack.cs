@@ -110,7 +110,7 @@ namespace TableClothKernel
 
         void PushVariable( string name )
         {
-            PushToken( new Variable { Name = name } );
+            PushToken( new Variable( name ) );
         }
 
         void PopVariablePushFunction()

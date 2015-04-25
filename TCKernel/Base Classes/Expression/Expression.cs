@@ -11,7 +11,8 @@ namespace TableClothKernel
     {
 		public Operand Root { get; set; }
 
-		public Expression()
+		public Expression():
+			base()
 		{
 		}
 
@@ -57,12 +58,6 @@ namespace TableClothKernel
 				case EOperator.Pirse: return !( t1 || t2 );
 				default: throw new ArgumentOutOfRangeException( "type" );
 			}
-		}
-
-		public Expression Calc()
-		{
-
-			return this;
 		}
     }
 }

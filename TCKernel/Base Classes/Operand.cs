@@ -25,7 +25,12 @@
 	
 	public class Variable : Operand
 	{
-	    public string Name { set; get; }
+	    public string Name { get; private set; }
+
+		public Variable( string name )
+		{
+			Name = name;
+		}
 	}
 	
 	public class Constant : Operand

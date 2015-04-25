@@ -1,21 +1,31 @@
-﻿namespace TableClothKernel.MathFunctions
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace TableClothKernel.MathFunctions
 {
+	[CalcMethods]
     static class FGet
     {
-        /*
-        /// <summary>
-        /// Указатель на главную форму, нужен чтобы показывать таблицы и схемы
-        /// </summary>
-        static MainForm MForm;
+		/// <summary>
+		/// Возвращает список всех переменных в операнде.
+		/// </summary>
+		public static OperandList GetVariables( Operand operand )
+		{
+			var result = new List<string>();
 
-        /// <summary>
-        /// Инициализация класса для отображения форм схем и таблиц истинности
-        /// </summary>
-        static public void Initialize(MainForm ApplicationForm)
-        {
-            MForm = ApplicationForm;
-        }
-
+			Algorithms.BreadthFirstSearch( operand, x =>
+			{
+				var variable = x as Variable;
+				if ( variable != null 
+					&& !result.Contains( variable.Name ) )
+				{
+					result.Add( variable.Name );
+				}
+			});
+			
+			return new OperandList( result.Select( x => new Variable( x ) ) );
+		}	
+		/*
         /// <summary>
         /// Получает строку фиктивных переменных
         /// </summary>

@@ -79,7 +79,14 @@ namespace TableClothKernel
             }
         }
 
-        public void Clear()
+	    public Expression Find( string name )
+	    {
+			Expression expression;
+			_variablesTable.TryGetValue( name, out expression );
+			return expression;
+	    }
+
+	    public void Clear()
         {
             _variablesTable.Clear();
         }

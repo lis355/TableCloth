@@ -80,21 +80,14 @@ namespace TableClothKernel
 			
 			foreach ( var method in types.SelectMany( x => x.GetMethods() ) )
 			{
-
 				if ( !method.IsPublic
 					|| !method.IsStatic
-					|| method.ReturnType != typeof( Operand ) 
+					|| !typeof( Operand ).IsAssignableFrom( method.ReturnType ) 
 					|| !IsGoodParameters( method.GetParameters(), ref param ) )
 					continue;
 
 				_methods.Add( method.Name, new MethodLink( method, param ) );
 			}
-
-			Calc( "T1" );
-			Calc( "T2", Constant.True );
-			Calc( "T3", Constant.True, Constant.True );
-			Calc( "T4", Constant.True );
-			Calc( "T5", Constant.True );
 		}
 
 		static bool IsGoodParameters( ParameterInfo[] parameters, ref MethodLink.MethodParameters param )
@@ -151,15 +144,50 @@ namespace TableClothKernel
 		public static Operand Calc( string functionName, params Operand[] operands )
 		{
 			var method = GetMethod( functionName );
+			return Calc( method, operands );
+		}
+
+		public static Operand Calc( Function function )
+		{
+			return Calc( function.Name, function.Operands.ToArray() );
+		}
+
+		static Operand Calc( MethodLink method, params Operand[] operands )
+		{
 			return method.Calc( operands );
+		}
+
+		public static Operand TryCalc( Function function )
+		{
+			var method = FindMethod( function.Name );
+			if ( method == null )
+				return function;
+
+			return Calc( method, function.Operands.ToArray() );
+		}
+
+		public static Operand TryCalc( string name, params Operand[] operands )
+		{
+			var method = FindMethod( name );
+			if ( method == null )
+				return null;
+
+			return Calc( method, operands );
 		}
 
 		static MethodLink GetMethod( string functionName )
 		{
-			MethodLink method;
-			if ( !_methods.TryGetValue( functionName, out method ) )
+			var method = FindMethod( functionName );
+			if ( method == null )
 				throw new TcException( "Can't find method " + functionName );
 
+			return method;
+		}
+
+		static MethodLink FindMethod( string functionName )
+		{
+			MethodLink method;
+			_methods.TryGetValue( functionName, out method );
 			return method;
 		}
 	}

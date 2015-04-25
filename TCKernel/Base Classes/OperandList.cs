@@ -12,6 +12,11 @@ namespace TableClothKernel
 			_operands = new List<Operand>();
 		}
 
+		public OperandList( IEnumerable<Operand> operands )
+		{
+			_operands = new List<Operand>( operands );
+		}
+
 		public override void Validate()
 		{
 			foreach ( var operand in _operands )

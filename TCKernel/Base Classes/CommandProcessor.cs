@@ -35,8 +35,8 @@
 
 			expression.Simplify();
 
-            result.Expression = expression.Calc();
-			result.Output = expression.ToExpressionString();
+            result.Expression = _solution.Calculator.Calc( expression );
+			result.Output = result.Expression.ToExpressionString();
 
 			return result;
 		}
