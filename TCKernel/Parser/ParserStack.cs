@@ -105,7 +105,7 @@ namespace TableClothKernel
 
         void PushOperator( EOperator type, params Operand[] operands )
         {
-            PushToken( new Operator( type, operands ) );
+	        PushToken( BinaryOperator.CreateBinaryOperator( type, operands[0], operands[1] ) );
         }
 
         void PushVariable( string name )

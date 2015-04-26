@@ -44,13 +44,13 @@ namespace TableClothKernel
 			}
 			else
 			{
-				if ( SimplyOperatorIsMono( op ) )
+				if ( SimplyOperatorIsNot( op ) )
 				{
-					return PrintDefaultMonoOperator( op );
+					return PrintNotOperator( op as NotOperator );
 				}
 				else
 				{
-					return PrintDefaultBinaryOperator( op );
+					return PrintDefaultBinaryOperator( op as BinaryOperator );
 				}
 			}
 		}
@@ -60,18 +60,18 @@ namespace TableClothKernel
 			return _operatorsTranscription[op.Type][type];
 		}
 
-		public static bool SimplyOperatorIsMono( Operator op )
+		public static bool SimplyOperatorIsNot( Operator op )
 		{
 			return op.Type == EOperator.Not;
 		}
 
-		static string PrintDefaultMonoOperator( Operator op )
+		static string PrintNotOperator( NotOperator op )
 		{
 			return GetSimplyOperatorName( op, Options.OperatorOutType )
-				+ op.FirstOperand.ToExpressionString();
+				+ op.Operand.ToExpressionString();
 		}
 
-		static string PrintDefaultBinaryOperator( Operator op )
+		static string PrintDefaultBinaryOperator( BinaryOperator op )
 		{
 			return _kLeftRoundBracket
 				+ Space()

@@ -78,12 +78,15 @@
     <Compile Include="Base Classes\Commands\VariableCommands.cs" />
     <Compile Include="Base Classes\Operands\Constant.cs" />
     <Compile Include="Base Classes\Operands\Variable.cs" />
+    <Compile Include="Base Classes\Operators\BinaryOperator.cs" />
+    <Compile Include="Base Classes\Operators\BinaryOperators.cs" />
+    <Compile Include="Base Classes\Operators\NotOperator.cs" />
     <Compile Include="Base Classes\Solution\Calculator.cs" />
     <Compile Include="Base Classes\Solution\CommandProcessor.cs" />
     <Compile Include="Base Classes\Operands\Function.cs" />
     <Compile Include="Base Classes\Operands\Operand.cs" />
     <Compile Include="Base Classes\Operands\OperandList.cs" />
-    <Compile Include="Base Classes\Operands\Operator.cs" />
+    <Compile Include="Base Classes\Operators\Operator.cs" />
     <Compile Include="Base Classes\Solution\RequestResult.cs" />
     <Compile Include="Base Classes\Solution\Solution.cs" />
     <Compile Include="Base Classes\TcToken.cs" />
