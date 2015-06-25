@@ -63,7 +63,7 @@ Command =
 	//| GetExpressionTypeCommand .
 
 ExpressionOrDefineVariableCommand =
-	IF ( GetNextTokenKind() != Equal && la.kind != New ) ExpressionCode
+	IF ( GetNextTokenKind() != (int)ETerminal.Equal && la.kind != (int)ETerminal.New ) ExpressionCode
 	| DefineVariableCommand .
 	
 DefineVariableCommand =

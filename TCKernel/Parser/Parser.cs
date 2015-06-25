@@ -11,33 +11,34 @@ public partial class Parser
 
 	public enum ETerminal
 	{
-		EOF,
-		IdentifierString,
-		TrueConstant,
-		FalseConstant,
-		True,
-		False,
-		TrueCaps,
-		FalseCaps,
-		New,
-		Clear,
-		Equal,
-		Not,
-		And,
-		Or,
-		Xor,
-		Equivalence,
-		Implication,
-		Sheffer,
-		Pirse,
-		LeftRoundBracket,
-		RightRoundBracket,
-		LeftListBracket,
-		RightListBracket,
-		EndOfCommand,
-		Comma
+		EOF = 0,
+		IdentifierString = 1,
+		TrueConstant = 2,
+		FalseConstant = 3,
+		True = 4,
+		False = 5,
+		TrueCaps = 6,
+		FalseCaps = 7,
+		New = 8,
+		Clear = 9,
+		Equal = 10,
+		Not = 11,
+		And = 12,
+		Or = 13,
+		Xor = 14,
+		Equivalence = 15,
+		Implication = 16,
+		Sheffer = 17,
+		Pirse = 18,
+		LeftRoundBracket = 19,
+		RightRoundBracket = 20,
+		LeftListBracket = 21,
+		RightListBracket = 22,
+		EndOfCommand = 23,
+		Comma = 24
 	}
 
+	public const int MaxT = 25;
 
 	public enum ENonTerminal
 	{
@@ -67,7 +68,6 @@ public partial class Parser
 		ExpressionEnumeration
 	}
 
-	public const int MaxT = 25;
 
 	const bool T = true;
 	const bool F = false;
@@ -119,9 +119,9 @@ public partial class Parser
 		}
 	}
 	
-	void Expect(int n)
+	void Expect(ETerminal n)
 	{
-		if (la.kind==n) Get(); else { SyntaxError(n); }
+		if (la.kind==(int)n) Get(); else { SyntaxError((int)n); }
 	}
 	
 	bool StartOf(int s)
@@ -129,12 +129,12 @@ public partial class Parser
 		return set[s, la.kind];
 	}
 	
-	void ExpectWeak(int n, int follow)
+	void ExpectWeak(ETerminal n, int follow)
 	{
-		if (la.kind == n) Get();
+		if (la.kind == (int)n) Get();
 		else
 		{
-			SyntaxError(n);
+			SyntaxError((int)n);
 			while (!StartOf(follow)) Get();
 		}
 	}
@@ -165,7 +165,7 @@ public partial class Parser
 	void ManyOrOneCommand() {
 		ProductionBegin( ENonTerminal.ManyOrOneCommand );
 		Command();
-		if (la.kind == EndOfCommand) {
+		if (la.kind == (int)ETerminal.EndOfCommand) {
 			Get();
 			if (StartOf(1)) {
 				ManyOrOneCommand();
@@ -178,7 +178,7 @@ public partial class Parser
 		ProductionBegin( ENonTerminal.Command );
 		if (StartOf(2)) {
 			ExpressionOrDefineVariableCommand();
-		} else if (la.kind == Clear) {
+		} else if (la.kind == (int)ETerminal.Clear) {
 			DeleteVariableCommand();
 		} else SyntaxError(26);
 		ProductionEnd( ENonTerminal.Command );
@@ -186,9 +186,9 @@ public partial class Parser
 
 	void ExpressionOrDefineVariableCommand() {
 		ProductionBegin( ENonTerminal.ExpressionOrDefineVariableCommand );
-		if (GetNextTokenKind() != Equal && la.kind != New ) {
+		if (GetNextTokenKind() != (int)ETerminal.Equal && la.kind != (int)ETerminal.New ) {
 			ExpressionCode();
-		} else if (la.kind == IdentifierString || la.kind == New) {
+		} else if (la.kind == (int)ETerminal.IdentifierString || la.kind == (int)ETerminal.New) {
 			DefineVariableCommand();
 		} else SyntaxError(27);
 		ProductionEnd( ENonTerminal.ExpressionOrDefineVariableCommand );
@@ -196,10 +196,10 @@ public partial class Parser
 
 	void DeleteVariableCommand() {
 		ProductionBegin( ENonTerminal.DeleteVariableCommand );
-		Expect(Clear);
-		Expect(LeftRoundBracket);
+		Expect(ETerminal.Clear);
+		Expect(ETerminal.LeftRoundBracket);
 		Identifier();
-		Expect(RightRoundBracket);
+		Expect(ETerminal.RightRoundBracket);
 		ProductionEnd( ENonTerminal.DeleteVariableCommand );
 	}
 
@@ -211,24 +211,24 @@ public partial class Parser
 
 	void DefineVariableCommand() {
 		ProductionBegin( ENonTerminal.DefineVariableCommand );
-		if (la.kind == IdentifierString) {
+		if (la.kind == (int)ETerminal.IdentifierString) {
 			Identifier();
-			Expect(Equal);
+			Expect(ETerminal.Equal);
 			ExpressionCode();
-		} else if (la.kind == New) {
+		} else if (la.kind == (int)ETerminal.New) {
 			Get();
-			Expect(LeftRoundBracket);
+			Expect(ETerminal.LeftRoundBracket);
 			Identifier();
-			Expect(Comma);
+			Expect(ETerminal.Comma);
 			ExpressionCode();
-			Expect(RightRoundBracket);
+			Expect(ETerminal.RightRoundBracket);
 		} else SyntaxError(28);
 		ProductionEnd( ENonTerminal.DefineVariableCommand );
 	}
 
 	void Identifier() {
 		ProductionBegin( ENonTerminal.Identifier );
-		Expect(IdentifierString);
+		Expect(ETerminal.IdentifierString);
 		ProductionEnd( ENonTerminal.Identifier );
 	}
 
@@ -236,7 +236,7 @@ public partial class Parser
 		ProductionBegin( ENonTerminal.ExpressionOrListOfExpression );
 		if (StartOf(3)) {
 			Expression();
-		} else if (la.kind == LeftListBracket) {
+		} else if (la.kind == (int)ETerminal.LeftListBracket) {
 			ListOfExpression();
 		} else SyntaxError(29);
 		ProductionEnd( ENonTerminal.ExpressionOrListOfExpression );
@@ -245,8 +245,8 @@ public partial class Parser
 	void Expression() {
 		ProductionBegin( ENonTerminal.Expression );
 		EquImplExpression();
-		if (la.kind == Sheffer || la.kind == Pirse) {
-			if (la.kind == Pirse) {
+		if (la.kind == (int)ETerminal.Sheffer || la.kind == (int)ETerminal.Pirse) {
+			if (la.kind == (int)ETerminal.Pirse) {
 				Get();
 				Expression();
 				PushPirse(); 
@@ -261,19 +261,19 @@ public partial class Parser
 
 	void ListOfExpression() {
 		ProductionBegin( ENonTerminal.ListOfExpression );
-		Expect(LeftListBracket);
+		Expect(ETerminal.LeftListBracket);
 		if (StartOf(4)) {
 			ExpressionEnumeration();
 		}
-		Expect(RightListBracket);
+		Expect(ETerminal.RightListBracket);
 		ProductionEnd( ENonTerminal.ListOfExpression );
 	}
 
 	void EquImplExpression() {
 		ProductionBegin( ENonTerminal.EquImplExpression );
 		XorExpression();
-		if (la.kind == Equivalence || la.kind == Implication) {
-			if (la.kind == Equivalence) {
+		if (la.kind == (int)ETerminal.Equivalence || la.kind == (int)ETerminal.Implication) {
+			if (la.kind == (int)ETerminal.Equivalence) {
 				Get();
 				EquImplExpression();
 				PushEquivalence(); 
@@ -289,7 +289,7 @@ public partial class Parser
 	void XorExpression() {
 		ProductionBegin( ENonTerminal.XorExpression );
 		OrExpression();
-		if (la.kind == Xor) {
+		if (la.kind == (int)ETerminal.Xor) {
 			Get();
 			XorExpression();
 			PushXor(); 
@@ -300,7 +300,7 @@ public partial class Parser
 	void OrExpression() {
 		ProductionBegin( ENonTerminal.OrExpression );
 		AndExpression();
-		if (la.kind == Or) {
+		if (la.kind == (int)ETerminal.Or) {
 			Get();
 			OrExpression();
 			PushOr(); 
@@ -311,7 +311,7 @@ public partial class Parser
 	void AndExpression() {
 		ProductionBegin( ENonTerminal.AndExpression );
 		NotExpression();
-		if (la.kind == And) {
+		if (la.kind == (int)ETerminal.And) {
 			Get();
 			AndExpression();
 			PushAnd(); 
@@ -323,7 +323,7 @@ public partial class Parser
 		ProductionBegin( ENonTerminal.NotExpression );
 		if (StartOf(5)) {
 			SimplyExpression();
-		} else if (la.kind == Not) {
+		} else if (la.kind == (int)ETerminal.Not) {
 			Get();
 			NotExpression();
 			PushNot(); 
@@ -333,14 +333,14 @@ public partial class Parser
 
 	void SimplyExpression() {
 		ProductionBegin( ENonTerminal.SimplyExpression );
-		if (la.kind == IdentifierString) {
+		if (la.kind == (int)ETerminal.IdentifierString) {
 			IdentifierOrFunction();
 		} else if (StartOf(6)) {
 			Constant();
-		} else if (la.kind == LeftRoundBracket) {
+		} else if (la.kind == (int)ETerminal.LeftRoundBracket) {
 			Get();
 			Expression();
-			Expect(RightRoundBracket);
+			Expect(ETerminal.RightRoundBracket);
 		} else SyntaxError(31);
 		ProductionEnd( ENonTerminal.SimplyExpression );
 	}
@@ -348,7 +348,7 @@ public partial class Parser
 	void IdentifierOrFunction() {
 		ProductionBegin( ENonTerminal.IdentifierOrFunction );
 		Identifier();
-		if (la.kind == LeftRoundBracket) {
+		if (la.kind == (int)ETerminal.LeftRoundBracket) {
 			FunctionBracketsAndArguments();
 		}
 		ProductionEnd( ENonTerminal.IdentifierOrFunction );
@@ -356,9 +356,9 @@ public partial class Parser
 
 	void Constant() {
 		ProductionBegin( ENonTerminal.Constant );
-		if (la.kind == TrueConstant || la.kind == True || la.kind == TrueCaps) {
+		if (la.kind == (int)ETerminal.TrueConstant || la.kind == (int)ETerminal.True || la.kind == (int)ETerminal.TrueCaps) {
 			ConstantT();
-		} else if (la.kind == FalseConstant || la.kind == False || la.kind == FalseCaps) {
+		} else if (la.kind == (int)ETerminal.FalseConstant || la.kind == (int)ETerminal.False || la.kind == (int)ETerminal.FalseCaps) {
 			ConstantF();
 		} else SyntaxError(32);
 		ProductionEnd( ENonTerminal.Constant );
@@ -366,21 +366,21 @@ public partial class Parser
 
 	void FunctionBracketsAndArguments() {
 		ProductionBegin( ENonTerminal.FunctionBracketsAndArguments );
-		Expect(LeftRoundBracket);
+		Expect(ETerminal.LeftRoundBracket);
 		if (StartOf(4)) {
 			ListOfArguments();
 		}
-		Expect(RightRoundBracket);
+		Expect(ETerminal.RightRoundBracket);
 		ProductionEnd( ENonTerminal.FunctionBracketsAndArguments );
 	}
 
 	void ConstantT() {
 		ProductionBegin( ENonTerminal.ConstantT );
-		if (la.kind == True) {
+		if (la.kind == (int)ETerminal.True) {
 			Get();
-		} else if (la.kind == TrueCaps) {
+		} else if (la.kind == (int)ETerminal.TrueCaps) {
 			Get();
-		} else if (la.kind == TrueConstant) {
+		} else if (la.kind == (int)ETerminal.TrueConstant) {
 			Get();
 		} else SyntaxError(33);
 		ProductionEnd( ENonTerminal.ConstantT );
@@ -388,11 +388,11 @@ public partial class Parser
 
 	void ConstantF() {
 		ProductionBegin( ENonTerminal.ConstantF );
-		if (la.kind == False) {
+		if (la.kind == (int)ETerminal.False) {
 			Get();
-		} else if (la.kind == FalseCaps) {
+		} else if (la.kind == (int)ETerminal.FalseCaps) {
 			Get();
-		} else if (la.kind == FalseConstant) {
+		} else if (la.kind == (int)ETerminal.FalseConstant) {
 			Get();
 		} else SyntaxError(34);
 		ProductionEnd( ENonTerminal.ConstantF );
@@ -402,7 +402,7 @@ public partial class Parser
 		ProductionBegin( ENonTerminal.ListOfArguments );
 		ExpressionOrListOfExpression();
 		PushArgumentToFunction(); 
-		if (la.kind == Comma) {
+		if (la.kind == (int)ETerminal.Comma) {
 			Get();
 			ListOfArguments();
 		}
@@ -413,7 +413,7 @@ public partial class Parser
 		ProductionBegin( ENonTerminal.ExpressionEnumeration );
 		ExpressionOrListOfExpression();
 		PushExpressionToList(); 
-		if (la.kind == Comma) {
+		if (la.kind == (int)ETerminal.Comma) {
 			Get();
 			ExpressionEnumeration();
 		}
@@ -437,7 +437,7 @@ public partial class Parser
 		la.val = "";		
 		Get();
 		TableCloth();
-		Expect(EOF);
+		Expect(ETerminal.EOF);
 
 	}
 	

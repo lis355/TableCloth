@@ -57,9 +57,9 @@ public partial class Parser
 		}
 	}
 	
-	void Expect(int n)
+	void Expect(ETerminal n)
 	{
-		if (la.kind==n) Get(); else { SyntaxError(n); }
+		if (la.kind==(int)n) Get(); else { SyntaxError((int)n); }
 	}
 	
 	bool StartOf(int s)
@@ -67,12 +67,12 @@ public partial class Parser
 		return set[s, la.kind];
 	}
 	
-	void ExpectWeak(int n, int follow)
+	void ExpectWeak(ETerminal n, int follow)
 	{
-		if (la.kind == n) Get();
+		if (la.kind == (int)n) Get();
 		else
 		{
-			SyntaxError(n);
+			SyntaxError((int)n);
 			while (!StartOf(follow)) Get();
 		}
 	}

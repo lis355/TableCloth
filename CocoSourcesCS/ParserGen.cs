@@ -153,7 +153,7 @@ public class ParserGen {
 			else if (n <= maxTerm)
 				foreach (Symbol sym in tab.terminals) {
 					if (s[sym.n]) {
-                        gen.Write( "la.kind == {0}", sym.name );
+                        gen.Write( "la.kind == (int)ETerminal.{0}", sym.name );
 						--n;
 						if (n > 0) gen.Write(" || ");
 					}
@@ -184,14 +184,14 @@ public class ParserGen {
 					Indent(indent);
 					// assert: if isChecked[p.sym.n] is true, then isChecked contains only p.sym.n
 					if (isChecked[p.sym.n]) gen.WriteLine("Get();");
-					else gen.WriteLine("Expect({0});", p.sym.name );
+					else gen.WriteLine("Expect(ETerminal.{0});", p.sym.name );
 					break;
 				}
 				case Node.wt: {
 					Indent(indent);
 					s1 = tab.Expected(p.next, curSy);
 					s1.Or(tab.allSyncSets);
-					gen.WriteLine("ExpectWeak({0}, {1});", p.sym.name , NewCondSet(s1));
+					gen.WriteLine("ExpectWeak({ETerminal.{0}, {1});", p.sym.name , NewCondSet(s1));
 					break;
 				}
 				case Node.any: {
@@ -300,13 +300,16 @@ public class ParserGen {
             return;
 
 		var terminalslist = tab.terminals.Where( x => Char.IsLetter( x.name[0] ) ).
-			Select( x => x.name ).ToList();
+			Select( x => x.name + " = " + x.n ).ToList();
 
 		gen.WriteLine();
         gen.WriteLine( "\tpublic enum ETerminal" );
         gen.WriteLine( "\t{" );
         gen.WriteLine( "\t\t{0}", String.Join( "," + CR + LF + "\t\t", terminalslist ) );
         gen.WriteLine( "\t}" + CR + LF );
+
+		
+		gen.WriteLine("\tpublic const int MaxT = {0};", terminalslist.Count() );
 
 		//foreach (Symbol sym in tab.terminals)
         //{
@@ -339,7 +342,7 @@ public class ParserGen {
     {
 		foreach (Symbol sym in tab.pragmas)
         {
-			gen.WriteLine("\t\t\t\tif (la.kind == {0}) {{", sym.name /*n*/ );
+			gen.WriteLine("\t\t\t\tif (la.kind == (int)ETerminal.{0}) {{", sym.name /*n*/ );
 			CopySourcePart(sym.semPos, 4);
 			gen.WriteLine("\t\t\t\t}");
 		}
@@ -397,14 +400,13 @@ public class ParserGen {
 		g.CopyFramePart("-->constants");
 		GenTokens();
         GenNonterminals();
-		gen.WriteLine("\tpublic const int MaxT = {0};", tab.terminals.Count-1);
 		GenPragmas(); /* ML 2005/09/23 write the pragma kinds */
 		g.CopyFramePart("-->declarations"); CopySourcePart(tab.semDeclPos, 0);
 		g.CopyFramePart("-->pragmas"); GenCodePragmas();
 		g.CopyFramePart("-->productions"); GenProductions(true);
 		g.CopyFramePart("-->parseRoot");
         gen.WriteLine("\t\t{0}();", tab.gramSy.name);
-        if (tab.checkEOF) gen.WriteLine("\t\tExpect({0});", ((Symbol)tab.terminals[0]).name );
+        if (tab.checkEOF) gen.WriteLine("\t\tExpect(ETerminal.{0});", ((Symbol)tab.terminals[0]).name );
 		g.CopyFramePart("-->initialization"); InitSets();
 		g.CopyFramePart("-->errors"); gen.Write(err.ToString());
 		g.CopyFramePart(null);
