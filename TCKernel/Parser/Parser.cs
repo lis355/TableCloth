@@ -8,31 +8,36 @@ namespace TableClothKernel
 
 public partial class Parser
 {
-	const int EOF = 0;
-	const int IdentifierString = 1;
-	const int TrueConstant = 2;
-	const int FalseConstant = 3;
-	const int True = 4;
-	const int False = 5;
-	const int TrueCaps = 6;
-	const int FalseCaps = 7;
-	const int New = 8;
-	const int Clear = 9;
-	const int Equal = 10;
-	const int Not = 11;
-	const int And = 12;
-	const int Or = 13;
-	const int Xor = 14;
-	const int Equivalence = 15;
-	const int Implication = 16;
-	const int Sheffer = 17;
-	const int Pirse = 18;
-	const int LeftRoundBracket = 19;
-	const int RightRoundBracket = 20;
-	const int LeftListBracket = 21;
-	const int RightListBracket = 22;
-	const int EndOfCommand = 23;
-	const int Comma = 24;
+
+	public enum ETerminal
+	{
+		EOF,
+		IdentifierString,
+		TrueConstant,
+		FalseConstant,
+		True,
+		False,
+		TrueCaps,
+		FalseCaps,
+		New,
+		Clear,
+		Equal,
+		Not,
+		And,
+		Or,
+		Xor,
+		Equivalence,
+		Implication,
+		Sheffer,
+		Pirse,
+		LeftRoundBracket,
+		RightRoundBracket,
+		LeftListBracket,
+		RightListBracket,
+		EndOfCommand,
+		Comma
+	}
+
 
 	public enum ENonTerminal
 	{
@@ -62,7 +67,7 @@ public partial class Parser
 		ExpressionEnumeration
 	}
 
-	public const int maxT = 25;
+	public const int MaxT = 25;
 
 	const bool T = true;
 	const bool F = false;
@@ -90,15 +95,15 @@ public partial class Parser
         Errors = new ParserErrors();
     }
 
-	void SynErr(int n)
+	void SyntaxError(int n)
 	{
-		if (errDist >= minErrDist) Errors.SynErr(la.line, la.col, n);
+		if (errDist >= minErrDist) Errors.SyntaxError(la.line, la.col, n);
 		errDist = 0;
 	}
 
-	void SemErr(string msg)
+	void SemanticError(string msg)
 	{
-		if (errDist >= minErrDist) Errors.SemErr(t.line, t.col, msg);
+		if (errDist >= minErrDist) Errors.SemanticError(t.line, t.col, msg);
 		errDist = 0;
 	}
 	
@@ -108,7 +113,7 @@ public partial class Parser
 		{
 			t = la;
 			la = _scanner.Scan();
-			if (la.kind <= maxT) { ++errDist; break; }
+			if (la.kind <= MaxT) { ++errDist; break; }
 
 			la = t;
 		}
@@ -116,7 +121,7 @@ public partial class Parser
 	
 	void Expect(int n)
 	{
-		if (la.kind==n) Get(); else { SynErr(n); }
+		if (la.kind==n) Get(); else { SyntaxError(n); }
 	}
 	
 	bool StartOf(int s)
@@ -129,7 +134,7 @@ public partial class Parser
 		if (la.kind == n) Get();
 		else
 		{
-			SynErr(n);
+			SyntaxError(n);
 			while (!StartOf(follow)) Get();
 		}
 	}
@@ -141,7 +146,7 @@ public partial class Parser
 		else if (StartOf(repFol)) {return false;}
 		else 
 		{
-			SynErr(n);
+			SyntaxError(n);
 			while (!(set[syFol, kind] || set[repFol, kind] || set[0, kind])) 
 			{
 				Get();
@@ -175,7 +180,7 @@ public partial class Parser
 			ExpressionOrDefineVariableCommand();
 		} else if (la.kind == Clear) {
 			DeleteVariableCommand();
-		} else SynErr(26);
+		} else SyntaxError(26);
 		ProductionEnd( ENonTerminal.Command );
 	}
 
@@ -185,7 +190,7 @@ public partial class Parser
 			ExpressionCode();
 		} else if (la.kind == IdentifierString || la.kind == New) {
 			DefineVariableCommand();
-		} else SynErr(27);
+		} else SyntaxError(27);
 		ProductionEnd( ENonTerminal.ExpressionOrDefineVariableCommand );
 	}
 
@@ -217,7 +222,7 @@ public partial class Parser
 			Expect(Comma);
 			ExpressionCode();
 			Expect(RightRoundBracket);
-		} else SynErr(28);
+		} else SyntaxError(28);
 		ProductionEnd( ENonTerminal.DefineVariableCommand );
 	}
 
@@ -233,7 +238,7 @@ public partial class Parser
 			Expression();
 		} else if (la.kind == LeftListBracket) {
 			ListOfExpression();
-		} else SynErr(29);
+		} else SyntaxError(29);
 		ProductionEnd( ENonTerminal.ExpressionOrListOfExpression );
 	}
 
@@ -322,7 +327,7 @@ public partial class Parser
 			Get();
 			NotExpression();
 			PushNot(); 
-		} else SynErr(30);
+		} else SyntaxError(30);
 		ProductionEnd( ENonTerminal.NotExpression );
 	}
 
@@ -336,7 +341,7 @@ public partial class Parser
 			Get();
 			Expression();
 			Expect(RightRoundBracket);
-		} else SynErr(31);
+		} else SyntaxError(31);
 		ProductionEnd( ENonTerminal.SimplyExpression );
 	}
 
@@ -355,7 +360,7 @@ public partial class Parser
 			ConstantT();
 		} else if (la.kind == FalseConstant || la.kind == False || la.kind == FalseCaps) {
 			ConstantF();
-		} else SynErr(32);
+		} else SyntaxError(32);
 		ProductionEnd( ENonTerminal.Constant );
 	}
 
@@ -377,7 +382,7 @@ public partial class Parser
 			Get();
 		} else if (la.kind == TrueConstant) {
 			Get();
-		} else SynErr(33);
+		} else SyntaxError(33);
 		ProductionEnd( ENonTerminal.ConstantT );
 	}
 
@@ -389,7 +394,7 @@ public partial class Parser
 			Get();
 		} else if (la.kind == FalseConstant) {
 			Get();
-		} else SynErr(34);
+		} else SyntaxError(34);
 		ProductionEnd( ENonTerminal.ConstantF );
 	}
 
@@ -449,7 +454,7 @@ public partial class Parser
 	};
 }
 
-public class ParserErrors
+public sealed class ParserErrors
 {
     public int TotalErrorsAmount { get; set; }
     public int TotalWarningsAmount { get; set; }
@@ -485,7 +490,7 @@ public class ParserErrors
         TotalWarningsAmount = 0;
     }
 	
-    public virtual void SynErr( int line, int col, int n )
+    public void SyntaxError( int line, int col, int n )
     {
 		string s;
 
@@ -537,7 +542,7 @@ public class ParserErrors
         }
 	}
 
-    public virtual void SemErr( int line, int col, string s )
+    public void SemanticError( int line, int col, string s )
     {
         TotalErrorsAmount++;
         if ( Message != null )
@@ -546,7 +551,7 @@ public class ParserErrors
         }
     }
 
-    public virtual void SemErr( string s )
+    public void SemanticError( string s )
     {
         TotalErrorsAmount++;
         if ( Message != null )
@@ -555,7 +560,7 @@ public class ParserErrors
         }
     }
 
-    public virtual void Warning( int line, int col, string s )
+    public void Warning( int line, int col, string s )
     {
         TotalWarningsAmount++;
         if ( Message != null )
@@ -564,7 +569,7 @@ public class ParserErrors
         }
     }
 
-    public virtual void Warning( string s )
+    public void Warning( string s )
     {
         TotalWarningsAmount++;
         if ( Message != null )

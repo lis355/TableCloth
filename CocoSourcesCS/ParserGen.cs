@@ -57,6 +57,9 @@ public class ParserGen {
 	TextWriter trace;
 	Errors errors;
 	Buffer buffer;
+
+	const string kSynErr = "SyntaxError";
+	const string kSemErr = "SemanticError";
 	
 	void Indent (int n) {
 		for (int i = 1; i <= n; i++) gen.Write('\t');
@@ -200,8 +203,8 @@ public class ParserGen {
 					} else {
 						GenErrorMsg(altErr, curSy);
 						if (acc > 0) {
-							gen.Write("if ("); GenCond(p.set, p); gen.WriteLine(") Get(); else SynErr({0});", errorNr);
-						} else gen.WriteLine("SynErr({0}); // ANY node that matches no symbol", errorNr);
+							gen.Write("if ("); GenCond(p.set, p); gen.WriteLine(") Get(); else "+kSynErr+"({0});", errorNr);
+						} else gen.WriteLine(kSynErr+"({0}); // ANY node that matches no symbol", errorNr);
 					}
 					break;
 				}
@@ -216,7 +219,7 @@ public class ParserGen {
 					GenErrorMsg(syncErr, curSy);
 					s1 = (BitArray)p.set.Clone();
 					gen.Write("while (!("); GenCond(s1, p); gen.Write(")) {");
-					gen.Write("SynErr({0}); Get();", errorNr); gen.WriteLine("}");
+					gen.Write(kSynErr+"({0}); Get();", errorNr); gen.WriteLine("}");
 					break;
 				}
 				case Node.alt: {
@@ -249,10 +252,10 @@ public class ParserGen {
 					} else {
 						GenErrorMsg(altErr, curSy);
 						if (useSwitch) {
-							gen.WriteLine("default: SynErr({0}); break;", errorNr);
+							gen.WriteLine("default: "+kSynErr+"({0}); break;", errorNr);
 							Indent(indent); gen.WriteLine("}");
 						} else {
-							gen.Write("} "); gen.WriteLine("else SynErr({0});", errorNr);
+							gen.Write("} "); gen.WriteLine("else "+kSynErr+"({0});", errorNr);
 						}
 					}
 					break;
@@ -293,11 +296,23 @@ public class ParserGen {
 	
 	void GenTokens() 
     {
-		foreach (Symbol sym in tab.terminals)
-        {
-			if (Char.IsLetter(sym.name[0]))
-				gen.WriteLine("\tconst int {0} = {1};", sym.name, sym.n);
-		}
+		if ( tab.terminals.Count == 0 )
+            return;
+
+		var terminalslist = tab.terminals.Where( x => Char.IsLetter( x.name[0] ) ).
+			Select( x => x.name ).ToList();
+
+		gen.WriteLine();
+        gen.WriteLine( "\tpublic enum ETerminal" );
+        gen.WriteLine( "\t{" );
+        gen.WriteLine( "\t\t{0}", String.Join( "," + CR + LF + "\t\t", terminalslist ) );
+        gen.WriteLine( "\t}" + CR + LF );
+
+		//foreach (Symbol sym in tab.terminals)
+        //{
+		//	if (Char.IsLetter(sym.name[0]))
+		//		gen.WriteLine("\tconst int {0} = {1};", sym.name, sym.n);
+		//}
 	}
 
     void GenNonterminals()
@@ -382,7 +397,7 @@ public class ParserGen {
 		g.CopyFramePart("-->constants");
 		GenTokens();
         GenNonterminals();
-		gen.WriteLine("\tpublic const int maxT = {0};", tab.terminals.Count-1);
+		gen.WriteLine("\tpublic const int MaxT = {0};", tab.terminals.Count-1);
 		GenPragmas(); /* ML 2005/09/23 write the pragma kinds */
 		g.CopyFramePart("-->declarations"); CopySourcePart(tab.semDeclPos, 0);
 		g.CopyFramePart("-->pragmas"); GenCodePragmas();

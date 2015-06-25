@@ -33,15 +33,15 @@ public partial class Parser
         Errors = new ParserErrors();
     }
 
-	void SynErr(int n)
+	void SyntaxError(int n)
 	{
-		if (errDist >= minErrDist) Errors.SynErr(la.line, la.col, n);
+		if (errDist >= minErrDist) Errors.SyntaxError(la.line, la.col, n);
 		errDist = 0;
 	}
 
-	void SemErr(string msg)
+	void SemanticError(string msg)
 	{
-		if (errDist >= minErrDist) Errors.SemErr(t.line, t.col, msg);
+		if (errDist >= minErrDist) Errors.SemanticError(t.line, t.col, msg);
 		errDist = 0;
 	}
 	
@@ -51,7 +51,7 @@ public partial class Parser
 		{
 			t = la;
 			la = _scanner.Scan();
-			if (la.kind <= maxT) { ++errDist; break; }
+			if (la.kind <= MaxT) { ++errDist; break; }
 -->pragmas
 			la = t;
 		}
@@ -59,7 +59,7 @@ public partial class Parser
 	
 	void Expect(int n)
 	{
-		if (la.kind==n) Get(); else { SynErr(n); }
+		if (la.kind==n) Get(); else { SyntaxError(n); }
 	}
 	
 	bool StartOf(int s)
@@ -72,7 +72,7 @@ public partial class Parser
 		if (la.kind == n) Get();
 		else
 		{
-			SynErr(n);
+			SyntaxError(n);
 			while (!StartOf(follow)) Get();
 		}
 	}
@@ -84,7 +84,7 @@ public partial class Parser
 		else if (StartOf(repFol)) {return false;}
 		else 
 		{
-			SynErr(n);
+			SyntaxError(n);
 			while (!(set[syFol, kind] || set[repFol, kind] || set[0, kind])) 
 			{
 				Get();
@@ -119,7 +119,7 @@ public partial class Parser
 	};
 }
 
-public class ParserErrors
+public sealed class ParserErrors
 {
     public int TotalErrorsAmount { get; set; }
     public int TotalWarningsAmount { get; set; }
@@ -155,7 +155,7 @@ public class ParserErrors
         TotalWarningsAmount = 0;
     }
 	
-    public virtual void SynErr( int line, int col, int n )
+    public void SyntaxError( int line, int col, int n )
     {
 		string s;
 
@@ -172,7 +172,7 @@ public class ParserErrors
         }
 	}
 
-    public virtual void SemErr( int line, int col, string s )
+    public void SemanticError( int line, int col, string s )
     {
         TotalErrorsAmount++;
         if ( Message != null )
@@ -181,7 +181,7 @@ public class ParserErrors
         }
     }
 
-    public virtual void SemErr( string s )
+    public void SemanticError( string s )
     {
         TotalErrorsAmount++;
         if ( Message != null )
@@ -190,7 +190,7 @@ public class ParserErrors
         }
     }
 
-    public virtual void Warning( int line, int col, string s )
+    public void Warning( int line, int col, string s )
     {
         TotalWarningsAmount++;
         if ( Message != null )
@@ -199,7 +199,7 @@ public class ParserErrors
         }
     }
 
-    public virtual void Warning( string s )
+    public void Warning( string s )
     {
         TotalWarningsAmount++;
         if ( Message != null )
