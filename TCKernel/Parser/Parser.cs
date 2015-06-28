@@ -42,30 +42,30 @@ public partial class Parser
 
 	public enum ENonTerminal
 	{
-		TableCloth,
-		ManyOrOneCommand,
-		Command,
-		ExpressionOrDefineVariableCommand,
-		DeleteVariableCommand,
-		ExpressionCode,
-		DefineVariableCommand,
-		Identifier,
-		ExpressionOrListOfExpression,
-		Expression,
-		ListOfExpression,
-		EquImplExpression,
-		XorExpression,
-		OrExpression,
-		AndExpression,
-		NotExpression,
-		SimplyExpression,
-		IdentifierOrFunction,
-		Constant,
-		FunctionBracketsAndArguments,
-		ConstantT,
-		ConstantF,
-		ListOfArguments,
-		ExpressionEnumeration
+		TableCloth = 0,
+		ManyOrOneCommand = 1,
+		Command = 2,
+		ExpressionOrDefineVariableCommand = 3,
+		DeleteVariableCommand = 4,
+		ExpressionCode = 5,
+		DefineVariableCommand = 6,
+		Identifier = 7,
+		ExpressionOrListOfExpression = 8,
+		Expression = 9,
+		ListOfExpression = 10,
+		EquImplExpression = 11,
+		XorExpression = 12,
+		OrExpression = 13,
+		AndExpression = 14,
+		NotExpression = 15,
+		SimplyExpression = 16,
+		IdentifierOrFunction = 17,
+		Constant = 18,
+		FunctionBracketsAndArguments = 19,
+		ConstantT = 20,
+		ConstantF = 21,
+		ListOfArguments = 22,
+		ExpressionEnumeration = 23
 	}
 
 
@@ -461,8 +461,17 @@ public sealed class ParserErrors
 
     public enum EType 
     {
-        Error,
+        SyntaxError,
+		SemanticError,
         Warning
+    }
+	
+	public enum ESyntaxErrorType 
+    {
+		Unknown,
+        TokenExpected,
+		UnknownTokenExpected,
+        InvalidToken
     }
 
     public struct Data
@@ -473,6 +482,10 @@ public sealed class ParserErrors
         public EType Type;
 
         public string Text;
+		
+		public ESyntaxErrorType SyntaxErrorType;
+		public Parser.ETerminal? SyntaxErrorTerminal;
+		public Parser.ENonTerminal? SyntaxErrorNonTerminal;
     }
 
     public delegate void MessageDelegate( Data data );
@@ -492,77 +505,87 @@ public sealed class ParserErrors
 	
     public void SyntaxError( int line, int col, int n )
     {
-		string s;
-
-		switch ( n )
+		//string s = "";
+		
+		ESyntaxErrorType syntaxErrorType = ESyntaxErrorType.Unknown;
+		Parser.ETerminal? syntaxErrorTerminal = null;
+		Parser.ENonTerminal? syntaxErrorNonTerminal = null;
+		
+		switch(n)
 		{
-			case 0: s = "EOF expected"; break;
-			case 1: s = "IdentifierString expected"; break;
-			case 2: s = "TrueConstant expected"; break;
-			case 3: s = "FalseConstant expected"; break;
-			case 4: s = "True expected"; break;
-			case 5: s = "False expected"; break;
-			case 6: s = "TrueCaps expected"; break;
-			case 7: s = "FalseCaps expected"; break;
-			case 8: s = "New expected"; break;
-			case 9: s = "Clear expected"; break;
-			case 10: s = "Equal expected"; break;
-			case 11: s = "Not expected"; break;
-			case 12: s = "And expected"; break;
-			case 13: s = "Or expected"; break;
-			case 14: s = "Xor expected"; break;
-			case 15: s = "Equivalence expected"; break;
-			case 16: s = "Implication expected"; break;
-			case 17: s = "Sheffer expected"; break;
-			case 18: s = "Pirse expected"; break;
-			case 19: s = "LeftRoundBracket expected"; break;
-			case 20: s = "RightRoundBracket expected"; break;
-			case 21: s = "LeftListBracket expected"; break;
-			case 22: s = "RightListBracket expected"; break;
-			case 23: s = "EndOfCommand expected"; break;
-			case 24: s = "Comma expected"; break;
-			case 25: s = "??? expected"; break;
-			case 26: s = "invalid Command"; break;
-			case 27: s = "invalid ExpressionOrDefineVariableCommand"; break;
-			case 28: s = "invalid DefineVariableCommand"; break;
-			case 29: s = "invalid ExpressionOrListOfExpression"; break;
-			case 30: s = "invalid NotExpression"; break;
-			case 31: s = "invalid SimplyExpression"; break;
-			case 32: s = "invalid Constant"; break;
-			case 33: s = "invalid ConstantT"; break;
-			case 34: s = "invalid ConstantF"; break;
+			case 0:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.EOF;break;
+			case 1:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.IdentifierString;break;
+			case 2:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.TrueConstant;break;
+			case 3:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.FalseConstant;break;
+			case 4:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.True;break;
+			case 5:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.False;break;
+			case 6:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.TrueCaps;break;
+			case 7:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.FalseCaps;break;
+			case 8:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.New;break;
+			case 9:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.Clear;break;
+			case 10:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.Equal;break;
+			case 11:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.Not;break;
+			case 12:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.And;break;
+			case 13:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.Or;break;
+			case 14:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.Xor;break;
+			case 15:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.Equivalence;break;
+			case 16:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.Implication;break;
+			case 17:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.Sheffer;break;
+			case 18:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.Pirse;break;
+			case 19:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.LeftRoundBracket;break;
+			case 20:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.RightRoundBracket;break;
+			case 21:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.LeftListBracket;break;
+			case 22:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.RightListBracket;break;
+			case 23:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.EndOfCommand;break;
+			case 24:syntaxErrorType = ESyntaxErrorType.TokenExpected;syntaxErrorTerminal = Parser.ETerminal.Comma;break;
+			case 25:syntaxErrorType = ESyntaxErrorType.UnknownTokenExpected;break;
+			case 26:syntaxErrorType = ESyntaxErrorType.InvalidToken;syntaxErrorNonTerminal = Parser.ENonTerminal.Command;break;
+			case 27:syntaxErrorType = ESyntaxErrorType.InvalidToken;syntaxErrorNonTerminal = Parser.ENonTerminal.ExpressionOrDefineVariableCommand;break;
+			case 28:syntaxErrorType = ESyntaxErrorType.InvalidToken;syntaxErrorNonTerminal = Parser.ENonTerminal.DefineVariableCommand;break;
+			case 29:syntaxErrorType = ESyntaxErrorType.InvalidToken;syntaxErrorNonTerminal = Parser.ENonTerminal.ExpressionOrListOfExpression;break;
+			case 30:syntaxErrorType = ESyntaxErrorType.InvalidToken;syntaxErrorNonTerminal = Parser.ENonTerminal.NotExpression;break;
+			case 31:syntaxErrorType = ESyntaxErrorType.InvalidToken;syntaxErrorNonTerminal = Parser.ENonTerminal.SimplyExpression;break;
+			case 32:syntaxErrorType = ESyntaxErrorType.InvalidToken;syntaxErrorNonTerminal = Parser.ENonTerminal.Constant;break;
+			case 33:syntaxErrorType = ESyntaxErrorType.InvalidToken;syntaxErrorNonTerminal = Parser.ENonTerminal.ConstantT;break;
+			case 34:syntaxErrorType = ESyntaxErrorType.InvalidToken;syntaxErrorNonTerminal = Parser.ENonTerminal.ConstantF;break;
 
-			default: s = "error " + n; break;
 		}
-
+		
 		TotalErrorsAmount++;
+
         if ( Message != null )
         {
-            Message( new Data { Line = line, Column = col, Type = EType.Error, Text = s } );
+            Message( new Data { Line = line, Column = col, Type = EType.SyntaxError, 
+				SyntaxErrorType = syntaxErrorType,
+				SyntaxErrorTerminal = syntaxErrorTerminal,
+				SyntaxErrorNonTerminal = syntaxErrorNonTerminal } );
         }
 	}
 
     public void SemanticError( int line, int col, string s )
     {
         TotalErrorsAmount++;
+
         if ( Message != null )
         {
-            Message( new Data { Line = line, Column = col, Type = EType.Error, Text = s } );
+            Message( new Data { Line = line, Column = col, Type = EType.SemanticError, Text = s } );
         }
     }
 
     public void SemanticError( string s )
     {
         TotalErrorsAmount++;
+
         if ( Message != null )
         {
-            Message( new Data { Type = EType.Error, Text = s } );
+            Message( new Data { Type = EType.SemanticError, Text = s } );
         }
     }
 
     public void Warning( int line, int col, string s )
     {
         TotalWarningsAmount++;
+
         if ( Message != null )
         {
             Message( new Data { Line = line, Column = col, Type = EType.Warning, Text = s } );
@@ -572,6 +595,7 @@ public sealed class ParserErrors
     public void Warning( string s )
     {
         TotalWarningsAmount++;
+
         if ( Message != null )
         {
             Message( new Data { Type = EType.Warning, Text = s } );

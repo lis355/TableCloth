@@ -23,7 +23,7 @@ namespace TableClothKernel
         }
 
 		public TcException( string message ):
-            base( new ParserErrors.Data { Text = message, Type =  ParserErrors.EType.Error } )
+            base( new ParserErrors.Data { Text = message, Type = ParserErrors.EType.SyntaxError } )
         {
         }
     }

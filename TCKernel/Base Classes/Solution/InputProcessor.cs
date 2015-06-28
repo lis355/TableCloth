@@ -65,7 +65,7 @@ namespace TableClothKernel
 
         void MessagesDispatcher( ParserErrors.Data data )
         {
-            if ( data.Type == ParserErrors.EType.Error )
+            if ( data.Type == ParserErrors.EType.SyntaxError )
             {
                 throw new TcException( data );
             }

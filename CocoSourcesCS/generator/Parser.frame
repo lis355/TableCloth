@@ -126,8 +126,17 @@ public sealed class ParserErrors
 
     public enum EType 
     {
-        Error,
+        SyntaxError,
+		SemanticError,
         Warning
+    }
+	
+	public enum ESyntaxErrorType 
+    {
+		Unknown,
+        TokenExpected,
+		UnknownTokenExpected,
+        InvalidToken
     }
 
     public struct Data
@@ -138,6 +147,10 @@ public sealed class ParserErrors
         public EType Type;
 
         public string Text;
+		
+		public ESyntaxErrorType SyntaxErrorType;
+		public Parser.ETerminal? SyntaxErrorTerminal;
+		public Parser.ENonTerminal? SyntaxErrorNonTerminal;
     }
 
     public delegate void MessageDelegate( Data data );
@@ -157,42 +170,52 @@ public sealed class ParserErrors
 	
     public void SyntaxError( int line, int col, int n )
     {
-		string s;
-
-		switch ( n )
+		//string s = "";
+		
+		ESyntaxErrorType syntaxErrorType = ESyntaxErrorType.Unknown;
+		Parser.ETerminal? syntaxErrorTerminal = null;
+		Parser.ENonTerminal? syntaxErrorNonTerminal = null;
+		
+		switch(n)
 		{
 -->errors
-			default: s = "error " + n; break;
 		}
-
+		
 		TotalErrorsAmount++;
+
         if ( Message != null )
         {
-            Message( new Data { Line = line, Column = col, Type = EType.Error, Text = s } );
+            Message( new Data { Line = line, Column = col, Type = EType.SyntaxError, 
+				SyntaxErrorType = syntaxErrorType,
+				SyntaxErrorTerminal = syntaxErrorTerminal,
+				SyntaxErrorNonTerminal = syntaxErrorNonTerminal } );
         }
 	}
 
     public void SemanticError( int line, int col, string s )
     {
         TotalErrorsAmount++;
+
         if ( Message != null )
         {
-            Message( new Data { Line = line, Column = col, Type = EType.Error, Text = s } );
+            Message( new Data { Line = line, Column = col, Type = EType.SemanticError, Text = s } );
         }
     }
 
     public void SemanticError( string s )
     {
         TotalErrorsAmount++;
+
         if ( Message != null )
         {
-            Message( new Data { Type = EType.Error, Text = s } );
+            Message( new Data { Type = EType.SemanticError, Text = s } );
         }
     }
 
     public void Warning( int line, int col, string s )
     {
         TotalWarningsAmount++;
+
         if ( Message != null )
         {
             Message( new Data { Line = line, Column = col, Type = EType.Warning, Text = s } );
@@ -202,6 +225,7 @@ public sealed class ParserErrors
     public void Warning( string s )
     {
         TotalWarningsAmount++;
+
         if ( Message != null )
         {
             Message( new Data { Type = EType.Warning, Text = s } );

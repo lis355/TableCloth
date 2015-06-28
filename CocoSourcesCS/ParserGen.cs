@@ -125,17 +125,52 @@ public class ParserGen {
 	}
 
 	void GenErrorMsg (int errTyp, Symbol sym) {
+		
 		errorNr++;
-		err.Write("\t\t\tcase " + errorNr + ": s = \"");
-		switch (errTyp) {
-			case tErr: 
-				if (sym.name[0] == '"') err.Write(tab.Escape(sym.name) + " expected");
-				else err.Write(sym.name + " expected"); 
+
+		err.Write("\t\t\tcase " + errorNr + ":");
+
+		switch (errTyp) 
+		{
+			case tErr:
+
+				if ( sym.name[0] == '"'
+					|| !Char.IsLetter( sym.name[0] ) )
+				{
+				//	err.Write( " s = \"" + tab.Escape( sym.name ) + " expected\";" );
+
+					err.Write( "syntaxErrorType = ESyntaxErrorType.UnknownTokenExpected;" );
+				}
+				else
+				{
+				//	err.Write( " s = \"" + sym.name + " expected\";" );
+
+					err.Write( "syntaxErrorType = ESyntaxErrorType.TokenExpected;" );
+					err.Write( "syntaxErrorTerminal = Parser.ETerminal." +sym.name + ";" );
+				}
+
 				break;
-			case altErr: err.Write("invalid " + sym.name); break;
-			case syncErr: err.Write("this symbol not expected in " + sym.name); break;
+
+			case altErr:
+				
+				//err.Write(" s = \"" + "invalid " + sym.name + "\";"); 
+
+				err.Write( "syntaxErrorType = ESyntaxErrorType.InvalidToken;"); 
+				err.Write( "syntaxErrorNonTerminal = Parser.ENonTerminal." +sym.name + ";" );
+
+				break;
+
+			case syncErr: 
+				
+				//err.Write(" s = \"" + "this symbol not expected in " + sym.name + "\";"); 
+
+				err.Write( "syntaxErrorType = ESyntaxErrorType.TokenExpected;" );
+				err.Write( "syntaxErrorTerminal = Parser.ETerminal." +sym.name + ";" );
+
+				break;
 		}
-		err.WriteLine("\"; break;");
+
+		err.WriteLine("break;");
 	}
 	
 	int NewCondSet (BitArray s) {
@@ -307,7 +342,6 @@ public class ParserGen {
         gen.WriteLine( "\t{" );
         gen.WriteLine( "\t\t{0}", String.Join( "," + CR + LF + "\t\t", terminalslist ) );
         gen.WriteLine( "\t}" + CR + LF );
-
 		
 		gen.WriteLine("\tpublic const int MaxT = {0};", terminalslist.Count() );
 
@@ -323,10 +357,13 @@ public class ParserGen {
         if ( tab.nonterminals.Count == 0 )
             return;
 
+		var nonterminalslist = tab.nonterminals.Where( x => Char.IsLetter( x.name[0] ) ).
+			Select( x => x.name + " = " + x.n ).ToList();
+
 		gen.WriteLine();
         gen.WriteLine( "\tpublic enum ENonTerminal" );
         gen.WriteLine( "\t{" );
-        gen.WriteLine( "\t\t{0}", String.Join( "," + CR + LF + "\t\t", tab.nonterminals.Select( x => x.name ).ToList() ) );
+        gen.WriteLine( "\t\t{0}", String.Join( "," + CR + LF + "\t\t", nonterminalslist ) );
         gen.WriteLine( "\t}" + CR + LF );
     }
 	
