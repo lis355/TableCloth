@@ -165,7 +165,7 @@ public class ParserGen {
 		
 	void PutCaseLabels (BitArray s) {
 		foreach (Symbol sym in tab.terminals)
-			if (s[sym.n]) gen.Write("case {0}: ", sym.name );
+			if (s[sym.n]) gen.Write("case ETerminal.{0}: ", sym.name );
 	}
 	
 	void GenCode (Node p, int indent, BitArray isChecked) {
@@ -226,7 +226,7 @@ public class ParserGen {
 					s1 = tab.First(p);
 					bool equal = Sets.Equals(s1, isChecked);
 					bool useSwitch = UseSwitch(p);
-					if (useSwitch) { Indent(indent); gen.WriteLine("switch (la.kind) {"); }
+					if (useSwitch) { Indent(indent); gen.WriteLine("switch ((ETerminal)la.kind) {"); }
 					p2 = p;
 					while (p2 != null) {
 						s1 = tab.Expected(p2.sub, curSy);
