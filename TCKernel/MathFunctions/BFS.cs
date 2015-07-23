@@ -7,6 +7,9 @@ namespace TableClothKernel.MathFunctions
 	{
 		public static void BreadthFirstSearch( Operand op, Action<Operand> visitor )
 		{
+			if ( visitor == null )
+				throw new ArgumentNullException( "visitor" );
+
 			var q = new Queue<Operand>();
 			q.Enqueue( op );
 
@@ -15,12 +18,37 @@ namespace TableClothKernel.MathFunctions
 				var item = q.Dequeue();
 				visitor( item );
 
-				if ( item is Function )
+				var func = item as Function;
+				if ( func != null )
 				{
-					foreach ( var operand in ( item as Function ).Operands )
+					foreach ( var operand in func.Operands )
 					{
 						q.Enqueue( operand );
 					}	
+				}
+			}
+		}
+
+		public static void DepthFirstSearch( Operand op, Action<Operand> visitor )
+		{
+			if ( visitor == null )
+				throw new ArgumentNullException( "visitor" );
+
+			var q = new Stack<Operand>();
+			q.Push( op );
+
+			while ( q.Count > 0 )
+			{
+				var item = q.Pop();
+				visitor( item );
+
+				var func = item as Function;
+				if ( func != null )
+				{
+					foreach ( var operand in func.Operands )
+					{
+						q.Push( operand );
+					}
 				}
 			}
 		}

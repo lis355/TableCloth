@@ -1,4 +1,6 @@
-﻿namespace TableClothKernel
+﻿using System;
+
+namespace TableClothKernel
 {
 	public class Variable : Operand
 	{
@@ -6,6 +8,9 @@
 
 		public Variable( string name )
 		{
+			if ( String.IsNullOrWhiteSpace( name ) )
+				throw new ArgumentNullException();
+
 			Name = name;
 		}
 
@@ -17,6 +22,15 @@
 		public override Operand Calc( Calculator calculator )
 		{
 			return calculator.CalcVariable( this );
+		}
+
+		public override bool Equals( object obj )
+		{
+			var other = obj as Variable;
+			if ( other == null )
+				return false;
+
+			return Name == other.Name;
 		}
 	}
 }

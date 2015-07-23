@@ -11,19 +11,19 @@ namespace TableClothKernel.MathFunctions
 		/// </summary>
 		public static OperandList GetVariables( Operand operand )
 		{
-			var result = new List<string>();
+			var result = new OperandList();
 
 			Algorithms.BreadthFirstSearch( operand, x =>
 			{
 				var variable = x as Variable;
 				if ( variable != null 
-					&& !result.Contains( variable.Name ) )
+					&& !result.Contains( variable ) )
 				{
-					result.Add( variable.Name );
+					result.Add( variable );
 				}
 			});
-			
-			return new OperandList( result.Select( x => new Variable( x ) ) );
+
+			return result;
 		}
 
 		/// <summary>
