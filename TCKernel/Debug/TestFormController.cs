@@ -53,7 +53,7 @@ namespace TableClothKernel
 
         static readonly string[] _expressions =
         {  
-			"y=a&&b||a; GetVariables(y);"
+			"y=a&&b||a; GetVariables(y); Calc(y,{r,t});"
             //"!( !( x ^ y ) => !( z == wy ) ) && r || !q",
             //"!( !( 1 ^ 0 ) => !( 1 == wy ) ) && r || !q", 
             //"Or(Not(q),And(r,Not(Implication(Not(Xor(False,True)),Not(Equivalence(wy,True))))))",

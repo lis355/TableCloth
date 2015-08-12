@@ -26,13 +26,16 @@ namespace TableClothKernel.MathFunctions
 			return result;
 		}
 
-		/// <summary>
-		/// Возвращает 2 списка: список переменных и вектор значений функции в порядке списка переменных
-		/// </summary>
-		//public static OperandList GetValuesVector( Operand operand )
+		///// <summary>
+		///// Осуществляет подстановку списка операндов в список переменных и рассчитывает.
+		///// </summary>
+		//public static Operand Calc( Operand operand, OperandList replace )
 		//{
 		//	var variables = GetVariables( operand );
-		//	 
+		//	if ( variables.Count != replace.Count )
+		//		throw new TcException( "Different variables count." );
+		//
+		//
 		//}
 
 		/*

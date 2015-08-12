@@ -185,10 +185,15 @@ public sealed class ParserErrors
 
         if ( Message != null )
         {
-            Message( new Data { Line = line, Column = col, Type = EType.SyntaxError, 
+            Message( new Data 
+			{
+				Line = line, 
+				Column = col, 
+				Type = EType.SyntaxError, 
 				SyntaxErrorType = syntaxErrorType,
 				SyntaxErrorTerminal = syntaxErrorTerminal,
-				SyntaxErrorNonTerminal = syntaxErrorNonTerminal } );
+				SyntaxErrorNonTerminal = syntaxErrorNonTerminal 
+			} );
         }
 	}
 
