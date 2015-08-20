@@ -1,0 +1,405 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="TableClothKernel.Command" Collapsed="true">
+    <Position X="13.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Base Classes\Commands\Command.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.UserInput" Collapsed="true">
+    <Position X="24.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base Classes\Commands\UserInput.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.DefineVariableCommand" Collapsed="true">
+    <Position X="11.25" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAQAAQAAAAAAAA=</HashCode>
+      <FileName>Base Classes\Commands\VariableCommands.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.DeleteVariableCommand" Collapsed="true">
+    <Position X="13.5" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Base Classes\Commands\VariableCommands.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.Expression" Collapsed="true">
+    <Position X="15.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAASAACAAAAAAAAAAAAIAAAAAAQAAAAAAACA=</HashCode>
+      <FileName>Base Classes\Expression\Expression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.ExpressionTranscription" Collapsed="true">
+    <Position X="33.5" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>hAKIACggggaAAAAIAAIgAAAAAAAAAAAgAIEAJAgQAAA=</HashCode>
+      <FileName>Base Classes\Expression\ExpressionTranscription.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.Constant" Collapsed="true">
+    <Position X="20" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAACAAAAAAAAAAAAAAAAAQAAABAggAAAAAAA=</HashCode>
+      <FileName>Base Classes\Operands\Constant.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.Function" Collapsed="true">
+    <Position X="22" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAgAAAACAAAAAAAAAAAQAAAACAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Base Classes\Operands\Function.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.Operand" Collapsed="true">
+    <Position X="20" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAACAAAAAAAAAAAAAAAAAAAAAAQAAAAAAACA=</HashCode>
+      <FileName>Base Classes\Operands\Operand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.OperandList" Collapsed="true">
+    <Position X="19" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEIgAkAAAACAABAQCAAABAQAAAAIAAAECAAAAABQICA=</HashCode>
+      <FileName>Base Classes\Operands\OperandList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TableClothKernel.Variable" Collapsed="true">
+    <Position X="17.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAgAAAAAAAAAAgAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base Classes\Operands\Variable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.BinaryOperator" Collapsed="true">
+    <Position X="21" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAgFAAAiAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Base Classes\Operators\BinaryOperator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.AndOperator" Collapsed="true">
+    <Position X="17.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Base Classes\Operators\BinaryOperators.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.OrOperator" Collapsed="true">
+    <Position X="19.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Base Classes\Operators\BinaryOperators.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.XorOperator" Collapsed="true">
+    <Position X="22" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Base Classes\Operators\BinaryOperators.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.EquivalenceOperator" Collapsed="true">
+    <Position X="24.5" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Base Classes\Operators\BinaryOperators.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.ImplicationOperator" Collapsed="true">
+    <Position X="18.75" Y="8" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Base Classes\Operators\BinaryOperators.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.ShefferOperator" Collapsed="true">
+    <Position X="21" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Base Classes\Operators\BinaryOperators.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.PirseOperator" Collapsed="true">
+    <Position X="23.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Base Classes\Operators\BinaryOperators.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.NotOperator" Collapsed="true">
+    <Position X="23.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAEAACA=</HashCode>
+      <FileName>Base Classes\Operators\NotOperator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.Operator" Collapsed="true">
+    <Position X="22" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>oAAgAAAAIAAAAAAAAAAAAAAAACAAgAEgAQAAAAAgAAA=</HashCode>
+      <FileName>Base Classes\Operators\Operator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.Calculator" Collapsed="true">
+    <Position X="35.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAE=</HashCode>
+      <FileName>Base Classes\Solution\Calculator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.CommandProcessor" Collapsed="true">
+    <Position X="37" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>QAAAACAAAAAAAAAAAgAAAAAAAAAAAAAQAAAAAAAAAIA=</HashCode>
+      <FileName>Base Classes\Solution\CommandProcessor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.InputProcessor" Collapsed="true">
+    <Position X="31.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgACAAAAAAAARAAgAAAAAAAAEAAAAABAAAAAAAAAQ=</HashCode>
+      <FileName>Base Classes\Solution\InputProcessor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.RequestResult" Collapsed="true">
+    <Position X="30" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAEgAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Base Classes\Solution\RequestResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.Solution" Collapsed="true">
+    <Position X="33.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAACAAAAEAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Base Classes\Solution\Solution.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.TcMessage" Collapsed="true">
+    <Position X="14.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base Classes\TcException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.TcException" Collapsed="true">
+    <Position X="13.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base Classes\TcException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.TcWarning" Collapsed="true">
+    <Position X="15.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base Classes\TcException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.TcToken" Collapsed="true">
+    <Position X="17.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Base Classes\TcToken.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.VariableList" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="33.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABBAACAAACAAAEAEIAAAEAAAIgABAAAA=</HashCode>
+      <FileName>Base Classes\VariableList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TableClothKernel.Options" Collapsed="true">
+    <Position X="35.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAQAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Config\Options.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.DebugExpressionTranscription" Collapsed="true">
+    <Position X="38.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Debug\DebugExpressionTranscription.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.TcDebug" Collapsed="true">
+    <Position X="35.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAEQAAAAgIAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Debug\TcDebug.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.TestForm" Collapsed="true">
+    <Position X="37" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAEKAAAAAAAACAAAAiCBAQACCgLAAAAEAABAA=</HashCode>
+      <FileName>Debug\TestForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.TestMethods" Collapsed="true">
+    <Position X="30" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAEAAAAAAACAAAAgAABAAAAAA=</HashCode>
+      <FileName>Debug\TestFormController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.TestFormController" Collapsed="true">
+    <Position X="38.75" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAQAAgAAAAAACAAAAAAAAAAAAgAAAgAAAJAA=</HashCode>
+      <FileName>Debug\TestFormController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.DotGraphPlot" Collapsed="true">
+    <Position X="30" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAABAAAAACAAAAACAAAIAgQAAAAAAAiAAA=</HashCode>
+      <FileName>Dot\DotGraphPlot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.DynamicFastCalc" Collapsed="true">
+    <Position X="31.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAEBAAAAAAAAAAAAAAAABAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>FastCalc\DynamicFastCalc.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.Parser" Collapsed="true">
+    <Position X="37" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>dDIhoiACYQggAQBIgSQQBYAFmQgAICkRAkQEcEKEAZI=</HashCode>
+      <FileName>Parser\Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.ParserErrors" Collapsed="true">
+    <Position X="38.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAABAABAAAAAAAAAAAAAAIAJAAAA=</HashCode>
+      <FileName>Parser\Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.FatalError" Collapsed="true">
+    <Position X="35.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parser\Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.Token" Collapsed="true">
+    <Position X="31.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAYAAAAAAAAAAQAAAAYAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Parser\Scanner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.Buffer" Collapsed="true">
+    <Position X="11.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgACBAAEAAQAAAQABACgAAOAEAAACAAIAACAAAA=</HashCode>
+      <FileName>Parser\Scanner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.UTF8Buffer" Collapsed="true">
+    <Position X="11.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parser\Scanner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.Scanner" Collapsed="true">
+    <Position X="31.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEc0ARAAFAQEAAAgAAASBYAAAACAAEAAAARCAAAAISA=</HashCode>
+      <FileName>Parser\Scanner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.CalcMethodsAttribute" Collapsed="true">
+    <Position X="31.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>StaticClasses\CalcProvider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.CalcProvider" Collapsed="true">
+    <Position X="33.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAgAAAACAAICAAAAACBAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>StaticClasses\CalcProvider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.Information" Collapsed="true">
+    <Position X="30" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAEAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>StaticClasses\Information.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.MathFunctions.Algorithms" Collapsed="true">
+    <Position X="30" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACE=</HashCode>
+      <FileName>MathFunctions\BFS.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.MathFunctions.FCheck" Collapsed="true">
+    <Position X="37" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MathFunctions\Check.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.MathFunctions.Math" Collapsed="true">
+    <Position X="33.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>MathFunctions\Get.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TableClothKernel.MathFunctions.FMinimize" Collapsed="true">
+    <Position X="38.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MathFunctions\Minimize.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="TableClothKernel.EBooleanConstants">
+    <Position X="29.75" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Enums\EBooleanConstants.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="TableClothKernel.EOperator">
+    <Position X="31.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>oAAAAAAAIAAAAAAAAAAAAAAAACAAgAEgAAAAAAAgAAA=</HashCode>
+      <FileName>Enums\EOperator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="TableClothKernel.EStringConstantType">
+    <Position X="33.5" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums\EStringTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="TableClothKernel.EStringOperatorType">
+    <Position X="35.75" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Enums\EStringTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

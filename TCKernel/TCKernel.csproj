@@ -129,6 +129,7 @@
     <Compile Include="Base Classes\VariableList.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="Config\app.config" />
   </ItemGroup>
   <ItemGroup>

@@ -13,7 +13,7 @@ namespace TableClothKernel.MathFunctions
 			var q = new Queue<Operand>();
 			q.Enqueue( op );
 
-			while ( q.Count > 0  )
+			while ( q.Count > 0 )
 			{
 				var item = q.Dequeue();
 				visitor( item );

@@ -58,7 +58,7 @@ namespace TableClothKernel
 
         void PushNot()
         {
-            PushOperator( EOperator.Not, PopToken<Operand>() );
+			PushToken( Operator.Not( PopToken<Operand>() ) );
         }
 
 	    void PushSimplyBinaryOperator( EOperator type )
