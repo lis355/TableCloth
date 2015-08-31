@@ -1,9 +1,11 @@
 Thumbs.db
 *.obj
 *.exe
+*.dll
 *.pdb
 *.user
 *.aps
+*.ps1
 *.pch
 *.vspscc
 *_i.c
@@ -23,7 +25,9 @@ trace.txt
 obj/
 _ReSharper*/
 *vshost*
+*.nupkg
 
 exe_debug/
 exe_release/
 obj/
+packages/
