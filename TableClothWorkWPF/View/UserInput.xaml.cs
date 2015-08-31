@@ -17,23 +17,9 @@ namespace TableClothWork
 {
 	public partial class UserInput : UserControl
 	{
-		// temp
-		readonly NoteController _controller = new NoteController();
-
 		public UserInput()
 		{
 			InitializeComponent();
-
-			Input.Text = String.Empty;
-			Output.Text = String.Empty;
-		}
-
-		private void Input_KeyDown(object sender, KeyEventArgs e)
-		{
-			if ( e.Key != Key.Enter )
-				return;
-
-			Output.Text = _controller.Calc( Input.Text );
 		}
 	}
 }
