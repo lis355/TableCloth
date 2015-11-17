@@ -146,9 +146,7 @@ namespace TableClothKernel
 			File.Delete( "test.dot" );
 			File.Delete( imageName );
 
-			var g = new DotGraphPlot( expression );
-			g.PlotGraph();
-			g.PlotDot();
+			var g = new DotGraphPloter( expression );
 			g.SaveDotAndImage( @"C:\Program Files (x86)\Graphviz2.38\bin\dot.exe", imageName );
 
 			if ( File.Exists( imageName ) )

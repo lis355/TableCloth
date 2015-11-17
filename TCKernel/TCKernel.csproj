@@ -124,7 +124,6 @@
     <Compile Include="MathFunctions\Create.cs" />
     <Compile Include="MathFunctions\Get.cs" />
     <Compile Include="MathFunctions\Minimize.cs" />
-    <Compile Include="old_and_tests\old_classes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base Classes\VariableList.cs" />
   </ItemGroup>
