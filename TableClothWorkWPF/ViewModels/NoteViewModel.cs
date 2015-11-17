@@ -1,35 +1,77 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
+using System.Collections.Specialized;
 using System.Windows.Input;
+using GJson;
 
 namespace TableClothWork
 {
 	public class NoteViewModel : ViewModelBase
 	{
-		readonly NoteController _controller = new NoteController();
+		public NoteData Data { get; private set; }
 
-		public NoteViewModel()
+		public NoteViewModel():
+			this( CreateNewData() )
 		{
-			AddNewUserInputCommand = new SimpleCommand( AddNewUserInput );
+			Changed = false;
+			Saved = false;
+
+			_inputs.CollectionChanged += Inputs_CollectionChanged;
 		}
 
-        string _noteName;
+		public NoteViewModel( NoteData data )
+		{
+			Data = data;
+
+			foreach ( var space in Data.Spaces )
+			{
+				_inputs.Add( new UserInputViewModel( space ) );
+			}
+
+			Changed = false;
+			Saved = true;
+		}
+
+		static NoteData CreateNewData()
+		{
+			var data = new NoteData();
+			var space = new NoteData.UserInputData();
+			data.Spaces.Add( space );
+
+			return data;
+		}
+
+		void Inputs_CollectionChanged( object sender, NotifyCollectionChangedEventArgs e )
+		{
+			// TODO по нормальному запилить
+
+			Data.Spaces.Clear();
+
+			foreach ( var input in _inputs )
+			{
+				Data.Spaces.Add( input.Data );
+			}
+		}
+
+		/// <summary>
+		/// Имя тетради
+		/// </summary>
         public string NoteName
         {
             get
             {
-                return _noteName;
+				return Data.Name;
             }
             set
             {
-                _noteName = value;
+				Data.Name = value;
                 OnPropertyChanged( "NoteName" );
             }
         }
 
+		/// <summary>
+		/// Список пространств ввода
+		/// </summary>
 		ObservableCollection<UserInputViewModel> _inputs = new ObservableCollection<UserInputViewModel>();
 		public ObservableCollection<UserInputViewModel> Inputs
 		{
@@ -47,11 +89,73 @@ namespace TableClothWork
 			}
 		}
 
-		public ICommand AddNewUserInputCommand { get; private set; }
-
-		void AddNewUserInput( object parameter )
+		/// <summary>
+		/// Были какие-то изменения. 
+		/// </summary>
+		bool _changed;
+		public bool Changed
 		{
-			Inputs.Add( new UserInputViewModel() );
+			get
+			{
+				return _changed;
+			}
+			set
+			{
+				_changed = value;
+				OnPropertyChanged( "Changed" );
+			}
+		}
+
+		/// <summary>
+		/// Сохранялась или нет
+		/// </summary>
+		bool _saved;
+		public bool Saved
+		{
+			get
+			{
+				return _saved;
+			}
+			set
+			{
+				_saved = value;
+				OnPropertyChanged( "Saved" );
+			}
+		}
+
+		public bool NeedSave
+		{
+			get
+			{
+				return !Changed && Saved;
+			}
+		}
+
+		ICommand _addNewUserInputCommand;
+		public ICommand AddNewUserInputCommand
+		{
+			get
+			{
+				if ( _addNewUserInputCommand == null )
+				{
+					_addNewUserInputCommand = new SimpleCommand( x =>
+					{
+						Inputs.Add( new UserInputViewModel() );
+					} );
+				}
+
+				return _addNewUserInputCommand;
+			}
+		}
+
+		void SaveDataToTempSettingFile( string file )
+		{
+			Setting.Instance.WriteTextFile( file, Serializator.Serialize( Data ).ToStringIdent() );
+		}
+
+		void SaveDataToFile( string file )
+		{
+			
 		}
 	}
 }

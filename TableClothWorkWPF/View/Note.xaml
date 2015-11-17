@@ -16,12 +16,14 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-		<StackPanel Orientation="Vertical"
-					Background="Transparent"
-					MouseUp="StackPanel_MouseUp">
-			<ItemsControl ItemsSource="{Binding Path=Inputs}">
-			</ItemsControl>
-		</StackPanel>		
+		<ScrollViewer VerticalScrollBarVisibility="Visible">
+			<StackPanel Orientation="Vertical"
+						Background="Transparent"
+						MouseUp="StackPanel_MouseUp">
+				<ItemsControl ItemsSource="{Binding Path=Inputs}">
+				</ItemsControl>
+			</StackPanel>		
+		</ScrollViewer>
         
 		<StatusBar Grid.Row="1">
             <StatusBarItem>Status</StatusBarItem>

@@ -20,13 +20,16 @@
 					  IsCloseButtonEnabled="True"
 					  IsMaxRestoreButtonEnabled="True"
 					  IsMinButtonEnabled="True"
-					  Initialized="MainWindow_OnInitialized">
+					  Initialized="MainWindow_OnInitialized"
+					  Closing="MainWindow_OnClosing"
+					  DataContextChanged="MainWindow_OnDataContextChanged">
 
-	<!--<Window.Title>
-		<MultiBinding StringFormat="{0}-{1}">
-			<Binding Source="NotesTab",Path="SelectedNote" />
+	<Window.Title>
+		<MultiBinding StringFormat="{}{0} - {1}" Mode="OneWay">
+			<Binding Source="{x:Static local:Information.CurrentAssemblyTitleName}" />
+			<Binding Path="SelectedNote.NoteName" />
 		</MultiBinding>
-	</Window.Title>-->
+	</Window.Title>
 	
 	<Window.Resources>
 
@@ -76,6 +79,12 @@
 		</controls:WindowCommands>
 	</controls:MetroWindow.LeftWindowCommands>
 
+	<Window.InputBindings>
+		<KeyBinding Modifiers="Alt"
+					Key="F4"
+					Command="{Binding ExitCommand}" />
+	</Window.InputBindings>
+
 	<controls:MetroContentControl>
 		<Grid>
 			<Grid.RowDefinitions>
@@ -88,13 +97,50 @@
 				  VerticalAlignment="Stretch"
 				  HorizontalAlignment="Left">
 				<MenuItem Header="File">
-					<MenuItem Header="File" />
+					<MenuItem Header="New Note"
+							  Command="{x:Static ApplicationCommands.New}" />
+					<Separator />
+					<MenuItem Header="Open Note"
+							  Command="{x:Static ApplicationCommands.Open}" />
+					<MenuItem Header="Close Note"
+							  Command="{x:Static ApplicationCommands.Close}" />
+					<Separator />
+					<MenuItem Header="Save Note"
+							  Command="{x:Static ApplicationCommands.Save}" />
+					<MenuItem Header="Save Note As"
+							  Command="{x:Static ApplicationCommands.SaveAs}" />
+					<MenuItem Header="Save All Notes" />
+					<Separator />
+					<MenuItem Header="Recent Notes" x:Name="RecentFilesMenuItem">
+						<Separator />
+						<MenuItem Header="Clear List" />
+					</MenuItem>
 					<Separator />
 					<MenuItem Header="Exit"
-							  Command="{Binding ExitCommand}" />
+							  Command="{Binding ExitCommand}" /> 
 				</MenuItem>
 				<MenuItem Header="Edit">
-					<MenuItem Header="Copy" />
+					<MenuItem Header="Undo"
+							  Command="{x:Static ApplicationCommands.Undo}" />
+					<MenuItem Header="Redo"
+							  Command="{x:Static ApplicationCommands.Redo}" />
+					<Separator />
+					<MenuItem Header="Cut"
+							  Command="{x:Static ApplicationCommands.Cut}" />
+					<MenuItem Header="Copy"
+							  Command="{x:Static ApplicationCommands.Copy}" />
+					<MenuItem Header="Paste"
+							  Command="{x:Static ApplicationCommands.Paste}" />
+				</MenuItem>
+				<MenuItem Header="Note">
+					<MenuItem Header="Clear" />
+					<Separator />
+					<MenuItem Header="Abort Calculation" />
+				</MenuItem>
+				<MenuItem Header="Help">
+					<MenuItem Header="{x:Static local:Information.CurrentAssemblyTitleName}"
+							  HeaderStringFormat="About {0}">
+					</MenuItem>
 				</MenuItem>
 			</Menu>
 
@@ -103,7 +149,13 @@
 						controls:TabControlHelper.Transition="Up"
 						controls:TabControlHelper.IsUnderlined="True"
 						ItemsSource="{Binding Notes}"
-						SelectedItem="{Binding SelectedNote}">
+						SelectedItem="{Binding SelectedNote}"
+						Padding="0">
+				<TabControl.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding NoteName}" FontSize="20"/>
+					</DataTemplate>
+				</TabControl.ItemTemplate>
 			</TabControl>
 
 		</Grid>

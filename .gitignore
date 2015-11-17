@@ -27,6 +27,7 @@ _ReSharper*/
 *vshost*
 *.nupkg
 
+exe/
 exe_debug/
 exe_release/
 obj/

@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace TableClothWork
 {
-	public class MainWindowViewModel : ViewModelBase
+	public partial class MainWindowViewModel : ViewModelBase
 	{
-        const string _kTitleWithNodeFormat = "{0} - {1}";
         const string _kNextNoteName = "Note {0}";
+
+		public MainWindow View { get; set; }
+
+		public RecentFilesManager RecentFiles { get; set; }
 
 		public MainWindowViewModel()
 		{
-			OnInitializeCommand = new SimpleCommand( OnInitialize );
-            ExitCommand = new SimpleCommand( Exit );
+			RecentFiles = new RecentFilesManager();
 		}
 
         #region Properties
@@ -45,8 +49,6 @@ namespace TableClothWork
 			{
 				_selectedNote = value;
 				OnPropertyChanged( "SelectedNote" );
-
-                SelectedNote_Changed();
 			}
 		}
 
@@ -63,30 +65,97 @@ namespace TableClothWork
                 OnPropertyChanged( "ViewModelTitle" );
             }
         }
-
         #endregion
 
         #region Commands
 
-        public ICommand OnInitializeCommand { get; private set; }
-        public ICommand ExitCommand { get; private set; }
+		ICommand _onInitializeCommand;
+		public ICommand OnInitializeCommand
+		{
+			get
+			{
+				if ( _onInitializeCommand == null )
+				{
+					_onInitializeCommand = new SimpleCommand( OnInitialize );
+				}
 
-        void OnInitialize( object parameter )
-        {
-            ViewModelTitle = Information.CurrentAssemblyTitleName;
-            
-            // test
-            AddAndSelectNewNote( GetNextNoteName() );
-        }
+				return _onInitializeCommand;
+			}
+		}
+
+		ICommand _onClosingCommand;
+		public ICommand OnClosingCommand
+		{
+			get
+			{
+				if ( _onClosingCommand == null )
+				{
+					_onClosingCommand = new SimpleCommand( OnClosing );
+				}
+
+				return _onClosingCommand;
+			}
+		}
+
+		ICommand _exitCommand;
+		public ICommand ExitCommand
+		{
+			get
+			{
+				if ( _exitCommand == null )
+				{
+					_exitCommand = new SimpleCommand( Exit );
+				}
+
+				return _exitCommand;
+			}
+		}
+
+		ICommand _addAndSelectNewNoteCommand;
+		public ICommand AddAndSelectNewNoteCommand
+		{
+			get
+			{
+				if ( _addAndSelectNewNoteCommand == null )
+				{
+					_addAndSelectNewNoteCommand = new SimpleCommand( async x =>
+					{
+						// TODO correct name function
+
+						string result = "";
+
+						do
+						{
+							result = await View.ShowInputAsync( "!!!", "fds" );
+							if ( result == null )
+								return;
+
+							if ( result == "" )
+								continue;
+
+							AddAndSelectNewNote( result );
+						}
+						while ( result == "" );
+					} );
+				}
+
+				return _addAndSelectNewNoteCommand;
+			}
+		}
 
         void Exit( object parameter )
         {
-            App.Current.Shutdown();
+            Application.Current.Shutdown();
         }
+
+		void OnClosing( object parameter )
+		{
+			Preferences.Instance.Save();
+		}
 
         #endregion
 
-        void AddAndSelectNewNote( string name = "" )
+        void AddAndSelectNewNote( string name )
         {
             var note = new NoteViewModel();
             note.NoteName = name;
@@ -94,16 +163,9 @@ namespace TableClothWork
             SelectedNote = note;
         }
 
-        string GetNextNoteName()
+        string GetNextNewNoteName()
         {
             return String.Format( _kNextNoteName, Notes.Count + 1 );
-        }
-
-        void SelectedNote_Changed()
-        {
-            ViewModelTitle = String.Format( _kTitleWithNodeFormat,
-                Information.CurrentAssemblyTitleName,
-                SelectedNote.NoteName );
         }
 	}
 }

@@ -2,33 +2,54 @@
 {
 	public class UserInputViewModel : ViewModelBase
 	{
-		public NoteController Controller { get; set; }
+		public NoteData.UserInputData Data { get; private set; }
 
-		string _inputText;
+		public UserInputViewModel() :
+			this( new NoteData.UserInputData() )
+		{
+		}
+
+		public UserInputViewModel( NoteData.UserInputData data )
+		{
+			Data = data;
+		}
+
 		public string InputText
 		{
 			get
 			{
-				return _inputText;
+				return Data.In;
 			}
 			set
 			{
-				_inputText = value;
+				Data.In = value;
 				OnPropertyChanged( "InputText" );
 			}
 		}
 
-		string _outputText;
 		public string OutputText
 		{
 			get
 			{
-				return _outputText;
+				return Data.Out;
 			}
 			set
 			{
-				_outputText = value;
+				Data.Out = value;
 				OnPropertyChanged( "OutputText" );
+			}
+		}
+
+		public bool Minimized
+		{
+			get
+			{
+				return Data.Minimized;
+			}
+			set
+			{
+				Data.Minimized = value;
+				OnPropertyChanged( "Minimized" );
 			}
 		}
 	}

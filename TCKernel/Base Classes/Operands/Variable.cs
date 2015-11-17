@@ -4,7 +4,7 @@ namespace TableClothKernel
 {
 	public class Variable : Operand
 	{
-	    public string Name { get; private set; }
+		public string Name { get; private set; }
 
 		public Variable( string name )
 		{
@@ -31,6 +31,16 @@ namespace TableClothKernel
 				return false;
 
 			return Name == other.Name;
+		}
+
+		public bool Equals( Variable other )
+		{
+			return string.Equals( Name, other.Name );
+		}
+
+		public override int GetHashCode()
+		{
+			return ( Name != null ) ? Name.GetHashCode() : 0;
 		}
 	}
 }

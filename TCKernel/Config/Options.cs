@@ -7,4 +7,3 @@
 		public static bool PrettyPrint { get; set; }
     }
 }
-
